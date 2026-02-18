@@ -1,0 +1,168 @@
+/* ==============================================
+   STROKIFY 2026 - GLOBAL FOUNDATION
+   ==============================================
+   • Apple SF Pro fonts
+   • Design tokens & variables
+   • Global resets
+   • Animation keyframes
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600;6..72,700&display=swap');
+
+/* ---------- DESIGN SYSTEM VARIABLES ---------- */
+:root {
+  /* Premium Color System - Strokify signature palette */
+  --strokify-pink: #FFE5E8;
+  --strokify-pink-light: #FFF1F3;
+  --strokify-pink-dark: #FFB8C1;
+  --strokify-red: #E63E4E;
+  --strokify-red-light: #FF6B7A;
+  --strokify-red-dark: #B31E2C;
+  
+  /* Gradients - Subtle, never loud */
+  --strokify-gradient-1: linear-gradient(145deg, #FFE5E8 0%, #FFD1D6 100%);
+  --strokify-gradient-2: linear-gradient(135deg, #E63E4E 0%, #FF6B7A 100%);
+  --strokify-gradient-3: linear-gradient(165deg, #FFF1F3 0%, #FFE5E8 100%);
+  
+  /* Spatial System - Fluid & proportional */
+  --space-3xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --space-2xs: clamp(0.5rem, 1vw, 0.75rem);
+  --space-xs: clamp(0.75rem, 1.5vw, 1rem);
+  --space-sm: clamp(1rem, 2vw, 1.25rem);
+  --space-md: clamp(1.25rem, 3vw, 1.75rem);
+  --space-lg: clamp(1.5rem, 4vw, 2.25rem);
+  --space-xl: clamp(2rem, 5vw, 3rem);
+  --space-2xl: clamp(2.5rem, 6vw, 4rem);
+  --space-3xl: clamp(3rem, 8vw, 5rem);
+  --space-4xl: clamp(4rem, 10vw, 6.5rem);
+  
+  /* Glass System - Consistent opacity */
+  --glass-1: rgba(255, 255, 255, 0.98);
+  --glass-2: rgba(255, 255, 255, 0.85);
+  --glass-3: rgba(255, 255, 255, 0.7);
+  --glass-edge: rgba(255, 255, 255, 0.5);
+  --glass-edge-strong: rgba(230, 62, 78, 0.1);
+  
+  /* Shadow System - Depth without drama */
+  --shadow-sm: 0 4px 6px -2px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.01);
+  --shadow-md: 0 12px 16px -4px rgba(230, 62, 78, 0.04), 0 6px 8px -4px rgba(230, 62, 78, 0.02);
+  --shadow-lg: 0 20px 24px -8px rgba(230, 62, 78, 0.06), 0 8px 12px -6px rgba(230, 62, 78, 0.04);
+  --shadow-xl: 0 32px 40px -12px rgba(230, 62, 78, 0.08), 0 12px 16px -8px rgba(230, 62, 78, 0.04);
+  --shadow-2xl: 0 48px 56px -16px rgba(230, 62, 78, 0.12), 0 16px 24px -12px rgba(230, 62, 78, 0.08);
+  
+  /* Typography - Apple's finest */
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  
+  /* Motion Curves - Buttery smooth */
+  --curve-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --curve-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --curve-emerge: cubic-bezier(0, 0, 0.2, 1);
+  --curve-subtle: cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* ---------- GLOBAL RESET - PIXEL PERFECT ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-text);
+  color: #1A1C1E;
+  background: #FFFFFF;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
+  overflow-x: hidden;
+}
+
+/* ---------- TYPOGRAPHY DEFAULTS ---------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: #1A1C1E;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- GLOBAL ANIMATIONS ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---------- UTILITY CLASSES ---------- */
+.animate-fade-up {
+  animation: fadeUp 0.8s var(--curve-emerge) forwards;
+}
+
+.animate-breathe {
+  animation: breathe 16s var(--curve-smooth) infinite;
+}
+
+.animate-pulse {
+  animation: pulse 3s var(--curve-smooth) infinite;
+}
+
+/* ---------- SELECTION STYLES ---------- */
+::selection {
+  background: var(--strokify-red);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--strokify-red);
+  color: white;
+}
+
+/* ---------- SCROLLBAR - CLEAN & MINIMAL ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8F9FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}

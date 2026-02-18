@@ -1,0 +1,870 @@
+/* ==============================================
+   STROKIFY LIFESYNC - CLEAN PROFESSIONAL DESIGN
+   ============================================== */
+
+.life-sync {
+  min-height: 100vh;
+  background: #F8FAFC;
+  padding: 80px 24px 48px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ========== HEADER ========== */
+.ls-header {
+  margin-bottom: 24px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.ls-header h1 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-icon {
+  color: #E63E4E;
+  font-size: 2rem;
+}
+
+.header-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 40px;
+  font-size: 0.85rem;
+  color: #334155;
+}
+
+.header-subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  color: #64748B;
+}
+
+/* ========== EMERGENCY STRIP ========== */
+.emergency-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: #FEF2F2;
+  border: 1px solid #FEE2E2;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  color: #7F1D1D;
+}
+
+.strip-icon {
+  color: #DC2626;
+  font-size: 1.2rem;
+}
+
+.strip-link {
+  background: none;
+  border: none;
+  color: #DC2626;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 4px;
+  font-size: 0.95rem;
+}
+
+.strip-link:hover {
+  color: #B91C1C;
+}
+
+/* ========== MODE TOGGLE ========== */
+.mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  background: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.toggle-btn.active {
+  background: #E63E4E;
+  color: white;
+  border-color: #E63E4E;
+}
+
+.toggle-btn.emergency.active {
+  background: #DC2626;
+  border-color: #DC2626;
+}
+
+/* ========== SEARCH SECTION ========== */
+.search-section {
+  margin-bottom: 24px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  color: #94A3B8;
+  font-size: 1rem;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.95rem;
+  color: #0F172A;
+}
+
+.search-box input::placeholder {
+  color: #94A3B8;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 8px 18px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 40px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.filter-tab.active {
+  background: #E63E4E;
+  color: white;
+  border-color: #E63E4E;
+}
+
+/* ========== NURSE CARDS ========== */
+.nurse-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nurse-card {
+  display: grid;
+  grid-template-columns: 140px 1fr 240px;
+  gap: 20px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.nurse-card:hover {
+  border-color: #E63E4E;
+  box-shadow: 0 10px 25px -5px rgba(230, 62, 78, 0.1);
+}
+
+/* Left Column */
+.card-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nurse-avatar-large {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #FFF1F3 0%, #FFE5E8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  border: 3px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.super-badge {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+
+.popular-badge {
+  background: #F0FDF4;
+  color: #065F46;
+  border: 1px solid #6EE7B7;
+}
+
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.language-tag {
+  padding: 2px 8px;
+  background: #F1F5F9;
+  border-radius: 30px;
+  font-size: 0.65rem;
+  color: #475569;
+}
+
+/* Middle Column */
+.card-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nurse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nurse-name {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0;
+}
+
+.response-time {
+  font-size: 0.75rem;
+  color: #10B981;
+  background: #F0FDF4;
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+.nurse-title {
+  font-size: 0.9rem;
+  color: #E63E4E;
+  font-weight: 500;
+}
+
+.certifications {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cert-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #F0FDF4;
+  color: #166534;
+  border-radius: 30px;
+  font-size: 0.7rem;
+}
+
+.nurse-description {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 4px 0;
+}
+
+.details-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #64748B;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shifts {
+  display: flex;
+  gap: 6px;
+}
+
+.shift-tag {
+  padding: 4px 10px;
+  background: #F1F5F9;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* Right Column */
+.card-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 16px;
+  border-left: 1px solid #E2E8F0;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.price-unit {
+  font-size: 0.9rem;
+  color: #64748B;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star-filled {
+  color: #F59E0B;
+  font-size: 0.9rem;
+}
+
+.star-empty {
+  color: #E2E8F0;
+  font-size: 0.9rem;
+}
+
+.rating-text {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.book-btn {
+  padding: 12px;
+  background: #E63E4E;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.book-btn:hover {
+  background: #B31E2C;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(230, 62, 78, 0.2);
+}
+
+.message-btn {
+  padding: 10px;
+  background: white;
+  color: #1E293B;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.message-btn:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.contact-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.contact-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  color: #475569;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.contact-link:hover {
+  background: #F1F5F9;
+  color: #E63E4E;
+}
+
+.view-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  color: #2563EB;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.view-profile:hover {
+  gap: 10px;
+  color: #1E40AF;
+}
+
+/* ========== EMERGENCY PANEL ========== */
+.emergency-panel {
+  background: #FEF2F2;
+  border: 2px solid #DC2626;
+  border-radius: 24px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.emergency-icon-large {
+  font-size: 4rem;
+  color: #DC2626;
+  margin-bottom: 16px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.emergency-panel h2 {
+  color: #B91C1C;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.emergency-panel p {
+  color: #7F1D1D;
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.emergency-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: #DC2626;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  transition: all 0.2s ease;
+  animation: pulse-call 1.5s infinite;
+}
+
+@keyframes pulse-call {
+  0%, 100% { background: #DC2626; }
+  50% { background: #B91C1C; }
+}
+
+.emergency-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.emergency-contact {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.contact-icon {
+  font-size: 1.8rem;
+}
+
+.contact-name {
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 4px;
+}
+
+.contact-number {
+  color: #2563EB;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.contact-number:hover {
+  text-decoration: underline;
+}
+
+.back-to-nurses {
+  background: none;
+  border: none;
+  color: #64748B;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.back-to-nurses:hover {
+  color: #E63E4E;
+}
+
+/* ========== NO RESULTS ========== */
+.no-results {
+  padding: 60px;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #E2E8F0;
+  color: #64748B;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .nurse-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .card-left {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .nurse-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+  }
+  
+  .card-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #E2E8F0;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .filter-tabs {
+    flex-direction: column;
+  }
+  
+  .filter-tab {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nurse-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .details-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .action-buttons {
+    flex-direction: row;
+  }
+  
+  .book-btn,
+  .message-btn {
+    flex: 1;
+  }
+  
+  .emergency-panel h2 {
+    font-size: 1.6rem;
+  }
+  
+  .emergency-call-btn {
+    font-size: 1.1rem;
+    padding: 14px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .life-sync {
+    padding: 80px 16px 32px;
+  }
+  
+  .nurse-card {
+    padding: 16px;
+  }
+  
+  .price {
+    font-size: 1.6rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .emergency-contact {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ========== VIDEO CARD STYLES ========== */
+.card-video {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.video-thumbnail {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.video-thumbnail:hover img {
+  transform: scale(1.05);
+}
+
+.video-thumbnail:hover .play-button {
+  background: #E63E4E;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(230, 62, 78, 0.9);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.play-button:hover {
+  background: #E63E4E;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 6px 15px rgba(230, 62, 78, 0.4);
+}
+
+.video-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #E63E4E;
+  border-radius: 50%;
+  animation: videoPulse 1.5s infinite;
+}
+
+@keyframes videoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* Update the nurse-card grid for video */
+.nurse-card {
+  display: grid;
+  grid-template-columns: 220px 1fr 240px;
+  gap: 20px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+/* Responsive for video cards */
+@media (max-width: 1024px) {
+  .nurse-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-video {
+    flex-direction: row;
+    align-items: center;
+    min-width: 100%;
+  }
+  
+  .video-thumbnail {
+    width: 160px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-video {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .video-thumbnail {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-thumbnail {
+    height: 140px;
+  }
+}
