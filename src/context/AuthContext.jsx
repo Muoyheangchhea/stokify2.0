@@ -114,16 +114,41 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
+      console.log(
+        "🔐 Google auth for:",
+        userData.email,
+        "Role:",
+        userData.role,
+      );
+
       const response = await fetch("http://localhost:5000/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          email: userData.email,
+          name: userData.name,
+          googleId: userData.googleId,
+          picture: userData.picture,
+          role: userData.role,
+        }),
       });
 
       const data = await response.json();
+      console.log("📥 Google auth response:", data);
 
       if (!response.ok) {
-        throw new Error(data.message || "Google authentication failed");
+        // Handle 409 Conflict (user already exists)
+        if (response.status === 409) {
+          return { success: false, error: "User already exists" };
+        }
+        // Handle 404 Not Found (user doesn't exist)
+        if (response.status === 404) {
+          return { success: false, error: "User not found" };
+        }
+        return {
+          success: false,
+          error: data.message || "Google authentication failed",
+        };
       }
 
       // Save to localStorage
@@ -134,7 +159,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, user: data.user };
     } catch (err) {
-      console.error("Google auth error:", err);
+      console.error("❌ Google auth error:", err);
       setError(err.message);
       return { success: false, error: err.message };
     } finally {
