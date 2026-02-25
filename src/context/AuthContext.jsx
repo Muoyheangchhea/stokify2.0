@@ -109,17 +109,13 @@ export const AuthProvider = ({ children }) => {
     // Optional: Call logout API
     authAPI.logout().catch(console.error);
   };
+  // In your AuthContext.jsx - update the googleAuth function
   const googleAuth = async (userData) => {
     try {
       setLoading(true);
       setError(null);
 
-      console.log(
-        "🔐 Google auth for:",
-        userData.email,
-        "Role:",
-        userData.role,
-      );
+      console.log("🔐 Google auth for:", userData.email);
 
       const response = await fetch("http://localhost:5000/api/auth/google", {
         method: "POST",
@@ -134,14 +130,11 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      console.log("📥 Google auth response:", data);
 
       if (!response.ok) {
-        // Handle 409 Conflict (user already exists)
         if (response.status === 409) {
           return { success: false, error: "User already exists" };
         }
-        // Handle 404 Not Found (user doesn't exist)
         if (response.status === 404) {
           return { success: false, error: "User not found" };
         }
@@ -151,16 +144,21 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
+      // Make sure picture is properly saved
+      const userWithPicture = {
+        ...data.user,
+        picture: data.user.picture || userData.picture, // Fallback to the Google picture if not returned
+      };
+
       // Save to localStorage
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(userWithPicture));
 
-      setUser(data.user);
+      setUser(userWithPicture);
 
-      return { success: true, user: data.user };
+      return { success: true, user: userWithPicture };
     } catch (err) {
       console.error("❌ Google auth error:", err);
-      setError(err.message);
       return { success: false, error: err.message };
     } finally {
       setLoading(false);

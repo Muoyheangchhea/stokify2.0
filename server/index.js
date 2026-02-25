@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const googleAuthRoutes = require('./routes/googleAuth');
 const protectedRoutes = require('./routes/protected');
 const passwordResetRoutes = require('./routes/passwordReset');
+const userRoutes = require('./routes/users');
+const imageProxyRoutes = require('./routes/imageProxy');
 
 const app = express();
 
@@ -15,11 +18,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', googleAuthRoutes);
 app.use('/api/auth', passwordResetRoutes);
 app.use('/api/protected', protectedRoutes);
+app.use('/api', userRoutes);
+app.use('/api', imageProxyRoutes);
 
 // Test route
 app.get('/api/test', (req, res) => {

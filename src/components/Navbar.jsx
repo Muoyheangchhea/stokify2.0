@@ -1,19 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  FaHome, FaStethoscope, FaHeartbeat, FaSync, 
-  FaEnvelope, FaBars, FaTimes, FaInfoCircle, FaUser,
-  FaArrowRight, FaHeart, FaBrain, FaSignOutAlt,
-  FaChartLine, FaUsers, FaCalendar
-} from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
-import '../styles/Navbar.css';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  FaHome,
+  FaStethoscope,
+  FaHeartbeat,
+  FaSync,
+  FaEnvelope,
+  FaBars,
+  FaTimes,
+  FaInfoCircle,
+  FaUser,
+  FaArrowRight,
+  FaHeart,
+  FaBrain,
+  FaSignOutAlt,
+  FaChartLine,
+  FaUsers,
+  FaCalendar,
+  FaCaretDown,
+} from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import "../styles/Navbar.css";
 
 const Navbar = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [imageError, setImageError] = useState({});
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();
+
+  // Helper function to get proxied image URL
+  const getProxiedImageUrl = (originalUrl) => {
+    if (!originalUrl) return "";
+
+    // Use wsrv.nl (formerly images.weserv.nl) - a free image proxy service
+    if (
+      originalUrl.includes("googleusercontent.com") ||
+      originalUrl.includes("google.com")
+    ) {
+      // Add cache busting and size optimization
+      return `https://wsrv.nl/?url=${encodeURIComponent(originalUrl)}&w=100&h=100&fit=cover&a=attention&we&output=webp`;
+    }
+    return originalUrl;
+  };
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -21,51 +51,84 @@ const Navbar = ({ scrolled }) => {
     setIsDropdownOpen(false);
   }, [location]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
+  // Reset image error state when user changes
+  useEffect(() => {
+    setImageError({});
+  }, [user?.picture]);
+
   const navLinks = [
-    { to: '/', icon: <FaHome />, text: 'Home' },
-    { to: '/about', icon: <FaInfoCircle />, text: 'About' },
-    { to: '/symptom-detector', icon: <FaStethoscope />, text: 'Symptom Detector' },
-    { to: '/health-advisor', icon: <FaHeartbeat />, text: 'Health Advisor' },
-    { to: '/lifesync', icon: <FaSync />, text: 'LifeSync' },
-    { to: '/contact', icon: <FaEnvelope />, text: 'Contact' },
+    { to: "/", icon: <FaHome />, text: "Home" },
+    { to: "/about", icon: <FaInfoCircle />, text: "About" },
+    {
+      to: "/symptom-detector",
+      icon: <FaStethoscope />,
+      text: "Symptom Detector",
+    },
+    { to: "/health-advisor", icon: <FaHeartbeat />, text: "Health Advisor" },
+    { to: "/lifesync", icon: <FaSync />, text: "LifeSync" },
+    { to: "/contact", icon: <FaEnvelope />, text: "Contact" },
   ];
 
   const userLinks = [
-    { to: '/dashboard', icon: <FaChartLine />, text: 'Dashboard' },
-    { to: '/profile', icon: <FaUser />, text: 'My Profile' },
-    { to: '/family', icon: <FaUsers />, text: 'Family' },
-    { to: '/appointments', icon: <FaCalendar />, text: 'Appointments' },
+    { to: "/dashboard", icon: <FaChartLine />, text: "Dashboard" },
+    { to: "/profile", icon: <FaUser />, text: "My Profile" },
+    { to: "/family", icon: <FaUsers />, text: "Family" },
+    { to: "/appointments", icon: <FaCalendar />, text: "Appointments" },
   ];
 
   const quickActions = [
-    { to: '/symptom-detector', icon: <FaStethoscope />, text: 'Check Symptoms', color: '#E63E4E' },
-    { to: '/lifesync', icon: <FaHeart />, text: 'Emergency', color: '#DC2626' },
+    {
+      to: "/symptom-detector",
+      icon: <FaStethoscope />,
+      text: "Check Symptoms",
+      color: "#E63E4E",
+    },
+    { to: "/lifesync", icon: <FaHeart />, text: "Emergency", color: "#DC2626" },
   ];
 
   // Get user's first name
   const getFirstName = () => {
-    if (!user?.name) return 'User';
-    return user.name.split(' ')[0];
+    if (!user?.name) return "User";
+    return user.name.split(" ")[0];
   };
 
   // Get user initials for avatar
   const getUserInitials = () => {
-    if (!user?.name) return 'U';
-    const names = user.name.split(' ');
+    if (!user?.name) return "U";
+    const names = user.name.split(" ");
     if (names.length === 1) return names[0].charAt(0).toUpperCase();
-    return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+    return (
+      names[0].charAt(0) + names[names.length - 1].charAt(0)
+    ).toUpperCase();
+  };
+
+  // Handle image error for specific avatar
+  const handleImageError = (avatarType) => {
+    console.error(`Image error for ${avatarType}:`, user?.picture);
+    setImageError((prev) => ({ ...prev, [avatarType]: true }));
   };
 
   // Handle link click - close menu
@@ -74,9 +137,16 @@ const Navbar = ({ scrolled }) => {
     setIsDropdownOpen(false);
   };
 
+  // Check if image should be shown
+  const shouldShowImage = (avatarType) => {
+    return user?.picture && !imageError[avatarType];
+  };
+
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+      <nav
+        className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isOpen ? "menu-open" : ""}`}
+      >
         <div className="navbar-container">
           {/* Logo */}
           <Link to="/" className="navbar-brand" onClick={handleLinkClick}>
@@ -90,26 +160,37 @@ const Navbar = ({ scrolled }) => {
               <Link
                 key={index}
                 to={link.to}
-                className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
+                className={`nav-link ${location.pathname === link.to ? "active" : ""}`}
               >
                 {link.icon}
                 <span>{link.text}</span>
               </Link>
             ))}
-            
+
             {/* User Section - Desktop */}
             {isAuthenticated ? (
-              <div className="user-menu">
-                <button 
+              <div className="user-menu" ref={dropdownRef}>
+                <button
                   className="user-menu-button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <div className="user-avatar">
-                    {getUserInitials()}
-                  </div>
+                  {shouldShowImage("desktop") ? (
+                    <img
+                      src={getProxiedImageUrl(user.picture)}
+                      alt={user.name}
+                      className="user-avatar-image"
+                      onError={() => handleImageError("desktop")}
+                    />
+                  ) : (
+                    <div className="user-avatar">{getUserInitials()}</div>
+                  )}
                   <span className="user-name">{getFirstName()}</span>
+                  <FaCaretDown
+                    className={`dropdown-arrow ${isDropdownOpen ? "open" : ""}`}
+                  />
                 </button>
-                
+
+                {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="user-dropdown">
                     {userLinks.map((link, index) => (
@@ -119,26 +200,32 @@ const Navbar = ({ scrolled }) => {
                         className="dropdown-item"
                         onClick={handleLinkClick}
                       >
-                        {link.icon}
+                        <span className="dropdown-icon">{link.icon}</span>
                         <span>{link.text}</span>
                       </Link>
                     ))}
                     <div className="dropdown-divider"></div>
-                    <button 
+                    <button
                       className="dropdown-item logout"
                       onClick={() => {
                         logout();
                         handleLinkClick();
                       }}
                     >
-                      <FaSignOutAlt />
+                      <span className="dropdown-icon">
+                        <FaSignOutAlt />
+                      </span>
                       <span>Logout</span>
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link to="/login" className="nav-link login-link" onClick={handleLinkClick}>
+              <Link
+                to="/login"
+                className="nav-link login-link"
+                onClick={handleLinkClick}
+              >
                 <FaUser />
                 <span>Login</span>
               </Link>
@@ -149,11 +236,22 @@ const Navbar = ({ scrolled }) => {
           <div className="mobile-right">
             {isAuthenticated && (
               <div className="mobile-user-avatar">
-                {getUserInitials()}
+                {shouldShowImage("mobile-small") ? (
+                  <img
+                    src={getProxiedImageUrl(user.picture)}
+                    alt={user.name}
+                    className="mobile-user-avatar-image-small"
+                    onError={() => handleImageError("mobile-small")}
+                  />
+                ) : (
+                  <div className="mobile-user-avatar-initials">
+                    {getUserInitials()}
+                  </div>
+                )}
               </div>
             )}
-            <button 
-              className={`navbar-toggle ${isOpen ? 'active' : ''}`}
+            <button
+              className={`navbar-toggle ${isOpen ? "active" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
                 setIsOpen(!isOpen);
@@ -165,13 +263,13 @@ const Navbar = ({ scrolled }) => {
           </div>
 
           {/* Mobile Menu Overlay */}
-          <div 
-            className={`mobile-menu-overlay ${isOpen ? 'active' : ''}`} 
+          <div
+            className={`mobile-menu-overlay ${isOpen ? "active" : ""}`}
             onClick={handleLinkClick}
           />
-          
+
           {/* Mobile Menu */}
-          <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
+          <div className={`mobile-menu ${isOpen ? "active" : ""}`}>
             <div className="mobile-menu-header">
               <div className="mobile-brand">
                 <span className="brand-icon">🎨</span>
@@ -182,10 +280,21 @@ const Navbar = ({ scrolled }) => {
               </button>
             </div>
 
-            {/* User info in mobile menu - moved inside */}
+            {/* User info in mobile menu */}
             {isAuthenticated && (
               <div className="mobile-user-info">
-                <div className="mobile-user-avatar-large">{getUserInitials()}</div>
+                {shouldShowImage("mobile-large") ? (
+                  <img
+                    src={getProxiedImageUrl(user.picture)}
+                    alt={user.name}
+                    className="mobile-user-avatar-image-large"
+                    onError={() => handleImageError("mobile-large")}
+                  />
+                ) : (
+                  <div className="mobile-user-avatar-large">
+                    {getUserInitials()}
+                  </div>
+                )}
                 <div className="mobile-user-details">
                   <span className="mobile-user-name">{user?.name}</span>
                   <span className="mobile-user-email">{user?.email}</span>
@@ -200,7 +309,7 @@ const Navbar = ({ scrolled }) => {
                   key={index}
                   to={action.to}
                   className="quick-action-btn"
-                  style={{ '--action-color': action.color }}
+                  style={{ "--action-color": action.color }}
                   onClick={handleLinkClick}
                 >
                   <span className="quick-icon">{action.icon}</span>
@@ -218,7 +327,7 @@ const Navbar = ({ scrolled }) => {
                 <Link
                   key={index}
                   to={link.to}
-                  className={`mobile-nav-link ${location.pathname === link.to ? 'active' : ''}`}
+                  className={`mobile-nav-link ${location.pathname === link.to ? "active" : ""}`}
                   onClick={handleLinkClick}
                 >
                   <span className="mobile-link-icon">{link.icon}</span>
@@ -247,14 +356,16 @@ const Navbar = ({ scrolled }) => {
                       <span className="mobile-link-text">{link.text}</span>
                     </Link>
                   ))}
-                  <button 
+                  <button
                     className="mobile-nav-link logout"
                     onClick={() => {
                       logout();
                       handleLinkClick();
                     }}
                   >
-                    <span className="mobile-link-icon"><FaSignOutAlt /></span>
+                    <span className="mobile-link-icon">
+                      <FaSignOutAlt />
+                    </span>
                     <span className="mobile-link-text">Logout</span>
                   </button>
                 </div>
@@ -264,10 +375,18 @@ const Navbar = ({ scrolled }) => {
             {/* Login/Register for non-authenticated users */}
             {!isAuthenticated && (
               <div className="mobile-auth-buttons">
-                <Link to="/login" className="mobile-login-btn" onClick={handleLinkClick}>
+                <Link
+                  to="/login"
+                  className="mobile-login-btn"
+                  onClick={handleLinkClick}
+                >
                   Login
                 </Link>
-                <Link to="/register" className="mobile-register-btn" onClick={handleLinkClick}>
+                <Link
+                  to="/register"
+                  className="mobile-register-btn"
+                  onClick={handleLinkClick}
+                >
                   Sign Up
                 </Link>
               </div>
@@ -280,7 +399,11 @@ const Navbar = ({ scrolled }) => {
                 <strong>Stroke Emergency?</strong>
                 <span>Call 911 immediately</span>
               </div>
-              <a href="tel:911" className="emergency-call" onClick={handleLinkClick}>
+              <a
+                href="tel:911"
+                className="emergency-call"
+                onClick={handleLinkClick}
+              >
                 911
               </a>
             </div>
@@ -289,9 +412,15 @@ const Navbar = ({ scrolled }) => {
             <div className="mobile-menu-footer">
               <p>© 2025 Strokify. All rights reserved.</p>
               <div className="mobile-footer-links">
-                <Link to="/about" onClick={handleLinkClick}>About</Link>
-                <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
-                <Link to="/privacy" onClick={handleLinkClick}>Privacy</Link>
+                <Link to="/about" onClick={handleLinkClick}>
+                  About
+                </Link>
+                <Link to="/contact" onClick={handleLinkClick}>
+                  Contact
+                </Link>
+                <Link to="/privacy" onClick={handleLinkClick}>
+                  Privacy
+                </Link>
               </div>
             </div>
           </div>

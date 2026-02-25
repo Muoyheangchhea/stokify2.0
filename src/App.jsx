@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoadingSpinner from './components/LoadingSpinner';
 import './App.css';
 
+
 // Lazy load all pages
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -21,6 +22,7 @@ const HealthAdvisor = lazy(() => import('./pages/HealthAdvisor'));
 const LifeSync = lazy(() => import('./pages/LifeSync'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const FamilyAccounts = lazy(() => import('./pages/FamilyAccounts'));
+const Profile = lazy(() => import('./pages/Profile')); // Added Profile page
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,44 +37,61 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-    <BrowserRouter>
-      <AuthProvider>
-        <div className="App">
-          <Navbar scrolled={scrolled} />
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
-              <Route path="/symptom-detector" element={<SymptomDetector />} />
-              <Route path="/health-advisor" element={<HealthAdvisor />} />
-              <Route path="/lifesync" element={<LifeSync />} />
-              
-              {/* Protected Routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/family-accounts" element={
-                <ProtectedRoute>
-                  <FamilyAccounts />
-                </ProtectedRoute>
-              } />
+      <BrowserRouter>
+        <AuthProvider>
+          <div className="App">
+            <Navbar scrolled={scrolled} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/symptom-detector" element={<SymptomDetector />} />
+                <Route path="/health-advisor" element={<HealthAdvisor />} />
+                <Route path="/lifesync" element={<LifeSync />} />
+                
+                {/* Protected Routes */}
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/family-accounts" element={
+                  <ProtectedRoute>
+                    <FamilyAccounts />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Optional: Role-based protected routes example */}
+                <Route path="/caregiver-dashboard" element={
+                  <ProtectedRoute requiredRole="caregiver">
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin" element={
+                  <ProtectedRoute requiredRole="admin">
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
 
-              {/* 404 Route */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-          <Footer />
-        </div>
-      </AuthProvider>
-    </BrowserRouter>
+                {/* 404 Route - Must be last */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+            <Footer />
+          </div>
+        </AuthProvider>
+      </BrowserRouter>
     </GoogleOAuthProvider>
   );
 }

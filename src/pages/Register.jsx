@@ -95,7 +95,7 @@ const Register = () => {
           sub: location.state.googleId,
           picture: location.state.picture,
         }
-      : null
+      : null,
   );
   const [selectedRole, setSelectedRole] = useState("user");
 
@@ -122,7 +122,7 @@ const Register = () => {
             headers: {
               Authorization: `Bearer ${tokenResponse.access_token}`,
             },
-          }
+          },
         );
 
         const userInfo = await userInfoResponse.json();
@@ -153,6 +153,24 @@ const Register = () => {
     try {
       setIsLoading(true);
       setShowRoleModal(false);
+      const checkResponse = await fetch(
+        `http://localhost:5000/api/auth/check-user?email=${encodeURIComponent(googleUserInfo.email)}`,
+      );
+
+      const checkData = await checkResponse.json();
+
+      if (checkData.exists) {
+        // User already exists - show warning
+        setAlert({
+          type: "warning",
+          message:
+            "An account with this email already exists. Would you like to sign in?",
+          onAction: () => navigate("/login"),
+          actionLabel: "Sign in →",
+        });
+        setIsLoading(false);
+        return;
+      }
 
       const result = await googleAuth({
         email: googleUserInfo.email,
@@ -272,7 +290,8 @@ const Register = () => {
         if (data.message === "User already exists") {
           setAlert({
             type: "warning",
-            message: "An account with this email already exists. Would you like to sign in?",
+            message:
+              "An account with this email already exists. Would you like to sign in?",
             onAction: () => navigate("/login"),
             actionLabel: "Sign in →",
           });
@@ -395,7 +414,7 @@ const Register = () => {
             <h2>Create account</h2>
             <p>
               Already have an account?{" "}
-              <Link to="/login" className="toggle-btn">
+              <Link to="/login" className="register-toggle-btn">
                 Sign in
               </Link>
             </p>
@@ -540,7 +559,9 @@ const Register = () => {
                   <FaLock className="input-icon" />
                   <input
                     className={`input-field ${
-                      errors.password && touchedFields.password ? "is-error" : ""
+                      errors.password && touchedFields.password
+                        ? "is-error"
+                        : ""
                     }`}
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -761,7 +782,7 @@ const Register = () => {
           )}
 
           {/* Emergency notice */}
-          <div className="emergency-notice">
+          <div className="register-emergency-notice">
             <FaShieldAlt className="emergency-icon" />
             <p>
               <strong>Stroke emergency?</strong> Do not wait — call 911

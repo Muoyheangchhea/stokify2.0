@@ -65,8 +65,10 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const [touchedFields, setTouchedFields] = useState({});
+  const [stylesLoaded, setStylesLoaded] = useState(false);
 
   useEffect(() => {
+    setStylesLoaded(true);
     const saved = localStorage.getItem("rememberedEmail");
     if (saved) setFormData((p) => ({ ...p, email: saved, rememberMe: true }));
   }, []);
@@ -83,11 +85,11 @@ const Login = () => {
             headers: {
               Authorization: `Bearer ${tokenResponse.access_token}`,
             },
-          }
+          },
         );
 
         const userInfo = await userInfoResponse.json();
-        
+
         // Login attempt with role = null
         await completeGoogleAuth(userInfo, null);
       } catch (error) {
@@ -215,19 +217,24 @@ const Login = () => {
         }),
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         // Handle "User not found" for email login
         if (data.message === "User not found") {
           setAlert({
             type: "warning",
-            message: "No account found with this email. Would you like to create one?",
-            onAction: () => navigate("/register", { 
-              state: { email: formData.email } 
-            }),
+            message:
+              "No account found with this email. Would you like to create one?",
+            onAction: () =>
+              navigate("/register", {
+                state: { email: formData.email },
+              }),
             actionLabel: "Create account →",
           });
-        } else if (data.message === "Invalid password" || data.message === "Invalid credentials") {
+        } else if (
+          data.message === "Invalid password" ||
+          data.message === "Invalid credentials"
+        ) {
           setErrors({ password: "Incorrect password" });
           setAlert({
             type: "error",
@@ -241,7 +248,7 @@ const Login = () => {
         }
         return;
       }
-      
+
       // Login successful
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -287,7 +294,10 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
+    <div
+      className="login-page"
+      style={{ opacity: stylesLoaded ? 1 : 0, transition: "opacity 0.2s" }}
+    >
       {/* Brand Panel */}
       <div className="login-brand">
         <div className="brand-inner">
@@ -346,7 +356,7 @@ const Login = () => {
             <h2>Welcome back</h2>
             <p>
               New here?{" "}
-              <Link to="/register" className="toggle-btn">
+              <Link to="/register" className="login-toggle-btn">
                 Create an account
               </Link>
             </p>
@@ -422,7 +432,9 @@ const Login = () => {
                   <FaLock className="input-icon" />
                   <input
                     className={`input-field ${
-                      errors.password && touchedFields.password ? "is-error" : ""
+                      errors.password && touchedFields.password
+                        ? "is-error"
+                        : ""
                     }`}
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -484,7 +496,7 @@ const Login = () => {
           </form>
 
           {/* Emergency notice */}
-          <div className="emergency-notice">
+          <div className="login-emergency-notice">
             <FaShieldAlt className="emergency-icon" />
             <p>
               <strong>Stroke emergency?</strong> Do not wait — call 911

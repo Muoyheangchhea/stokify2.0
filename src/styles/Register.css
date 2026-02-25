@@ -217,7 +217,7 @@
   color: #718096;
 }
 
-.toggle-btn {
+.register-toggle-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -228,7 +228,7 @@
   transition: opacity var(--transition);
 }
 
-.toggle-btn:hover {
+.register-toggle-btn:hover {
   opacity: 0.75;
   text-decoration: underline;
 }
@@ -391,7 +391,7 @@
 
 .input-field {
   width: 100%;
-  padding: 13px 14px 13px 40px;
+  padding: 13px 14px 13px 40px !important;
   background: white;
   border: 2px solid #e2e8f0;
   border-radius: var(--radius);
@@ -644,7 +644,7 @@
 }
 
 /* Emergency notice - reuse from login.css */
-.emergency-notice {
+.register-emergency-notice {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -657,19 +657,19 @@
   color: #742a2a;
 }
 
-.emergency-notice strong {
+.register-emergency-notice strong {
   color: #B31E2C;
   font-weight: 600;
 }
 
-.emergency-notice a {
+.register-emergency-notice a {
   color: #B31E2C;
   text-decoration: none;
   font-weight: 500;
   margin-left: 4px;
 }
 
-.emergency-notice a:hover {
+.register-emergency-notice a:hover {
   text-decoration: underline;
 }
 
