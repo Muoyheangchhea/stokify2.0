@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaEnvelope, FaArrowLeft, FaPaperPlane, FaShieldAlt, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  FaEnvelope,
+  FaArrowLeft,
+  FaPaperPlane,
+  FaShieldAlt,
+  FaCheckCircle,
+  FaExclamationCircle,
+} from "react-icons/fa";
+import logo from '../assets/img/Strokify_Logo.png';
 /* ─── Inline styles (red theme, matching Login/Register) ──────────────── */
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -458,50 +465,54 @@ const CSS = `
 `;
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [touched, setTouched] = useState(false);
   const [alert, setAlert] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTouched(true);
-    
+
     if (!email.trim()) {
-      setError('Email is required');
-      return;
-    }
-    
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
+      setError("Email is required");
       return;
     }
 
-    setError('');
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setError("");
     setIsLoading(true);
     setAlert(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/auth/forgot-password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        if (response.status === 404 || data.message === 'User not found') {
+        if (response.status === 404 || data.message === "User not found") {
           setAlert({
-            type: 'warning',
-            message: 'No account found with this email. Please check and try again.'
+            type: "warning",
+            message:
+              "No account found with this email. Please check and try again.",
           });
         } else {
           setAlert({
-            type: 'error',
-            message: data.message || 'Something went wrong. Please try again.'
+            type: "error",
+            message: data.message || "Something went wrong. Please try again.",
           });
         }
         setIsLoading(false);
@@ -511,12 +522,11 @@ const ForgotPassword = () => {
       // Success - email sent
       setIsSubmitted(true);
       setIsLoading(false);
-      
     } catch (error) {
-      console.error('Forgot password error:', error);
+      console.error("Forgot password error:", error);
       setAlert({
-        type: 'error',
-        message: 'Network error. Please check your connection and try again.'
+        type: "error",
+        message: "Network error. Please check your connection and try again.",
       });
       setIsLoading(false);
     }
@@ -524,16 +534,16 @@ const ForgotPassword = () => {
 
   const handleChange = (e) => {
     setEmail(e.target.value);
-    if (error) setError('');
+    if (error) setError("");
     if (alert) setAlert(null);
   };
 
   const handleBlur = () => {
     setTouched(true);
     if (!email.trim()) {
-      setError('Email is required');
+      setError("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
+      setError("Please enter a valid email address");
     }
   };
 
@@ -545,15 +555,20 @@ const ForgotPassword = () => {
         <div className="fp-brand">
           <div className="fp-brand-inner">
             <div className="fp-logo">
-              <span className="fp-logo-icon">❤️</span>
+              <span>
+                <img src={logo} alt="Strokify Logo" className="logo-icon" />
+              </span>
               <span className="fp-logo-name">Strokify</span>
             </div>
 
             <h1>
-              Reset your<br /><em>password</em>
+              Reset your
+              <br />
+              <em>password</em>
             </h1>
             <p className="fp-brand-sub">
-              We'll send you instructions to reset your password and get back to protecting your health.
+              We'll send you instructions to reset your password and get back to
+              protecting your health.
             </p>
 
             <div className="fp-features">
@@ -602,7 +617,11 @@ const ForgotPassword = () => {
             {alert && (
               <div className={`fp-alert ${alert.type}`}>
                 <span className="fp-alert-icon">
-                  {alert.type === 'error' ? <FaExclamationCircle /> : <FaInfoCircle />}
+                  {alert.type === "error" ? (
+                    <FaExclamationCircle />
+                  ) : (
+                    <FaInfoCircle />
+                  )}
                 </span>
                 <span>{alert.message}</span>
               </div>
@@ -611,9 +630,7 @@ const ForgotPassword = () => {
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="fp-form" noValidate>
                 <div className="fp-field">
-                  <label>
-                    Email Address
-                  </label>
+                  <label>Email Address</label>
                   <div className="fp-input-wrap">
                     <FaEnvelope className="fp-input-icon" />
                     <input
@@ -622,7 +639,7 @@ const ForgotPassword = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="you@example.com"
-                      className={`fp-input ${error && touched ? 'is-error' : ''}`}
+                      className={`fp-input ${error && touched ? "is-error" : ""}`}
                       disabled={isLoading}
                       autoComplete="email"
                     />
@@ -635,8 +652,8 @@ const ForgotPassword = () => {
                   )}
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="fp-submit"
                   disabled={isLoading}
                 >
@@ -647,7 +664,8 @@ const ForgotPassword = () => {
                     </>
                   ) : (
                     <>
-                      Send Reset Instructions <FaPaperPlane style={{ fontSize: 13 }} />
+                      Send Reset Instructions{" "}
+                      <FaPaperPlane style={{ fontSize: 13 }} />
                     </>
                   )}
                 </button>
@@ -659,11 +677,15 @@ const ForgotPassword = () => {
                 </div>
                 <h3>Check Your Email</h3>
                 <p>
-                  We've sent password reset instructions to <strong>{email}</strong>
+                  We've sent password reset instructions to{" "}
+                  <strong>{email}</strong>
                 </p>
                 <p className="fp-success-note">
-                  Didn't receive the email? Check your spam folder or{' '}
-                  <button onClick={() => setIsSubmitted(false)} className="fp-text-link">
+                  Didn't receive the email? Check your spam folder or{" "}
+                  <button
+                    onClick={() => setIsSubmitted(false)}
+                    className="fp-text-link"
+                  >
                     try again
                   </button>
                 </p>
@@ -680,7 +702,8 @@ const ForgotPassword = () => {
             <div className="fp-emergency">
               <FaShieldAlt className="fp-emergency-icon" />
               <p>
-                <strong>Stroke emergency?</strong> Do not wait — call 911 immediately.
+                <strong>Stroke emergency?</strong> Do not wait — call 911
+                immediately.
                 <Link to="/lifesync">Emergency Resources →</Link>
               </p>
             </div>

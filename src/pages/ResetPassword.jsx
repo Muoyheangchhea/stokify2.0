@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { 
-  FaLock, 
-  FaEye, 
-  FaEyeSlash, 
-  FaArrowLeft, 
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import logo from "../assets/img/Strokify_Logo.png";
+import {
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaArrowLeft,
   FaCheck,
   FaShieldAlt,
   FaExclamationCircle,
-  FaInfoCircle
-} from 'react-icons/fa';
+  FaInfoCircle,
+} from "react-icons/fa";
 
 /* ─── Inline styles (red theme, matching Login/Register) ──────────────── */
 const CSS = `
@@ -75,8 +76,8 @@ const CSS = `
 
   .rp-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
   .rp-logo-icon { 
-    width: 48px;
-    height: 48px;
+    width: 55px;
+    height: 55px;
     background: rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -532,12 +533,12 @@ const getStrength = (pw) => {
 const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: ''
+    password: "",
+    confirmPassword: "",
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -552,24 +553,28 @@ const ResetPassword = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/auth/verify-reset-token/${token}`);
+        const response = await fetch(
+          `http://localhost:5000/api/auth/verify-reset-token/${token}`,
+        );
         const data = await response.json();
-        
+
         if (data.valid) {
           setIsTokenValid(true);
         } else {
           setIsTokenValid(false);
           setAlert({
-            type: 'error',
-            message: 'This password reset link is invalid or has expired. Please request a new one.'
+            type: "error",
+            message:
+              "This password reset link is invalid or has expired. Please request a new one.",
           });
         }
       } catch (error) {
-        console.error('Token verification error:', error);
+        console.error("Token verification error:", error);
         setIsTokenValid(false);
         setAlert({
-          type: 'error',
-          message: 'Unable to verify reset link. Please try again or request a new one.'
+          type: "error",
+          message:
+            "Unable to verify reset link. Please try again or request a new one.",
         });
       } finally {
         setIsVerifying(false);
@@ -586,36 +591,36 @@ const ResetPassword = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    setTouchedFields(prev => ({ ...prev, [name]: true }));
+    setTouchedFields((prev) => ({ ...prev, [name]: true }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
     if (alert) setAlert(null);
   };
 
   const handleBlur = (field) => {
-    setTouchedFields(prev => ({ ...prev, [field]: true }));
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
   };
 
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+      newErrors.password = "Password must be at least 8 characters";
     } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password = 'Must contain at least one uppercase letter';
+      newErrors.password = "Must contain at least one uppercase letter";
     } else if (!/[0-9]/.test(formData.password)) {
-      newErrors.password = 'Must contain at least one number';
+      newErrors.password = "Must contain at least one number";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     return newErrors;
@@ -623,7 +628,7 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -634,21 +639,25 @@ const ResetPassword = () => {
     setAlert(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token,
-          password: formData.password
-        })
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/auth/reset-password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token,
+            password: formData.password,
+          }),
+        },
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
         setAlert({
-          type: 'error',
-          message: data.message || 'Failed to reset password. Please try again.'
+          type: "error",
+          message:
+            data.message || "Failed to reset password. Please try again.",
         });
         setIsLoading(false);
         return;
@@ -656,17 +665,16 @@ const ResetPassword = () => {
 
       // Success
       setIsSubmitted(true);
-      
+
       // Redirect to login after 3 seconds
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 3000);
-
     } catch (error) {
-      console.error('Reset password error:', error);
+      console.error("Reset password error:", error);
       setAlert({
-        type: 'error',
-        message: 'Network error. Please check your connection and try again.'
+        type: "error",
+        message: "Network error. Please check your connection and try again.",
       });
       setIsLoading(false);
     }
@@ -683,14 +691,16 @@ const ResetPassword = () => {
           <div className="rp-brand">
             <div className="rp-brand-inner">
               <div className="rp-logo">
-                <span className="rp-logo-icon">❤️</span>
+                <span>
+                  <img src={logo} alt="Strokify Logo" className="logo-icon" />
+                </span>
                 <span className="rp-logo-name">Strokify</span>
               </div>
             </div>
           </div>
           <div className="rp-form-panel">
-            <div className="rp-form-card" style={{ textAlign: 'center' }}>
-              <div className="rp-spinner" style={{ margin: '40px auto' }}></div>
+            <div className="rp-form-card" style={{ textAlign: "center" }}>
+              <div className="rp-spinner" style={{ margin: "40px auto" }}></div>
               <p>Verifying your reset link...</p>
             </div>
           </div>
@@ -708,12 +718,16 @@ const ResetPassword = () => {
           <div className="rp-brand">
             <div className="rp-brand-inner">
               <div className="rp-logo">
-                <span className="rp-logo-icon">❤️</span>
+                <span>
+                  <img src={logo} alt="Strokify Logo" className="logo-icon" />
+                </span>
                 <span className="rp-logo-name">Strokify</span>
               </div>
 
               <h1>
-                Password<br /><em>Reset</em>
+                Password
+                <br />
+                <em>Reset</em>
               </h1>
               <p className="rp-brand-sub">
                 Secure your account with a new password.
@@ -743,12 +757,18 @@ const ResetPassword = () => {
 
               {alert && (
                 <div className={`rp-alert ${alert.type}`}>
-                  <span className="rp-alert-icon"><FaExclamationCircle /></span>
+                  <span className="rp-alert-icon">
+                    <FaExclamationCircle />
+                  </span>
                   <span>{alert.message}</span>
                 </div>
               )}
 
-              <Link to="/forgot-password" className="rp-submit" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              <Link
+                to="/forgot-password"
+                className="rp-submit"
+                style={{ textAlign: "center", textDecoration: "none" }}
+              >
                 Request New Link
               </Link>
 
@@ -772,12 +792,16 @@ const ResetPassword = () => {
           <div className="rp-brand">
             <div className="rp-brand-inner">
               <div className="rp-logo">
-                <span className="rp-logo-icon">❤️</span>
+                <span>
+                  <img src={logo} alt="Strokify Logo" className="logo-icon" />
+                </span>
                 <span className="rp-logo-name">Strokify</span>
               </div>
 
               <h1>
-                Password<br /><em>Reset</em>
+                Password
+                <br />
+                <em>Reset</em>
               </h1>
               <p className="rp-brand-sub">
                 Your password has been successfully updated.
@@ -809,12 +833,16 @@ const ResetPassword = () => {
         <div className="rp-brand">
           <div className="rp-brand-inner">
             <div className="rp-logo">
-              <span className="rp-logo-icon">❤️</span>
+              <span>
+                <img src={logo} alt="Strokify Logo" className="logo-icon" />
+              </span>
               <span className="rp-logo-name">Strokify</span>
             </div>
 
             <h1>
-              Set New<br /><em>Password</em>
+              Set New
+              <br />
+              <em>Password</em>
             </h1>
             <p className="rp-brand-sub">
               Create a strong password to secure your account.
@@ -865,7 +893,9 @@ const ResetPassword = () => {
 
             {alert && (
               <div className={`rp-alert ${alert.type}`}>
-                <span className="rp-alert-icon"><FaExclamationCircle /></span>
+                <span className="rp-alert-icon">
+                  <FaExclamationCircle />
+                </span>
                 <span>{alert.message}</span>
               </div>
             )}
@@ -878,12 +908,12 @@ const ResetPassword = () => {
                   <div className="rp-input-wrap">
                     <FaLock className="rp-input-icon" />
                     <input
-                      className={`rp-input${errors.password && touchedFields.password ? ' is-error' : ''}`}
-                      type={showPassword ? 'text' : 'password'}
+                      className={`rp-input${errors.password && touchedFields.password ? " is-error" : ""}`}
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      onBlur={() => handleBlur('password')}
+                      onBlur={() => handleBlur("password")}
                       placeholder="Enter new password"
                       disabled={isLoading}
                       autoComplete="new-password"
@@ -930,24 +960,34 @@ const ResetPassword = () => {
                         <ul>
                           <li
                             style={{
-                              color: formData.password.length >= 8 ? '#10B981' : '#6B7280',
+                              color:
+                                formData.password.length >= 8
+                                  ? "#10B981"
+                                  : "#6B7280",
                             }}
                           >
-                            {formData.password.length >= 8 ? '✓' : '○'} At least 8 characters
+                            {formData.password.length >= 8 ? "✓" : "○"} At least
+                            8 characters
                           </li>
                           <li
                             style={{
-                              color: /[A-Z]/.test(formData.password) ? '#10B981' : '#6B7280',
+                              color: /[A-Z]/.test(formData.password)
+                                ? "#10B981"
+                                : "#6B7280",
                             }}
                           >
-                            {/[A-Z]/.test(formData.password) ? '✓' : '○'} At least one uppercase letter
+                            {/[A-Z]/.test(formData.password) ? "✓" : "○"} At
+                            least one uppercase letter
                           </li>
                           <li
                             style={{
-                              color: /[0-9]/.test(formData.password) ? '#10B981' : '#6B7280',
+                              color: /[0-9]/.test(formData.password)
+                                ? "#10B981"
+                                : "#6B7280",
                             }}
                           >
-                            {/[0-9]/.test(formData.password) ? '✓' : '○'} At least one number
+                            {/[0-9]/.test(formData.password) ? "✓" : "○"} At
+                            least one number
                           </li>
                         </ul>
                       </div>
@@ -961,12 +1001,12 @@ const ResetPassword = () => {
                   <div className="rp-input-wrap">
                     <FaLock className="rp-input-icon" />
                     <input
-                      className={`rp-input${errors.confirmPassword && touchedFields.confirmPassword ? ' is-error' : ''}`}
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      className={`rp-input${errors.confirmPassword && touchedFields.confirmPassword ? " is-error" : ""}`}
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      onBlur={() => handleBlur('confirmPassword')}
+                      onBlur={() => handleBlur("confirmPassword")}
                       placeholder="Confirm new password"
                       disabled={isLoading}
                       autoComplete="new-password"
@@ -975,7 +1015,9 @@ const ResetPassword = () => {
                     <button
                       type="button"
                       className="rp-eye-btn"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       tabIndex={-1}
                     >
                       {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -990,11 +1032,7 @@ const ResetPassword = () => {
                 </div>
               </div>
 
-              <button 
-                type="submit" 
-                className="rp-submit"
-                disabled={isLoading}
-              >
+              <button type="submit" className="rp-submit" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <div className="rp-spinner" />
@@ -1012,7 +1050,8 @@ const ResetPassword = () => {
             <div className="rp-emergency">
               <FaShieldAlt className="rp-emergency-icon" />
               <p>
-                <strong>Stroke emergency?</strong> Do not wait — call 911 immediately.
+                <strong>Stroke emergency?</strong> Do not wait — call 911
+                immediately.
                 <Link to="/lifesync">Emergency Resources →</Link>
               </p>
             </div>

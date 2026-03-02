@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/img/Strokify_Logo.png';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHeart, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import "../styles/Footer.css";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +13,7 @@ const Footer = () => {
         <div className="footer-grid">
           <div className="footer-section">
             <h3 className="footer-title">
-              <span className="brand-icon animate-float">🎨</span>
+              <span className="brand-icon animate-float"><img src={logo} alt="Strokify Logo" className="logo-icon" /></span>
               Strokify
             </h3>
             <p className="footer-description">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
+import logo from '../assets/img/Strokify_Logo.png';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   FaEnvelope,
@@ -360,7 +361,9 @@ const Register = () => {
       <div className="register-brand">
         <div className="brand-inner">
           <div className="brand-logo">
-            <span className="logo-icon">❤️</span>
+            <span>
+              <img src={logo} alt="Strokify Logo" className="logo-icon" />
+            </span>
             <span className="logo-text">Strokify</span>
           </div>
 
@@ -391,17 +394,17 @@ const Register = () => {
           </div>
 
           <div className="brand-stats">
-            <div className="stat-item">
-              <span className="stat-number">50K+</span>
-              <span className="stat-label">LIVES PROTECTED</span>
+            <div className="register-stat-item">
+              <span className="register-stat-number">50K+</span>
+              <span className="register-stat-label">LIVES PROTECTED</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-number">95%</span>
-              <span className="stat-label">ACCURACY</span>
+            <div className="register-stat-item">
+              <span className="register-stat-number">95%</span>
+              <span className="register-stat-label">ACCURACY</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-number">24/7</span>
-              <span className="stat-label">SUPPORT</span>
+            <div className="register-stat-item">
+              <span className="register-stat-number">24/7</span>
+              <span className="register-stat-label">SUPPORT</span>
             </div>
           </div>
         </div>
