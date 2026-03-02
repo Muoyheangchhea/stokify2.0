@@ -248,7 +248,10 @@ const Profile = () => {
       fileInputRef.current.value = "";
     }
   };
-
+  const handleEnable2FA = () => {
+    console.log("Enable 2FA clicked");
+    alert("2FA setup will be available soon!");
+  };
   const handleSave = async () => {
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -806,15 +809,22 @@ const Profile = () => {
                       title="Change Password"
                       desc="Update your password regularly to stay protected"
                       action={
-                        <Link to="/change-password" className="sec-btn">
+                        <button
+                          className="sec-btn"
+                          onClick={() => navigate("/change-password")}
+                        >
                           Change
-                        </Link>
+                        </button>
                       }
                     />
                     <SecurityRow
                       title="Two-Factor Authentication"
                       desc="Add an extra layer of security to your account"
-                      action={<button className="sec-btn">Enable</button>}
+                      action={
+                        <button className="sec-btn" onClick={handleEnable2FA}>
+                          Enable
+                        </button>
+                      }
                     />
                     <SecurityRow
                       title="Delete Account"

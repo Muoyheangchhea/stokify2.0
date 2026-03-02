@@ -1,26 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import {
-  FaHome,
-  FaStethoscope,
-  FaHeartbeat,
-  FaSync,
-  FaEnvelope,
-  FaBars,
-  FaTimes,
-  FaInfoCircle,
-  FaUser,
-  FaArrowRight,
-  FaHeart,
-  FaBrain,
-  FaSignOutAlt,
-  FaChartLine,
-  FaUsers,
-  FaCalendar,
-  FaCaretDown,
-} from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
-import "../styles/Navbar.css";
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { 
+  FaHome, FaStethoscope, FaHeartbeat, FaSync, 
+  FaEnvelope, FaBars, FaTimes, FaInfoCircle, FaUser,
+  FaArrowRight, FaHeart, FaBrain, FaSignOutAlt,
+  FaChartLine, FaUsers, FaCalendar, FaCaretDown
+} from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import '../styles/Navbar.css';
+import logo from '../assets/img/Strokify_Logo.png';
 
 const Navbar = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -148,13 +136,13 @@ const Navbar = ({ scrolled }) => {
         className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isOpen ? "menu-open" : ""}`}
       >
         <div className="navbar-container">
-          {/* Logo */}
+          {/* Logo - with image instead of emoji */}
           <Link to="/" className="navbar-brand" onClick={handleLinkClick}>
-            <span className="brand-icon animate-float">🎨</span>
+            <img src={logo} alt="Strokify Logo" className="navbar-logo" />
             <span className="brand-text">Strokify</span>
           </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu - Icons hidden on desktop via CSS */}
           <div className="navbar-menu desktop-menu">
             {navLinks.map((link, index) => (
               <Link
@@ -162,8 +150,8 @@ const Navbar = ({ scrolled }) => {
                 to={link.to}
                 className={`nav-link ${location.pathname === link.to ? "active" : ""}`}
               >
-                {link.icon}
-                <span>{link.text}</span>
+                <span className="nav-icon desktop-hide">{link.icon}</span>
+                <span className="nav-text">{link.text}</span>
               </Link>
             ))}
 
@@ -267,12 +255,12 @@ const Navbar = ({ scrolled }) => {
             className={`mobile-menu-overlay ${isOpen ? "active" : ""}`}
             onClick={handleLinkClick}
           />
-
-          {/* Mobile Menu */}
-          <div className={`mobile-menu ${isOpen ? "active" : ""}`}>
+          
+          {/* Mobile Menu - Original UI with icons */}
+          <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
             <div className="mobile-menu-header">
               <div className="mobile-brand">
-                <span className="brand-icon">🎨</span>
+                <img src={logo} alt="Strokify Logo" className="mobile-logo" />
                 <span className="brand-text">Strokify</span>
               </div>
               <button className="mobile-close" onClick={handleLinkClick}>
@@ -321,7 +309,7 @@ const Navbar = ({ scrolled }) => {
 
             <div className="mobile-menu-divider" />
 
-            {/* Main Navigation */}
+            {/* Main Navigation - With Icons (original UI) */}
             <div className="mobile-nav-links">
               {navLinks.map((link, index) => (
                 <Link
