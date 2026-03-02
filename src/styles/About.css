@@ -89,6 +89,7 @@
 .stat-item {
   text-align: center;
   position: relative;
+  /* background: rgba(255, 255, 255, 0.1); */ /* ← REMOVE THIS LINE */
 }
 
 .stat-item:not(:last-child)::after {

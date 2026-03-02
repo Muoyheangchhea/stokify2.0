@@ -1,55 +1,103 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  FaStethoscope, FaHeartbeat, FaSync, FaArrowRight, 
-  FaShieldAlt, FaRobot, FaUsers, FaUserPlus, 
-  FaCheckCircle, FaExclamationTriangle, FaAmbulance,
-  FaClock, FaBell, FaChild, FaUserMd, FaQuestionCircle,
-  FaChartLine, FaHome, FaMobileAlt
+  // Hero Icons
+  FaHeartbeat, FaArrowRight, FaQuestionCircle,
+  FaShieldAlt, FaRobot, FaUsers,
+  
+  // Feature Icons
+  FaStethoscope, FaSync, FaClock, FaCheckCircle,
+  FaAmbulance, FaUserPlus,
+  
+  // Risk Assessment Icons
+  FaBrain, FaHeart, FaExclamation, FaBell,
+  
+  // Risk Icons
+  FaExclamationTriangle
 } from 'react-icons/fa';
 import '../styles/Home.css';
+import logo from '../assets/img/Strokify_Logo.png';
 
 const Home = () => {
+  // Stats Data
   const stats = [
-    { value: '50K+', label: 'Active Users', icon: <FaUsers /> },
-    { value: '100K+', label: 'Health Checks', icon: <FaShieldAlt /> },
-    { value: '99.9%', label: 'Uptime', icon: <FaRobot /> }
+    { value: '200+', label: '  Users Testing', icon: <FaUsers /> },
+    { value: '5', label: '  Hospitals Engaged', icon: <FaShieldAlt /> },
   ];
 
-  const flowSteps = [
+  // Risk Levels
+  const riskLevels = [
     {
-      icon: <FaUserPlus />,
-      title: '1. Register',
-      description: 'Create your free account in seconds. Add family members to monitor elderly parents or children.',
-      time: '30 seconds',
-      features: ['Free', 'Family linking', 'Secure']
+      level: 'Low Risk',
+      icon: <FaCheckCircle />,
+      color: '#10B981',
+      bg: 'rgba(16, 185, 129, 0.1)',
+      actions: [
+        'Health Advisor recommendations',
+        'LifeSync daily tasks',
+        'Wellness tracking'
+      ]
     },
+    {
+      level: 'Moderate Risk',
+      icon: <FaExclamation />,
+      color: '#F59E0B',
+      bg: 'rgba(245, 158, 11, 0.1)',
+      actions: [
+        'Share report with caregiver',
+        'Schedule check-up',
+        'Enhanced monitoring'
+      ]
+    },
+    {
+      level: 'High Risk',
+      icon: <FaExclamationTriangle />,
+      color: '#EF4444',
+      bg: 'rgba(239, 68, 68, 0.1)',
+      actions: [
+        'F.A.S.T. stroke test',
+        'Emergency guidance',
+        'Call 911 immediately'
+      ]
+    }
+  ];
+
+  // Features
+  const features = [
     {
       icon: <FaStethoscope />,
-      title: '2. Symptom Check',
-      description: 'Answer a few quick questions about your health, lifestyle, and medical history.',
-      time: '5 minutes',
-      features: ['AI-powered', 'Simple questions', 'Instant']
+      title: 'Symptom Detector',
+      description: 'AI-powered symptom analysis with 95% accuracy - get results in seconds',
+      benefits: ['5-minute assessment', '3 risk categories', 'Instant results'],
+      link: '/symptom-detector'
     },
     {
-      icon: <FaRobot />,
-      title: '3. AI Analysis',
-      description: 'Our machine learning model analyzes your data and provides clear risk categories.',
-      time: '2 seconds',
-      features: ['95% accuracy', '3 risk levels', 'Actionable']
+      icon: <FaHeartbeat />,
+      title: 'Health Advisor',
+      description: 'Personalized wellness plans tailored to your unique health profile',
+      benefits: ['Custom recommendations', 'Progress tracking', 'Expert guidelines'],
+      link: '/health-advisor'
+    },
+    {
+      icon: <FaSync />,
+      title: 'LifeSync',
+      description: 'Synchronize your health tasks, medications, and daily progress',
+      benefits: ['Smart reminders', 'Medication tracking', 'Health metrics'],
+      link: '/lifesync'
     }
   ];
 
   return (
     <div className="home">
-      {/* Hero Section */}
+      {/* ========== HERO SECTION ========== */}
       <section className="home-hero">
         <div className="home-hero-content">
           <h1>Your Health Journey Starts Here</h1>
           <p className="home-hero-subtitle">
             Experience the future of healthcare with AI-powered symptom analysis 
-            and personalized wellness guidance. Join 50,000+ users who trust Strokify.
+            and personalized wellness guidance.
           </p>
+          
           <div className="home-hero-buttons">
             <Link to="/about" className="btn-secondary">
               <FaQuestionCircle /> About Us
@@ -58,6 +106,7 @@ const Home = () => {
               Start Free Trial <FaArrowRight />
             </Link>
           </div>
+
           <div className="home-hero-stats">
             {stats.map((stat, index) => (
               <div key={index} className="home-hero-stat">
@@ -70,194 +119,95 @@ const Home = () => {
             ))}
           </div>
         </div>
+
         <div className="home-hero-image">
           <div className="hero-placeholder animate-float">
-            🎨
+            <img src={logo} alt="Strokify Logo" className="hero-logo" />
           </div>
         </div>
       </section>
 
-      {/* How It Works Flow Section */}
-      <section className="how-it-works-section">
-        <div className="section-header">
-          <h2>How Strokify Works</h2>
-          <p>From symptom check to emergency response - complete health workflow</p>
-        </div>
-
-        <div className="flow-container">
-          {/* Main Flow Steps */}
-          <div className="flow-steps">
-            {flowSteps.map((step, index) => (
-              <div key={index} className="flow-step">
-                <div className="step-badge">STEP {index + 1}</div>
-                <div className="step-icon-wrapper">
-                  <div className="step-main-icon">{step.icon}</div>
-                </div>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-                <div className="step-time">
-                  <FaClock /> Takes {step.time}
-                </div>
-                <div className="step-features-mini">
-                  {step.features.map((feature, i) => (
-                    <span key={i} className="feature-tag">{feature}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Risk Decision Tree */}
-          <div className="risk-decision-tree">
-            <div className="decision-header">
-              <h3>Intelligent Risk Assessment</h3>
-              <p>Our AI categorizes your results into 3 clear risk levels</p>
-            </div>
-
-            <div className="risk-flow">
-              <div className="risk-node">
-                <div className="risk-node-icon">🟢</div>
-                <h4>Normal / Low Risk</h4>
-                <p style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>
-                  Maintain your health with personalized guidance
-                </p>
-                <ul className="risk-actions">
-                  <li><FaCheckCircle /> Health Advisor recommendations</li>
-                  <li><FaCheckCircle /> LifeSync daily tasks</li>
-                  <li><FaCheckCircle /> Wellness tracking</li>
-                </ul>
-              </div>
-
-              <div className="flow-arrow">→</div>
-
-              <div className="risk-node">
-                <div className="risk-node-icon">🟡</div>
-                <h4>Moderate Risk</h4>
-                <p style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>
-                  Connect with healthcare providers
-                </p>
-                <ul className="risk-actions">
-                  <li><FaCheckCircle /> Share report with caregiver</li>
-                  <li><FaCheckCircle /> Schedule check-up</li>
-                  <li><FaCheckCircle /> Enhanced monitoring</li>
-                </ul>
-              </div>
-
-              <div className="flow-arrow">→</div>
-
-              <div className="risk-node">
-                <div className="risk-node-icon">🔴</div>
-                <h4>High Risk</h4>
-                <p style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>
-                  Immediate action required
-                </p>
-                <ul className="risk-actions">
-                  <li><FaExclamationTriangle /> F.A.S.T. stroke test</li>
-                  <li><FaAmbulance /> Emergency guidance</li>
-                </ul>
-                <div className="emergency-badge">
-                  <FaAmbulance /> Time Saved = Brain Saved
-                </div>
-              </div>
-            </div>
-
-            {/* FAST Mini Test */}
-            <div className="fast-mini">
-              <h4>
-                <FaAmbulance style={{ color: 'var(--primary)' }} />
-                F.A.S.T. Stroke Test - For High Risk Cases
-              </h4>
-              <div className="fast-grid-mini">
-                <div className="fast-item-mini">
-                  <div className="fast-letter-mini">F</div>
-                  <span>Face drooping</span>
-                </div>
-                <div className="fast-item-mini">
-                  <div className="fast-letter-mini">A</div>
-                  <span>Arm weakness</span>
-                </div>
-                <div className="fast-item-mini">
-                  <div className="fast-letter-mini">S</div>
-                  <span>Speech difficulty</span>
-                </div>
-                <div className="fast-item-mini">
-                  <div className="fast-letter-mini">T</div>
-                  <span>Time to call emergency</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Family Care Preview - FIXED LINK */}
-          <div className="family-preview">
-            <div className="family-preview-icon">
-              <FaUsers />
-            </div>
-            <div className="family-preview-content">
-              <h4>Care for Your Whole Family</h4>
-              <p>
-                Children can create family accounts to monitor their elderly parents' health 
-                from anywhere in the world. Stay connected and catch potential health issues 
-                before they become emergencies.
-              </p>
-              <Link to="/family-accounts" className="family-link">
-                Learn about family accounts <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
+      {/* ========== FEATURES SECTION ========== */}
       <section className="features">
         <div className="section-header">
           <h2>Comprehensive Health Solutions</h2>
           <p>Everything you need to manage your health journey in one platform</p>
         </div>
+
         <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon"><FaStethoscope /></div>
-            <h3>Symptom Detector</h3>
-            <p>AI-powered symptom analysis with 95% accuracy - get results in seconds</p>
-            <ul className="feature-benefits">
-              <li>5-minute assessment</li>
-              <li>3 risk categories</li>
-              <li>Instant results</li>
-            </ul>
-            <Link to="/symptom-detector" className="feature-link">
-              Learn more <FaArrowRight />
-            </Link>
+          {features.map((feature, index) => (
+            <div key={index} className="feature-card">
+              <div className="feature-icon">{feature.icon}</div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+              <ul className="feature-benefits">
+                {feature.benefits.map((benefit, i) => (
+                  <li key={i}>{benefit}</li>
+                ))}
+              </ul>
+              <Link to={feature.link} className="feature-link">
+                Learn more <FaArrowRight />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========== RISK ASSESSMENT ========== */}
+      <section className="risk-assessment-section">
+        <div className="section-header">
+          <h2>Intelligent Risk Assessment</h2>
+          <p>Our AI categorizes your results into 3 clear risk levels</p>
+        </div>
+
+        <div className="risk-flow">
+          {riskLevels.map((risk, index) => (
+            <React.Fragment key={index}>
+              <div className="risk-node" style={{ backgroundColor: risk.bg }}>
+                <div className="risk-node-icon" style={{ color: risk.color }}>
+                  {risk.icon}
+                </div>
+                <h4 style={{ color: risk.color }}>{risk.level}</h4>
+                <ul className="risk-actions">
+                  {risk.actions.map((action, i) => (
+                    <li key={i}>
+                      <FaCheckCircle style={{ color: risk.color, marginRight: '8px' }} /> 
+                      {action}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {index < riskLevels.length - 1 && (
+                <div className="flow-arrow">
+                  <FaArrowRight />
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </section>
+
+      {/* ========== FAMILY CARE PREVIEW ========== */}
+      <section className="family-care-section">
+        <div className="family-preview">
+          <div className="family-preview-icon">
+            <FaUsers />
           </div>
-          <div className="feature-card">
-            <div className="feature-icon"><FaHeartbeat /></div>
-            <h3>Health Advisor</h3>
-            <p>Personalized wellness plans tailored to your unique health profile</p>
-            <ul className="feature-benefits">
-              <li>Custom recommendations</li>
-              <li>Progress tracking</li>
-              <li>Expert guidelines</li>
-            </ul>
-            <Link to="/health-advisor" className="feature-link">
-              Learn more <FaArrowRight />
-            </Link>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon"><FaSync /></div>
-            <h3>LifeSync</h3>
-            <p>Synchronize your health tasks, medications, and daily progress</p>
-            <ul className="feature-benefits">
-              <li>Smart reminders</li>
-              <li>Medication tracking</li>
-              <li>Health metrics</li>
-            </ul>
-            <Link to="/lifesync" className="feature-link">
-              Learn more <FaArrowRight />
+          <div className="family-preview-content">
+            <h4>Care for Your Whole Family</h4>
+            <p>
+              Children can create family accounts to monitor their elderly parents' health 
+              from anywhere in the world. Stay connected and catch potential health issues 
+              before they become emergencies.
+            </p>
+            <Link to="/family-accounts" className="family-link">
+              Learn about family accounts <FaArrowRight />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* ========== CTA SECTION ========== */}
       <section className="home-cta">
         <div className="home-cta-content">
           <h2>Ready to transform your health?</h2>
