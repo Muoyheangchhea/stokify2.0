@@ -1,59 +1,100 @@
 /* ==============================================
-   STROKIFY ABOUT US - PROFESSIONAL DESIGN
+   STROKIFY ABOUT US - MODERN REDESIGN
    ==============================================
-   • No emojis - professional icons only
-   • Perfect spacing
-   • Clean typography
-   • Responsive design
+   • Clean, professional healthcare aesthetic
+   • Modern card design
+   • Better typography
+   • Smooth animations
+   • Consistent spacing
    ============================================ */
 
 .about-page {
   padding-top: 80px;
   overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.container {
+.about-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* ---------- Hero Section ---------- */
-.about-hero {
+/* ========== BUTTONS ========== */
+.about-btn-primary,
+.about-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.about-btn-primary {
+  background: #E63E4E;
+  color: white;
+  box-shadow: 0 4px 12px rgba(230, 62, 78, 0.2);
+}
+
+.about-btn-primary:hover {
+  background: #B31E2C;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(230, 62, 78, 0.3);
+}
+
+.about-btn-secondary {
+  background: white;
+  color: #1F2937;
+  border: 1px solid #E5E7EB;
+}
+
+.about-btn-secondary:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+  transform: translateY(-2px);
+}
+
+/* ========== HERO SECTION ========== */
+.about-hero-section {
   background: linear-gradient(135deg, #E63E4E 0%, #B31E2C 100%);
   color: white;
-  padding: 100px 24px;
+  padding: 120px 24px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-.about-hero::before {
+.about-hero-section::before {
   content: '';
   position: absolute;
   top: -50%;
   right: -10%;
   width: 80%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
   border-radius: 50%;
-  animation: pulse 8s ease-in-out infinite;
+  animation: about-pulse 8s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+@keyframes about-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
 }
 
-.hero-content {
+.about-hero-content {
   max-width: 900px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.hero-content h1 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.about-hero-content h1 {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
   margin-bottom: 24px;
@@ -61,15 +102,14 @@
   line-height: 1.2;
 }
 
-.gradient-text {
+.about-gradient-text {
   background: linear-gradient(135deg, #FFE5E8 0%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.hero-subtitle {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.about-hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.25rem);
   line-height: 1.6;
   max-width: 700px;
@@ -77,36 +117,35 @@
   opacity: 0.95;
 }
 
-/* ========== STATS - PERFECTLY SPACED ========== */
-.hero-stats {
+/* Stats Section */
+.about-stats-container {
   display: flex;
   justify-content: center;
-  gap: 100px;
+  gap: 80px;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
-.stat-item {
+.about-stat-item {
   text-align: center;
   position: relative;
-  /* background: rgba(255, 255, 255, 0.1); */ /* ← REMOVE THIS LINE */
+  padding: 0 20px;
 }
 
-.stat-item:not(:last-child)::after {
+.about-stat-item:not(:last-child)::after {
   content: '';
   position: absolute;
-  right: -50px;
+  right: -40px;
   top: 50%;
   transform: translateY(-50%);
   width: 2px;
-  height: 40px;
+  height: 50px;
   background: rgba(255, 255, 255, 0.2);
 }
 
-.stat-number {
+.about-stat-number {
   display: block;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 8px;
   color: white;
@@ -114,9 +153,8 @@
   letter-spacing: -0.02em;
 }
 
-.stat-label {
+.about-stat-label {
   display: block;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -125,182 +163,162 @@
   font-weight: 500;
 }
 
-/* ---------- Mission & Vision Cards ---------- */
-.mission-vision-section {
+/* ========== MISSION & VISION CARDS ========== */
+.about-mission-vision-section {
   padding: 100px 0;
   background: #FFFFFF;
 }
 
-.section-header {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 60px;
-}
-
-.section-header h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1A1C1E;
-  margin-bottom: 16px;
-  letter-spacing: -0.02em;
-}
-
-.section-header p {
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.6;
-}
-
-.cards-grid {
+.about-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
-.mission-card,
-.vision-card,
-.goal-card {
+.about-mission-card,
+.about-vision-card,
+.about-goal-card {
   background: white;
-  border-radius: 24px;
+  border-radius: 32px;
   padding: 40px 32px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-  border: 1px solid #F0F1F2;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  border: 1px solid #F0F0F0;
   transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.mission-card:hover,
-.vision-card:hover,
-.goal-card:hover {
+.about-mission-card:hover,
+.about-vision-card:hover,
+.about-goal-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 30px 50px -20px rgba(230, 62, 78, 0.15);
   border-color: #E63E4E;
+  box-shadow: 0 30px 40px -20px rgba(230, 62, 78, 0.15);
 }
 
-.card-icon {
+.about-card-icon {
   font-size: 2.5rem;
   margin-bottom: 24px;
-  display: inline-block;
-  width: fit-content;
-}
-
-.mission-card .card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: rgba(230, 62, 78, 0.1);
   color: #E63E4E;
 }
 
-.vision-card .card-icon {
+.about-vision-card .about-card-icon {
+  background: rgba(16, 185, 129, 0.1);
   color: #10B981;
 }
 
-.goal-card .card-icon {
+.about-goal-card .about-card-icon {
+  background: rgba(245, 158, 11, 0.1);
   color: #F59E0B;
 }
 
-.mission-card h2,
-.vision-card h2,
-.goal-card h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.6rem;
+.about-mission-card h2,
+.about-vision-card h2,
+.about-goal-card h2 {
+  font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #1A1C1E;
+  color: #111827;
   letter-spacing: -0.02em;
 }
 
-.card-description {
-  color: #666;
+.about-card-description {
+  color: #6B7280;
   line-height: 1.7;
   margin-bottom: 24px;
   font-size: 0.95rem;
   flex-grow: 1;
 }
 
-.mission-list,
-.vision-list {
+.about-mission-list,
+.about-vision-list {
   list-style: none;
   padding: 0;
   margin-top: auto;
 }
 
-.mission-list li,
-.vision-list li {
+.about-mission-list li,
+.about-vision-list li {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 0;
+  padding: 12px 0;
   color: #4B5563;
-  border-bottom: 1px solid #F0F1F2;
+  border-bottom: 1px solid #F0F0F0;
   font-size: 0.95rem;
 }
 
-.mission-list li:last-child,
-.vision-list li:last-child {
+.about-mission-list li:last-child,
+.about-vision-list li:last-child {
   border-bottom: none;
 }
 
-.mission-list li::before {
-  content: '✓';
+.about-mission-list li::before {
+  content: "✓";
   color: #E63E4E;
   font-weight: bold;
   font-size: 1rem;
 }
 
-.vision-list li::before {
-  content: '✓';
+.about-vision-list li::before {
+  content: "✓";
   color: #10B981;
   font-weight: bold;
   font-size: 1rem;
 }
 
 /* Goal List */
-.goal-list {
+.about-goal-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-top: auto;
 }
 
-.goal-item {
+.about-goal-item {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px 12px;
-  background: #F8F9FA;
-  border-radius: 12px;
+  padding: 12px 16px;
+  background: #F9FAFB;
+  border-radius: 16px;
   transition: all 0.2s ease;
 }
 
-.goal-item:hover {
-  background: #FFF1F3;
+.about-goal-item:hover {
+  background: #FFF5F5;
   transform: translateX(5px);
 }
 
-.goal-percent {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.3rem;
+.about-goal-percent {
+  font-size: 1.4rem;
   font-weight: 700;
   color: #F59E0B;
-  min-width: 70px;
+  min-width: 80px;
   text-align: center;
 }
 
-.goal-text {
+.about-goal-text {
   color: #4B5563;
   font-size: 0.95rem;
   font-weight: 500;
 }
 
-/* ---------- Why We Started ---------- */
-.why-section {
+/* ========== WHY WE STARTED ========== */
+.about-why-section {
   padding: 100px 0;
-  background: #F8F9FA;
-  position: relative;
+  background: #F9FAFB;
 }
 
-.why-content {
+.about-why-content {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
@@ -309,213 +327,251 @@
   background: white;
   border-radius: 40px;
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #F0F0F0;
 }
 
-.quote-icon {
-  font-size: 3rem;
+.about-quote-icon {
+  font-size: 4rem;
   color: #E63E4E;
   opacity: 0.1;
   position: absolute;
-  font-family: Georgia, serif;
 }
 
-.quote-icon.left {
+.about-quote-icon.left {
   top: 20px;
   left: 30px;
 }
 
-.quote-icon.right {
+.about-quote-icon.right {
   bottom: 20px;
   right: 30px;
   transform: rotate(180deg);
 }
 
-.why-content h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.about-why-content h2 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #1A1C1E;
+  color: #111827;
   margin-bottom: 24px;
   letter-spacing: -0.02em;
 }
 
-.why-text {
-  font-family: Georgia, serif;
-  font-size: 1.25rem;
+.about-why-text {
+  font-size: 1.2rem;
   line-height: 1.8;
   color: #4B5563;
   margin-bottom: 30px;
   font-style: italic;
 }
 
-.why-authors {
+.about-why-authors {
   font-weight: 600;
   color: #E63E4E;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
 }
 
-/* ---------- Founders Section - NO EMOJIS ---------- */
-.founders-section {
+/* ========== FOUNDERS SECTION ========== */
+.about-founders-section {
   padding: 100px 0;
-  background: white;
+  background: #FFFFFF;
 }
 
-.section-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.about-section-title {
+  text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1A1C1E;
-  text-align: center;
+  color: #111827;
   margin-bottom: 16px;
   letter-spacing: -0.02em;
 }
 
-.section-subtitle {
-  font-size: 1.2rem;
-  color: #666;
+.about-section-subtitle {
   text-align: center;
+  font-size: 1.2rem;
+  color: #6B7280;
   margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.founders-grid {
+.about-founders-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 
-.founder-card {
+.about-founder-card {
   background: white;
-  border-radius: 24px;
+  border-radius: 32px;
   overflow: hidden;
-  box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.1);
-  border: 1px solid #F0F1F2;
+  border: 1px solid #F0F0F0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.about-founder-card:hover {
+  transform: translateY(-10px);
+  border-color: #E63E4E;
+  box-shadow: 0 30px 40px -20px rgba(230, 62, 78, 0.15);
+}
+
+.about-founder-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.about-founder-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.about-founder-card:hover .about-founder-image {
+  transform: scale(1.05);
+}
+
+.about-founder-social {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
   transition: all 0.3s ease;
 }
 
-.founder-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 50px -20px rgba(230, 62, 78, 0.2);
-  border-color: #E63E4E;
+.about-founder-card:hover .about-founder-social {
+  bottom: 0;
 }
 
-.founder-image-wrapper {
-  background: linear-gradient(135deg, #FFF1F3 0%, #FFE5E8 100%);
-  padding: 40px 20px 20px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-bottom: 1px solid #F0F1F2;
-}
-
-.founder-avatar {
-  width: 120px;
-  height: 120px;
+.about-social-link {
+  width: 44px;
+  height: 44px;
   background: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  box-shadow: 0 15px 25px -8px rgba(0, 0, 0, 0.1);
-  border: 3px solid white;
-  font-size: 3rem;
-  color: #E63E4E;
-}
-
-.founder-avatar::before {
-  content: "👤";
-  font-size: 3rem;
-}
-
-.founder-social {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.social-link {
-  width: 36px;
-  height: 36px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
+  color: #4B5563;
   transition: all 0.2s ease;
   text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  font-size: 20px;
 }
 
-.social-link:hover {
+.about-social-link:hover {
   background: #E63E4E;
   color: white;
   transform: translateY(-3px);
 }
 
-.founder-info {
-  padding: 30px 24px;
-  text-align: center;
+.about-founder-info {
+  padding: 28px;
 }
 
-.founder-name {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.4rem;
+.about-founder-name {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #1A1C1E;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
+  color: #111827;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
 }
 
-.founder-role {
+.about-founder-role {
   color: #E63E4E;
   font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
-.founder-bio {
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #F0F1F2;
-}
-
-.founder-quote {
-  position: relative;
-  padding: 0 10px;
-}
-
-.quote-small {
-  color: #E63E4E;
+.about-founder-education {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
   font-size: 0.9rem;
-  opacity: 0.5;
-  margin-right: 4px;
-  font-family: Georgia, serif;
+  color: #6B7280;
+  background: #F9FAFB;
+  padding: 8px 12px;
+  border-radius: 40px;
+  width: fit-content;
 }
 
-.founder-quote p {
+.about-founder-bio {
   color: #4B5563;
-  font-style: italic;
   font-size: 0.95rem;
   line-height: 1.6;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #F0F0F0;
 }
 
-/* ---------- Core Values ---------- */
-.values-section {
+.about-founder-expertise {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.expertise-tag {
+  padding: 6px 14px;
+  background: #FFF5F5;
+  color: #E63E4E;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.expertise-tag:hover {
+  background: #E63E4E;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.about-founder-quote {
+  position: relative;
+  padding: 20px;
+  background: #F9FAFB;
+  border-radius: 20px;
+  margin-top: 16px;
+}
+
+.quote-icon {
+  color: #E63E4E;
+  font-size: 1.2rem;
+  opacity: 0.3;
+  margin-right: 4px;
+}
+
+.about-founder-quote p {
+  color: #4B5563;
+  font-style: italic;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 8px 0 0 0;
+}
+
+/* ========== CORE VALUES ========== */
+.about-values-section {
   padding: 100px 0;
-  background: #F8F9FA;
+  background: #F9FAFB;
 }
 
-.values-grid {
+.about-values-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
@@ -523,55 +579,57 @@
   margin: 50px auto 0;
 }
 
-.value-card {
+.about-value-card {
   background: white;
-  border-radius: 24px;
+  border-radius: 28px;
   padding: 32px 24px;
   text-align: center;
-  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.03);
-  border: 1px solid #F0F1F2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid #F0F0F0;
   transition: all 0.3s ease;
 }
 
-.value-card:hover {
+.about-value-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 25px 40px -15px rgba(230, 62, 78, 0.1);
   border-color: #E63E4E;
+  box-shadow: 0 30px 40px -20px rgba(230, 62, 78, 0.15);
 }
 
-.value-icon {
-  font-size: 2.2rem;
+.about-value-icon {
+  font-size: 2.5rem;
   color: #E63E4E;
   margin-bottom: 20px;
-  display: inline-block;
-  background: rgba(230, 62, 78, 0.05);
-  padding: 16px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: rgba(230, 62, 78, 0.1);
+  border-radius: 24px;
   transition: all 0.3s ease;
 }
 
-.value-card:hover .value-icon {
+.about-value-card:hover .about-value-icon {
   background: #E63E4E;
   color: white;
-  transform: scale(1.05);
+  transform: scale(1.1) rotate(5deg);
 }
 
-.value-card h3 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.2rem;
+.about-value-card h3 {
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #1A1C1E;
+  color: #111827;
   margin-bottom: 12px;
 }
 
-.value-card p {
-  color: #666;
+.about-value-card p {
+  color: #6B7280;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
-/* ---------- Call to Action ---------- */
-.about-cta {
+/* ========== CTA SECTION ========== */
+.about-cta-section {
   padding: 100px 24px;
   background: linear-gradient(135deg, #E63E4E 0%, #B31E2C 100%);
   color: white;
@@ -580,7 +638,7 @@
   overflow: hidden;
 }
 
-.about-cta::before {
+.about-cta-section::before {
   content: '';
   position: absolute;
   top: -50%;
@@ -588,166 +646,215 @@
   width: 140%;
   height: 200%;
   background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-  animation: rotate 30s linear infinite;
+  animation: about-rotate 30s linear infinite;
 }
 
-@keyframes rotate {
+@keyframes about-rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-.cta-content {
+.about-cta-content {
   max-width: 600px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
 }
 
-.cta-content h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 2.5rem;
+.about-cta-content h2 {
+  font-size: 2.8rem;
   font-weight: 700;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
 
-.cta-content p {
+.about-cta-content p {
   font-size: 1.2rem;
   margin-bottom: 40px;
   opacity: 0.95;
 }
 
-.cta-buttons {
+.about-cta-buttons {
   display: flex;
   gap: 20px;
   justify-content: center;
 }
 
-.btn-primary,
-.btn-secondary {
-  padding: 16px 36px;
-  border-radius: 50px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-}
-
-.btn-primary {
+.about-cta-buttons .about-btn-primary {
   background: white;
   color: #E63E4E;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary:hover {
-  background: #F8F9FA;
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.3);
+.about-cta-buttons .about-btn-primary:hover {
+  background: #F9FAFB;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.15);
+.about-cta-buttons .about-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
 }
 
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-3px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.5);
+.about-cta-buttons .about-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
-/* ---------- Responsive ---------- */
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-hero-section,
+.about-mission-card,
+.about-vision-card,
+.about-goal-card,
+.about-founder-card,
+.about-value-card {
+  animation: fadeIn 0.6s ease;
+}
+
+/* Stagger children */
+.about-mission-card:nth-child(1) { animation-delay: 0.1s; }
+.about-mission-card:nth-child(2) { animation-delay: 0.2s; }
+.about-mission-card:nth-child(3) { animation-delay: 0.3s; }
+
+.about-founder-card:nth-child(1) { animation-delay: 0.1s; }
+.about-founder-card:nth-child(2) { animation-delay: 0.2s; }
+.about-founder-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
-  .cards-grid,
-  .founders-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    max-width: 600px;
-    margin: 0 auto;
+  .about-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .values-grid {
+  .about-founders-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  }
+
+  .about-values-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .hero-stats {
+  .about-hero-section {
+    padding: 80px 20px;
+  }
+
+  .about-stats-container {
     gap: 40px;
   }
-  
-  .stat-item:not(:last-child)::after {
+
+  .about-stat-item:not(:last-child)::after {
     display: none;
   }
-  
-  .stat-number {
-    font-size: 2.2rem;
+
+  .about-stat-number {
+    font-size: 2.5rem;
   }
-  
-  .stat-label {
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+
+  .about-cards-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .values-grid {
+
+  .about-founders-grid {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+  }
+
+  .about-values-grid {
     grid-template-columns: 1fr;
     max-width: 400px;
   }
-  
-  .cta-buttons {
+
+  .about-cta-buttons {
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
   }
-  
-  .why-content {
+
+  .about-cta-content h2 {
+    font-size: 2.2rem;
+  }
+
+  .about-why-content {
     padding: 40px 20px;
   }
-  
-  .why-text {
+
+  .about-why-text {
     font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-stats {
-    gap: 30px;
+  .about-hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .about-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .about-stats-container {
     flex-direction: column;
     align-items: center;
+    gap: 20px;
   }
-  
-  .stat-item {
+
+  .about-stat-item {
     width: 100%;
     max-width: 200px;
   }
-  
-  .stat-number {
+
+  .about-stat-number {
     font-size: 2rem;
   }
-  
-  .founder-avatar {
-    width: 100px;
-    height: 100px;
-    font-size: 2.5rem;
-  }
-  
-  .founder-name {
-    font-size: 1.2rem;
-  }
-  
-  .section-title {
+
+  .about-section-title {
     font-size: 2rem;
   }
-  
-  .hero-content h1 {
+
+  .about-section-subtitle {
+    font-size: 1rem;
+  }
+
+  .about-founder-image-wrapper {
+    height: 260px;
+  }
+
+  .about-founder-name {
+    font-size: 1.3rem;
+  }
+
+  .about-value-icon {
+    width: 70px;
+    height: 70px;
     font-size: 2rem;
+  }
+
+  .about-cta-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-cta-content p {
+    font-size: 1rem;
+  }
+
+  .about-btn-primary,
+  .about-btn-secondary {
+    width: 100%;
+    justify-content: center;
   }
 }

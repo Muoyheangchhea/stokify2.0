@@ -83,7 +83,7 @@ const Navbar = ({ scrolled }) => {
   const userLinks = [
     { to: "/dashboard", icon: <FaChartLine />, text: "Dashboard" },
     { to: "/profile", icon: <FaUser />, text: "My Profile" },
-    { to: "/family", icon: <FaUsers />, text: "Family" },
+    { to: "/family-accounts", icon: <FaUsers />, text: "Family" },
     { to: "/appointments", icon: <FaCalendar />, text: "Appointments" },
   ];
 

@@ -1,0 +1,1180 @@
+{
+  "nurses": [
+    {
+      "id": "nurse-001",
+      "name": "Maria Garcia",
+      "firstName": "Maria",
+      "lastName": "Garcia",
+      "title": "Registered Nurse",
+      "credentials": ["RN", "BSN"],
+      "specialty": "Stroke Recovery Specialist",
+      "specialties": ["Stroke Rehabilitation", "Neurological Care", "Post-Stroke Care"],
+      "experience": {
+        "years": 12,
+        "totalYears": 12,
+        "specialtyYears": 8,
+        "hospitalYears": 10
+      },
+      "hospital": {
+        "name": "City Home Health",
+        "id": "hosp-023",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 4.9,
+        "total": 4.9,
+        "count": 17,
+        "breakdown": {
+          "5star": 14,
+          "4star": 2,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 123-4567",
+        "phoneFormatted": "+15551234567",
+        "email": "maria.garcia@strokify.com",
+        "secondaryEmail": "maria.garcia@nurseconnect.com",
+        "website": "https://strokify.com/nurse/maria-garcia"
+      },
+      "location": {
+        "distance": 2.3,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "coordinates": {
+          "lat": 37.7749,
+          "lng": -122.4194
+        },
+        "serviceRadius": 25
+      },
+      "availability": {
+        "available": true,
+        "availableNow": true,
+        "nextAvailable": "2026-03-04T14:00:00Z",
+        "schedule": {
+          "monday": ["09:00-17:00"],
+          "tuesday": ["09:00-17:00"],
+          "wednesday": ["09:00-17:00"],
+          "thursday": ["09:00-17:00"],
+          "friday": ["09:00-17:00"],
+          "saturday": [],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 45
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 42
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 45,
+        "minimumHours": 4,
+        "weekendRate": 48,
+        "holidayRate": 52,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Aetna"]
+      },
+      "media": {
+        "profileImage": "/assets/nurses/female3.png",
+        "videoThumbnail": "/assets/nurses/female3.png",
+        "videoIntro": "/assets/nurses/female3.png",
+        "gallery": [
+          "/assets/nurses/female3.png",
+          "/assets/nurses/female3.png"
+        ]
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        },
+        {
+          "language": "Spanish",
+          "code": "es",
+          "proficiency": "Fluent"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Stroke Certified Registered Nurse",
+          "code": "SCRN",
+          "issuer": "American Board of Neuroscience Nursing",
+          "year": 2018,
+          "expiry": "2026-12-31"
+        },
+        {
+          "name": "Neuro Rehabilitation Specialist",
+          "code": "NRS",
+          "issuer": "Rehabilitation Nursing Certification Board",
+          "year": 2019,
+          "expiry": "2027-06-30"
+        },
+        {
+          "name": "Basic Life Support",
+          "code": "BLS",
+          "issuer": "American Heart Association",
+          "year": 2024,
+          "expiry": "2026-05-15"
+        }
+      ],
+      "badges": ["Super Nurse", "Stroke Specialist", "Top Rated"],
+      "features": {
+        "bookedRecently": true,
+        "responseTime": "< 1 hour",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true
+      },
+      "description": "Specialized in post-stroke rehabilitation with 12 years of hospital experience. Compassionate care focused on recovery and independence.",
+      "bio": "Maria has dedicated her career to helping stroke survivors regain their independence. She developed a specialized rehabilitation program that combines physical therapy exercises with cognitive stimulation.",
+      "education": [
+        {
+          "degree": "Bachelor of Science in Nursing",
+          "institution": "University of California San Francisco",
+          "year": 2012
+        }
+      ],
+      "tags": ["stroke", "rehabilitation", "neuro", "home care"],
+      "stats": {
+        "totalPatients": 87,
+        "completedShifts": 342,
+        "cancellationRate": 0.02,
+        "responseRate": 0.98
+      }
+    },
+    {
+      "id": "nurse-002",
+      "name": "Robert Kim",
+      "firstName": "Robert",
+      "lastName": "Kim",
+      "title": "Licensed Practical Nurse",
+      "credentials": ["LPN"],
+      "specialty": "Post-Stroke Care",
+      "specialties": ["Medication Management", "Daily Living Support", "Wound Care"],
+      "experience": {
+        "years": 8,
+        "totalYears": 8,
+        "specialtyYears": 6,
+        "hospitalYears": 5
+      },
+      "hospital": {
+        "name": "Home Care Solutions",
+        "id": "hosp-045",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 4.8,
+        "total": 4.8,
+        "count": 12,
+        "breakdown": {
+          "5star": 9,
+          "4star": 2,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 234-5678",
+        "phoneFormatted": "+15552345678",
+        "email": "robert.kim@strokify.com"
+      },
+      "location": {
+        "distance": 1.5,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94107",
+        "coordinates": {
+          "lat": 37.7649,
+          "lng": -122.4094
+        },
+        "serviceRadius": 20
+      },
+      "availability": {
+        "available": true,
+        "availableNow": true,
+        "nextAvailable": "2026-03-04T09:00:00Z",
+        "schedule": {
+          "monday": ["08:00-16:00"],
+          "tuesday": ["08:00-16:00"],
+          "wednesday": ["08:00-16:00"],
+          "thursday": ["08:00-16:00"],
+          "friday": ["08:00-16:00"],
+          "saturday": ["09:00-13:00"],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 38
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 35
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 38,
+        "minimumHours": 4,
+        "weekendRate": 40,
+        "holidayRate": 45,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross"]
+      },
+      "media": {
+        "profileImage": "/assets/nurses/male2.png",
+        "videoThumbnail": "/assets/nurses/male2.png",
+        "videoIntro": "/assets/nurses/male2.png"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        },
+        {
+          "language": "Korean",
+          "code": "ko",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Medication Management Certification",
+          "code": "MMC",
+          "issuer": "National Association of LPNs",
+          "year": 2019,
+          "expiry": "2027-01-31"
+        },
+        {
+          "name": "Basic Life Support",
+          "code": "BLS",
+          "issuer": "American Heart Association",
+          "year": 2024,
+          "expiry": "2026-08-20"
+        }
+      ],
+      "badges": ["Medication Expert", "Bilingual"],
+      "features": {
+        "bookedRecently": false,
+        "responseTime": "< 2 hours",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": false
+      },
+      "description": "Specializes in daily activities, medication management, and gentle rehabilitation exercises for stroke patients.",
+      "bio": "Robert's approach focuses on helping patients maintain independence through proper medication management and daily living support.",
+      "education": [
+        {
+          "degree": "Practical Nursing Diploma",
+          "institution": "City College of San Francisco",
+          "year": 2016
+        }
+      ],
+      "tags": ["medication", "daily living", "support", "korean"],
+      "stats": {
+        "totalPatients": 45,
+        "completedShifts": 187,
+        "cancellationRate": 0.01,
+        "responseRate": 0.99
+      }
+    },
+    {
+      "id": "nurse-003",
+      "name": "Sarah Johnson",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "title": "Registered Nurse",
+      "credentials": ["RN", "BSN", "CCRN"],
+      "specialty": "Neuro Critical Care",
+      "specialties": ["Critical Care", "Neurological Monitoring", "Ventilator Care"],
+      "experience": {
+        "years": 15,
+        "totalYears": 15,
+        "specialtyYears": 12,
+        "hospitalYears": 14
+      },
+      "hospital": {
+        "name": "Advanced Home Health",
+        "id": "hosp-078",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 4.9,
+        "total": 4.9,
+        "count": 28,
+        "breakdown": {
+          "5star": 25,
+          "4star": 2,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 345-6789",
+        "phoneFormatted": "+15553456789",
+        "email": "sarah.johnson@strokify.com"
+      },
+      "location": {
+        "distance": 3.2,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94110",
+        "coordinates": {
+          "lat": 37.7549,
+          "lng": -122.4294
+        },
+        "serviceRadius": 30
+      },
+      "availability": {
+        "available": false,
+        "availableNow": false,
+        "nextAvailable": "2026-03-06T09:00:00Z",
+        "schedule": {
+          "monday": ["19:00-07:00"],
+          "tuesday": ["19:00-07:00"],
+          "wednesday": ["19:00-07:00"],
+          "thursday": [],
+          "friday": ["19:00-07:00"],
+          "saturday": ["19:00-07:00"],
+          "sunday": ["19:00-07:00"]
+        }
+      },
+      "shifts": [
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 52
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 52,
+        "minimumHours": 8,
+        "weekendRate": 55,
+        "holidayRate": 60,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Aetna", "Cigna"]
+      },
+      "media": {
+        "profileImage": "/assets/nurses/male1.png",
+        "videoThumbnail": "/assets/nurses/male1.png",
+        "videoIntro": "/assets/nurses/male1.png"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Critical Care Registered Nurse",
+          "code": "CCRN",
+          "issuer": "American Association of Critical-Care Nurses",
+          "year": 2013,
+          "expiry": "2026-11-30"
+        },
+        {
+          "name": "Stroke Certified Registered Nurse",
+          "code": "SCRN",
+          "issuer": "American Board of Neuroscience Nursing",
+          "year": 2015,
+          "expiry": "2027-03-31"
+        },
+        {
+          "name": "Advanced Cardiac Life Support",
+          "code": "ACLS",
+          "issuer": "American Heart Association",
+          "year": 2024,
+          "expiry": "2026-09-15"
+        }
+      ],
+      "badges": ["Super Nurse", "Critical Care", "ICU Specialist"],
+      "features": {
+        "bookedRecently": true,
+        "responseTime": "< 30 mins",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true,
+        "ventilatorTrained": true
+      },
+      "description": "Critical care nurse with 15 years of ICU experience. Now providing specialized in-home care for stroke recovery patients.",
+      "bio": "Sarah brings her ICU expertise to home care, specializing in complex stroke cases requiring close neurological monitoring and advanced life support.",
+      "education": [
+        {
+          "degree": "Bachelor of Science in Nursing",
+          "institution": "Johns Hopkins University",
+          "year": 2009
+        }
+      ],
+      "tags": ["critical care", "icu", "ventilator", "complex care"],
+      "stats": {
+        "totalPatients": 112,
+        "completedShifts": 567,
+        "cancellationRate": 0.005,
+        "responseRate": 1.0
+      }
+    },
+    {
+      "id": "nurse-004",
+      "name": "James Wilson",
+      "firstName": "James",
+      "lastName": "Wilson",
+      "title": "Certified Nursing Assistant",
+      "credentials": ["CNA"],
+      "specialty": "Daily Living Support",
+      "specialties": ["Personal Care", "Mobility Assistance", "Companionship"],
+      "experience": {
+        "years": 5,
+        "totalYears": 5,
+        "specialtyYears": 5,
+        "hospitalYears": 3
+      },
+      "hospital": {
+        "name": "Compassionate Care",
+        "id": "hosp-092",
+        "type": "Home Care Agency"
+      },
+      "rating": {
+        "average": 4.7,
+        "total": 4.7,
+        "count": 9,
+        "breakdown": {
+          "5star": 6,
+          "4star": 2,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 456-7890",
+        "phoneFormatted": "+15554567890",
+        "email": "james.wilson@strokify.com"
+      },
+      "location": {
+        "distance": 4.1,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94112",
+        "coordinates": {
+          "lat": 37.7249,
+          "lng": -122.4394
+        },
+        "serviceRadius": 15
+      },
+      "availability": {
+        "available": true,
+        "availableNow": true,
+        "nextAvailable": "2026-03-04T10:00:00Z",
+        "schedule": {
+          "monday": ["07:00-15:00"],
+          "tuesday": ["07:00-15:00"],
+          "wednesday": ["07:00-15:00"],
+          "thursday": ["07:00-15:00"],
+          "friday": ["07:00-15:00"],
+          "saturday": ["08:00-14:00"],
+          "sunday": ["08:00-14:00"]
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 28
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 26
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 28,
+        "minimumHours": 3,
+        "weekendRate": 30,
+        "holidayRate": 32,
+        "acceptsInsurance": false,
+        "insurances": []
+      },
+      "media": {
+        "profileImage": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
+        "videoThumbnail": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
+        "videoIntro": "https://strokify.com/videos/james-wilson-intro.mp4"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Certified Nursing Assistant",
+          "code": "CNA",
+          "issuer": "California Department of Public Health",
+          "year": 2019,
+          "expiry": "2027-12-31"
+        },
+        {
+          "name": "First Aid & CPR",
+          "code": "FA/CPR",
+          "issuer": "American Red Cross",
+          "year": 2024,
+          "expiry": "2026-10-31"
+        }
+      ],
+      "badges": [],
+      "features": {
+        "bookedRecently": false,
+        "responseTime": "< 3 hours",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true
+      },
+      "description": "Compassionate CNA specializing in daily living support for stroke patients. Helping with mobility, bathing, meals, and companionship.",
+      "bio": "James has a gentle approach to care, helping patients maintain dignity while assisting with daily activities during stroke recovery.",
+      "education": [
+        {
+          "degree": "CNA Certification",
+          "institution": "Bay Area Nursing Academy",
+          "year": 2019
+        }
+      ],
+      "tags": ["cna", "daily living", "personal care", "companionship"],
+      "stats": {
+        "totalPatients": 28,
+        "completedShifts": 156,
+        "cancellationRate": 0.03,
+        "responseRate": 0.95
+      }
+    },
+    {
+      "id": "nurse-005",
+      "name": "Linda Chen",
+      "firstName": "Linda",
+      "lastName": "Chen",
+      "title": "Registered Nurse",
+      "credentials": ["RN", "BSN", "CRRN"],
+      "specialty": "Rehabilitation Nursing",
+      "specialties": ["Physical Rehabilitation", "Occupational Therapy Support", "Stroke Rehab"],
+      "experience": {
+        "years": 10,
+        "totalYears": 10,
+        "specialtyYears": 8,
+        "hospitalYears": 9
+      },
+      "hospital": {
+        "name": "Elite Home Care",
+        "id": "hosp-034",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 4.8,
+        "total": 4.8,
+        "count": 22,
+        "breakdown": {
+          "5star": 18,
+          "4star": 3,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 567-8901",
+        "phoneFormatted": "+15555678901",
+        "email": "linda.chen@strokify.com"
+      },
+      "location": {
+        "distance": 2.8,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94109",
+        "coordinates": {
+          "lat": 37.7949,
+          "lng": -122.4094
+        },
+        "serviceRadius": 25
+      },
+      "availability": {
+        "available": true,
+        "availableNow": true,
+        "nextAvailable": "2026-03-04T13:00:00Z",
+        "schedule": {
+          "monday": ["10:00-18:00"],
+          "tuesday": ["10:00-18:00"],
+          "wednesday": ["10:00-18:00"],
+          "thursday": ["10:00-18:00"],
+          "friday": ["10:00-18:00"],
+          "saturday": [],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 48
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 45
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 48,
+        "minimumHours": 4,
+        "weekendRate": 50,
+        "holidayRate": 55,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Kaiser"]
+      },
+      "media": {
+        "profileImage": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2",
+        "videoThumbnail": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2",
+        "videoIntro": "https://strokify.com/videos/linda-chen-intro.mp4"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Fluent"
+        },
+        {
+          "language": "Mandarin",
+          "code": "zh",
+          "proficiency": "Native"
+        },
+        {
+          "language": "Cantonese",
+          "code": "yue",
+          "proficiency": "Conversational"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Certified Rehabilitation Registered Nurse",
+          "code": "CRRN",
+          "issuer": "Rehabilitation Nursing Certification Board",
+          "year": 2017,
+          "expiry": "2027-08-31"
+        },
+        {
+          "name": "Stroke Rehabilitation Specialist",
+          "code": "SRS",
+          "issuer": "American Stroke Association",
+          "year": 2018,
+          "expiry": "2026-12-31"
+        }
+      ],
+      "badges": ["Rehab Expert", "Bilingual", "Top Rated"],
+      "features": {
+        "bookedRecently": true,
+        "responseTime": "< 1 hour",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true,
+        "rehabSpecialist": true
+      },
+      "description": "Rehabilitation nurse helping stroke patients regain mobility and independence through personalized care plans.",
+      "bio": "Linda combines her rehabilitation expertise with cultural sensitivity to provide holistic care for stroke survivors and their families.",
+      "education": [
+        {
+          "degree": "Bachelor of Science in Nursing",
+          "institution": "University of Washington",
+          "year": 2014
+        },
+        {
+          "degree": "Rehabilitation Nursing Certificate",
+          "institution": "Rehab Nursing Institute",
+          "year": 2017
+        }
+      ],
+      "tags": ["rehabilitation", "physical therapy", "mobility", "mandarin"],
+      "stats": {
+        "totalPatients": 67,
+        "completedShifts": 289,
+        "cancellationRate": 0.01,
+        "responseRate": 0.98
+      }
+    },
+    {
+      "id": "nurse-006",
+      "name": "Michael Brown",
+      "firstName": "Michael",
+      "lastName": "Brown",
+      "title": "Registered Nurse",
+      "credentials": ["RN", "BSN"],
+      "specialty": "Wound Care Specialist",
+      "specialties": ["Wound Care", "Pressure Ulcer Prevention", "Post-Surgical Care"],
+      "experience": {
+        "years": 9,
+        "totalYears": 9,
+        "specialtyYears": 7,
+        "hospitalYears": 8
+      },
+      "hospital": {
+        "name": "Healing Hands Home Health",
+        "id": "hosp-056",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 4.8,
+        "total": 4.8,
+        "count": 15,
+        "breakdown": {
+          "5star": 12,
+          "4star": 2,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 678-9012",
+        "phoneFormatted": "+15556789012",
+        "email": "michael.brown@strokify.com"
+      },
+      "location": {
+        "distance": 3.7,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94114",
+        "coordinates": {
+          "lat": 37.7649,
+          "lng": -122.4394
+        },
+        "serviceRadius": 25
+      },
+      "availability": {
+        "available": true,
+        "availableNow": false,
+        "nextAvailable": "2026-03-05T09:00:00Z",
+        "schedule": {
+          "monday": ["08:00-16:00"],
+          "tuesday": ["08:00-16:00"],
+          "wednesday": ["08:00-16:00"],
+          "thursday": ["08:00-16:00"],
+          "friday": ["08:00-16:00"],
+          "saturday": [],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 46
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": true,
+          "rate": 43
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 46,
+        "minimumHours": 4,
+        "weekendRate": 48,
+        "holidayRate": 52,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Aetna"]
+      },
+      "media": {
+        "profileImage": "/assets/nurses/female1.png",
+        "videoThumbnail": "/assets/nurses/female1.png",
+        "videoIntro": "/assets/nurses/female1.png"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Wound Care Certified",
+          "code": "WCC",
+          "issuer": "National Alliance of Wound Care",
+          "year": 2018,
+          "expiry": "2027-04-30"
+        },
+        {
+          "name": "Certified Wound Specialist",
+          "code": "CWS",
+          "issuer": "American Board of Wound Management",
+          "year": 2019,
+          "expiry": "2027-09-30"
+        }
+      ],
+      "badges": ["Wound Care Expert", "Top Rated"],
+      "features": {
+        "bookedRecently": false,
+        "responseTime": "< 2 hours",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true
+      },
+      "description": "Specialized in wound care for bedridden stroke patients, preventing and treating pressure ulcers.",
+      "bio": "Michael's expertise in wound management helps prevent complications in stroke patients with limited mobility.",
+      "tags": ["wound care", "pressure ulcers", "bed sores", "skin integrity"],
+      "stats": {
+        "totalPatients": 52,
+        "completedShifts": 231,
+        "cancellationRate": 0.02,
+        "responseRate": 0.97
+      }
+    },
+    {
+      "id": "nurse-007",
+      "name": "Patricia Martinez",
+      "firstName": "Patricia",
+      "lastName": "Martinez",
+      "title": "Registered Nurse",
+      "credentials": ["RN", "MSN"],
+      "specialty": "Geriatric Stroke Care",
+      "specialties": ["Geriatrics", "Dementia Care", "Stroke Recovery"],
+      "experience": {
+        "years": 18,
+        "totalYears": 18,
+        "specialtyYears": 15,
+        "hospitalYears": 16
+      },
+      "hospital": {
+        "name": "ElderCare Home Health",
+        "id": "hosp-089",
+        "type": "Home Health Agency"
+      },
+      "rating": {
+        "average": 5.0,
+        "total": 5.0,
+        "count": 31,
+        "breakdown": {
+          "5star": 31,
+          "4star": 0,
+          "3star": 0,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 789-0123",
+        "phoneFormatted": "+15557890123",
+        "email": "patricia.martinez@strokify.com"
+      },
+      "location": {
+        "distance": 2.1,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94102",
+        "coordinates": {
+          "lat": 37.7849,
+          "lng": -122.4094
+        },
+        "serviceRadius": 20
+      },
+      "availability": {
+        "available": true,
+        "availableNow": false,
+        "nextAvailable": "2026-03-05T10:00:00Z",
+        "schedule": {
+          "monday": ["09:00-17:00"],
+          "tuesday": ["09:00-17:00"],
+          "wednesday": ["09:00-17:00"],
+          "thursday": ["09:00-17:00"],
+          "friday": ["09:00-17:00"],
+          "saturday": [],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 54
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": false,
+          "rate": 50
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 54,
+        "minimumHours": 4,
+        "weekendRate": 58,
+        "holidayRate": 62,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Aetna", "Cigna", "UnitedHealthcare"]
+      },
+      "media": {
+        "profileImage": "/assets/nurses/female2.png",
+        "videoThumbnail": "/assets/nurses/female2.png",
+        "videoIntro": "/assets/nurses/female2.png"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Fluent"
+        },
+        {
+          "language": "Spanish",
+          "code": "es",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Gerontological Nursing Certification",
+          "code": "GNC",
+          "issuer": "American Nurses Credentialing Center",
+          "year": 2010,
+          "expiry": "2027-02-28"
+        },
+        {
+          "name": "Dementia Care Specialist",
+          "code": "DCS",
+          "issuer": "Alzheimer's Association",
+          "year": 2012,
+          "expiry": "2026-11-30"
+        }
+      ],
+      "badges": ["Super Nurse", "Geriatric Specialist", "Perfect Rating"],
+      "features": {
+        "bookedRecently": true,
+        "responseTime": "< 2 hours",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true,
+        "dementiaTrained": true
+      },
+      "description": "Specialized in geriatric stroke care with expertise in managing dementia and age-related complications.",
+      "bio": "Patricia has dedicated her career to caring for elderly stroke survivors, understanding the unique challenges of aging and recovery.",
+      "education": [
+        {
+          "degree": "Master of Science in Nursing",
+          "institution": "University of California San Francisco",
+          "year": 2006
+        },
+        {
+          "degree": "Bachelor of Science in Nursing",
+          "institution": "San Francisco State University",
+          "year": 2002
+        }
+      ],
+      "tags": ["geriatric", "dementia", "elderly", "senior care"],
+      "stats": {
+        "totalPatients": 124,
+        "completedShifts": 678,
+        "cancellationRate": 0.0,
+        "responseRate": 1.0
+      }
+    },
+    {
+      "id": "nurse-008",
+      "name": "David Lee",
+      "firstName": "David",
+      "lastName": "Lee",
+      "title": "Physical Therapist Assistant",
+      "credentials": ["PTA"],
+      "specialty": "Stroke Rehabilitation",
+      "specialties": ["Physical Therapy", "Mobility Training", "Exercise Programs"],
+      "experience": {
+        "years": 6,
+        "totalYears": 6,
+        "specialtyYears": 6,
+        "hospitalYears": 4
+      },
+      "hospital": {
+        "name": "Mobility Plus Home Health",
+        "id": "hosp-067",
+        "type": "Therapy Services"
+      },
+      "rating": {
+        "average": 4.9,
+        "total": 4.9,
+        "count": 14,
+        "breakdown": {
+          "5star": 12,
+          "4star": 1,
+          "3star": 1,
+          "2star": 0,
+          "1star": 0
+        }
+      },
+      "contact": {
+        "phone": "+1 (555) 890-1234",
+        "phoneFormatted": "+15558901234",
+        "email": "david.lee@strokify.com"
+      },
+      "location": {
+        "distance": 1.8,
+        "distanceUnit": "miles",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "coordinates": {
+          "lat": 37.7749,
+          "lng": -122.4194
+        },
+        "serviceRadius": 20
+      },
+      "availability": {
+        "available": true,
+        "availableNow": true,
+        "nextAvailable": "2026-03-04T11:00:00Z",
+        "schedule": {
+          "monday": ["08:00-16:00"],
+          "tuesday": ["08:00-16:00"],
+          "wednesday": ["08:00-16:00"],
+          "thursday": ["08:00-16:00"],
+          "friday": ["08:00-16:00"],
+          "saturday": [],
+          "sunday": []
+        }
+      },
+      "shifts": [
+        {
+          "duration": 6,
+          "durationUnit": "hours",
+          "type": "6hr",
+          "available": true,
+          "rate": 42
+        },
+        {
+          "duration": 12,
+          "durationUnit": "hours",
+          "type": "12hr",
+          "available": false,
+          "rate": 40
+        }
+      ],
+      "pricing": {
+        "hourlyRate": 42,
+        "minimumHours": 2,
+        "weekendRate": 44,
+        "holidayRate": 48,
+        "acceptsInsurance": true,
+        "insurances": ["Medicare", "Blue Cross", "Aetna"]
+      },
+      "media": {
+        "profileImage": "https://images.unsplash.com/photo-1537368910025-700350fe46c7",
+        "videoThumbnail": "https://images.unsplash.com/photo-1537368910025-700350fe46c7",
+        "videoIntro": "https://strokify.com/videos/david-lee-intro.mp4"
+      },
+      "languages": [
+        {
+          "language": "English",
+          "code": "en",
+          "proficiency": "Native"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Physical Therapist Assistant",
+          "code": "PTA",
+          "issuer": "Federation of State Boards of Physical Therapy",
+          "year": 2018,
+          "expiry": "2027-12-31"
+        },
+        {
+          "name": "Stroke Rehabilitation Certification",
+          "code": "SRC",
+          "issuer": "American Physical Therapy Association",
+          "year": 2019,
+          "expiry": "2027-05-31"
+        }
+      ],
+      "badges": ["Rehab Specialist", "Top Rated"],
+      "features": {
+        "bookedRecently": true,
+        "responseTime": "< 1 hour",
+        "verified": true,
+        "backgroundChecked": true,
+        "vaccinated": true,
+        "transportation": true
+      },
+      "description": "Physical therapist assistant specializing in stroke recovery exercises and mobility training.",
+      "bio": "David works with patients to regain strength, balance, and mobility through personalized exercise programs.",
+      "tags": ["physical therapy", "mobility", "exercise", "strength training"],
+      "stats": {
+        "totalPatients": 48,
+        "completedShifts": 203,
+        "cancellationRate": 0.01,
+        "responseRate": 0.99
+      }
+    }
+  ],
+  "metadata": {
+    "total": 8,
+    "generated": "2026-03-04T00:00:00Z",
+    "version": "1.0",
+    "filters": {
+      "specialties": ["Stroke Recovery", "Critical Care", "Rehabilitation", "Wound Care", "Geriatrics", "Daily Living Support"],
+      "languages": ["English", "Spanish", "Korean", "Mandarin", "Cantonese"],
+      "shifts": ["6hr", "12hr"],
+      "credentials": ["RN", "LPN", "CNA", "PTA"]
+    }
+  }
+}
