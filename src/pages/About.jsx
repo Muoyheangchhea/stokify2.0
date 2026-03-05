@@ -31,60 +31,79 @@ import muoyheangImage from "../assets/img/mh.png";
 const founders = [
   {
     name: "Hieng Dara",
-    role: "Co-Founder & CEO",
+    role: ["Co-Founder", "Business Lead"],
     image: daraImage,
-    bio: "Former healthcare executive with 12+ years in digital health. Passionate about making stroke prevention accessible to all Cambodians.",
+    bio: "Computer Science major with strong business acumen. Experienced in financial leadership, project management, and business intelligence across multiple international projects in Singapore and China.",
     linkedin: "https://linkedin.com/in/hieng-dara",
     twitter: "https://twitter.com/hiengdara",
     email: "dara@strokify.com",
     quote:
-      "Every minute counts when it comes to stroke. We're building technology that saves those minutes.",
+      "Bridging technical expertise with business strategy to drive innovation.",
     education: "Computer Science, American University of Phnom Penh",
+    // expertise: [
+    //   "Business Strategy",
+    //   "Financial Leadership",
+    //   "Project Management",
+    //   "Business Intelligence"
+    // ],
     expertise: [
-      "Healthcare Strategy",
-      "Digital Health",
-      "Business Development",
-    ],
-    achievements: [
-      "Former CEO of HealthTech Asia",
-      "Led 3 healthcare startups to acquisition",
-      "Advisor to Cambodian Ministry of Health",
+      "CFO, Real Business Simulations (SmartEdu USD P5)",
+      "1st Place Winner - Sokheap Project, BUPT China",
+      "Business Lead, GreenBite (NUS Singapore)",
+      "Finance Lead, MindEASE",
+      "Project Intern at MPTC",
+      "Completed Business Intelligence Course",
     ],
   },
   {
     name: "Van Meysorng",
-    role: "Co-Founder & CTO",
+    role: ["Co-Founder", "Product Development Lead"],
     image: meysorngImage,
-    bio: "AI specialist from MIT with expertise in medical machine learning. Led research on stroke prediction algorithms.",
+    bio: "ICT specialist skilled in web development, UI/UX design, and product innovation. Experienced across international projects in Singapore and China, passionate about creating user-centered digital solutions.",
     linkedin: "https://linkedin.com/in/van-meysorng",
     twitter: "https://twitter.com/vanmeysorng",
     email: "meysorng@strokify.com",
-    quote:
-      "Our AI doesn't just predict strokes - it empowers families to take action before it's too late.",
-    education: "Information Communication of Technology, American University of Phnom Penh",
-    expertise: ["Machine Learning", "Medical AI", "Algorithm Development"],
-    achievements: [
-      "Published 15+ papers on medical AI",
-      "Patent holder for stroke prediction algorithm",
-      "Google AI Impact Award 2022",
+    quote: "Great products blend design thinking with technical excellence.",
+    education: "ICT, American University of Phnom Penh",
+    // expertise: [
+    //   "Product Design",
+    //   "UI/UX Design",
+    //   "Frontend Development",
+    //   "Gamification"
+    // ],
+    expertise: [
+      "2nd Place - Best AI & UI/UX Design (BUPT China)",
+      "UI Designer, BusMate (NUS Singapore)",
+      "Frontend Lead & Gamification Developer, ScamShield (RMIT)",
+      "Product Designer, MindEASE & SkinApsor",
+      "Web & Product Design Intern, MPTC",
+      "Media & Design Lead, Greensphere Campaign",
     ],
   },
   {
     name: "Chhea Muoyheang",
-    role: "Co-Founder",
+    role: ["Co-Founder", "Technical Lead"],
     image: muoyheangImage,
-    bio: "Neurologist specializing in cerebrovascular diseases. Previously led stroke units at major hospitals in Southeast Asia.",
+    bio: "Software development specialist with full-stack expertise and a passion for building scalable technical solutions. Experienced in leading development teams and implementing data-driven applications.",
     linkedin: "https://linkedin.com/in/chhea-muoyheang",
-    twitter: "https://twitter.com/drmuoyheang",
+    twitter: "https://twitter.com/chheamuoyheang",
     email: "muoyheang@strokify.com",
-    quote:
-      "I've seen too many stroke patients arrive too late. Strokify is my mission to change that.",
+    quote: "Building robust technical foundations for innovative solutions.",
     education: "Software Development, American University of Phnom Penh",
-    expertise: ["Computer Vision", "AI", "Machine Learning"],
-    achievements: [
-      "Former Head of Stroke Unit, Bumrungrad Hospital",
-      "WHO Stroke Prevention Committee Member",
-      "Published 30+ peer-reviewed papers",
+    // expertise: [
+    //   "Full Stack Development",
+    //   "Technical Leadership",
+    //   "Data Analytics",
+    //   "Prompt Engineering",
+    //   "UI/UX"
+    // ],
+    expertise: [
+      "Full Stack & Technical Lead, SkinApsor",
+      "Frontend Developer, EZ Found",
+      "Project Intern, MPTC",
+      "Completed Data Analytics Bootcamp (UpSkill 2.0)",
+      "Prompt Engineering & UX/UI Intern, Resumely",
+      "Technician, E-Solver Cambodia",
     ],
   },
 ];
@@ -265,7 +284,13 @@ const About = () => {
 
                 <div className="about-founder-info">
                   <h3 className="about-founder-name">{founder.name}</h3>
-                  <p className="about-founder-role">{founder.role}</p>
+                  <div className="about-founder-role">
+                    {founder.role.map((line, index) => (
+                      <p key={index} style={{ margin: 0 }}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
 
                   {founder.education && (
                     <div className="about-founder-education">
