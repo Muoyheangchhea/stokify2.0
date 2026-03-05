@@ -95,7 +95,7 @@ const NURSES = [
     badges: [],
     bookedRecently: false,
     shiftTypes: ["night"],
-    image: "https://i.pravatar.cc/300?img=38",
+    image: "https://i.pinimg.com/1200x/64/da/80/64da801438affd53e73f50bdbe814248.jpg",
   },
   {
     id: 4, name: "Robert Vasquez", title: "BSN, CNRN", specialty: "Critical Care",
