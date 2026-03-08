@@ -8,10 +8,10 @@ import {
   FaCheckCircle,
   FaExclamationCircle,
 } from "react-icons/fa";
-import logo from '../assets/img/Strokify_Logo.png';
+import logo from "../assets/img/Strokify_Logo.png";
 /* ─── Inline styles (red theme, matching Login/Register) ──────────────── */
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap");
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,7 +38,7 @@ const CSS = `
   .fp-root {
     min-height: 100vh;
     display: flex;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background: linear-gradient(135deg, #E63E4E 0%, #B31E2C 100%);
   }
 

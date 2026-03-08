@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   FaUsers,
@@ -51,6 +51,11 @@ import testimonialJames from "../assets/profile/child3.png";
 const FamilyAccounts = () => {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const pricingRef = useRef(null);
+
+  const scrollToPricing = () => {
+    pricingRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // Elder Care Focused Plans
   const plans = [
@@ -112,7 +117,7 @@ const FamilyAccounts = () => {
       id: "elite",
       name: "Elite Protection",
       price: {
-        monthly: 1.50,
+        monthly: 1.5,
         yearly: 14.94,
       },
       members: "Monitor 4 elders + 8 family members",
@@ -154,7 +159,7 @@ const FamilyAccounts = () => {
     {
       category: "Emergency Response",
       features: [
-        "One-tap 911 calling",
+        "One-tap 119 calling",
         "Automatic fall detection",
         "GPS location sharing",
         "Emergency contact broadcast",
@@ -254,7 +259,7 @@ const FamilyAccounts = () => {
     {
       question: "How fast are emergency alerts sent?",
       answer:
-        "Alerts are sent instantly via SMS, push notification, and email to all designated family members. Our system also automatically calls 911 if a fall is detected with no response.",
+        "Alerts are sent instantly via SMS, push notification, and email to all designated family members. Our system also automatically calls 119 if a fall is detected with no response.",
     },
     {
       question: "Can multiple family members monitor the same parent?",
@@ -278,9 +283,7 @@ const FamilyAccounts = () => {
       {/* Hero Section - Elder Care Focused */}
       <section className="family-hero">
         <div className="hero-content">
-          <h1>
-            Protect Your Aging Parents
-          </h1>
+          <h1>Protect Your Aging Parents</h1>
           <p className="family-hero-subtitle">
             Monitor your elderly parents' health in real-time. Get instant
             alerts for stroke risks, falls, and missed medications. Be there
@@ -290,9 +293,12 @@ const FamilyAccounts = () => {
             <Link to="/register" className="btn-primary btn-large">
               Start Protecting <FaArrowRight />
             </Link>
-            <Link to="#pricing" className="btn-secondary btn-large">
+            <button
+              onClick={scrollToPricing}
+              className="btn-secondary btn-large"
+            >
               View Care Plans
-            </Link>
+            </button>
           </div>
           <div className="hero-stats">
             {stats.map((stat, index) => (
@@ -350,7 +356,7 @@ const FamilyAccounts = () => {
       </section>
 
       {/* Pricing Section - Elder Care Plans */}
-      <section id="pricing" className="pricing-section">
+      <section id="pricing" ref={pricingRef} className="pricing-section">
         <div className="container">
           <div className="pricing-header">
             <h2>Choose the Right Protection Plan</h2>
@@ -478,7 +484,7 @@ const FamilyAccounts = () => {
             <div className="warning-card">
               <span className="warning-letter">T</span>
               <h3>Time to Act</h3>
-              <p>Call 911 immediately if you see any signs</p>
+              <p>Call 119 immediately if you see any signs</p>
             </div>
           </div>
         </div>

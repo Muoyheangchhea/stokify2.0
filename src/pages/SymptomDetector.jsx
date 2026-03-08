@@ -895,10 +895,10 @@ ${reportData?.disclaimer}
         const maxValue = Number(question.max);
         
         return (
-          <div className="slider-container">
-            <div className="slider-value">
-              <span className="slider-number">{sliderValue}</span>
-              <span className="slider-unit">{question.unit}</span>
+          <div className="sd-slider-container">
+            <div className="sd-slider-value">
+              <span className="sd-slider-number">{sliderValue}</span>
+              <span className="sd-slider-unit">{question.unit}</span>
             </div>
             <input
               type="range"
@@ -906,9 +906,9 @@ ${reportData?.disclaimer}
               max={maxValue}
               value={sliderValue}
               onChange={(e) => handleInputChange(question.id, parseInt(e.target.value))}
-              className="slider"
+              className="sd-slider"
             />
-            <div className="slider-labels">
+            <div className="sd-slider-labels">
               <span>{minValue}</span>
               <span>{maxValue}</span>
             </div>
@@ -917,15 +917,15 @@ ${reportData?.disclaimer}
 
       case 'dual-slider':
         return (
-          <div className="dual-slider-container">
-            <div className="bmi-indicator">
-              <span className="bmi-label">Your BMI</span>
-              <span className="bmi-value">{calculateBMI()}</span>
+          <div className="sd-dual-slider">
+            <div className="sd-bmi-indicator">
+              <span className="sd-bmi-label">Your BMI</span>
+              <span className="sd-bmi-value">{calculateBMI()}</span>
             </div>
             
-            <div className="slider-group">
+            <div className="sd-slider-group">
               <label>Height (cm)</label>
-              <div className="slider-value-mini">
+              <div className="sd-slider-value-mini">
                 <span>{formData.height || 170} cm</span>
               </div>
               <input
@@ -934,13 +934,13 @@ ${reportData?.disclaimer}
                 max={question.heightMax}
                 value={formData.height || 170}
                 onChange={(e) => handleInputChange('height', parseInt(e.target.value))}
-                className="slider"
+                className="sd-slider"
               />
             </div>
             
-            <div className="slider-group">
+            <div className="sd-slider-group">
               <label>Weight (kg)</label>
-              <div className="slider-value-mini">
+              <div className="sd-slider-value-mini">
                 <span>{formData.weight || 70} kg</span>
               </div>
               <input
@@ -949,7 +949,7 @@ ${reportData?.disclaimer}
                 max={question.weightMax}
                 value={formData.weight || 70}
                 onChange={(e) => handleInputChange('weight', parseInt(e.target.value))}
-                className="slider"
+                className="sd-slider"
               />
             </div>
           </div>
@@ -958,33 +958,33 @@ ${reportData?.disclaimer}
       case 'options':
       case 'yes-no':
         return (
-          <div className="options-grid">
+          <div className="sd-options-grid">
             {question.options ? (
               question.options.map((option) => (
                 <button
                   key={option}
-                  className={`option-btn ${formData[question.id] === option ? 'selected' : ''}`}
+                  className={`sd-option-btn ${formData[question.id] === option ? 'sd-selected' : ''}`}
                   onClick={() => handleInputChange(question.id, option)}
                 >
                   {option}
-                  {formData[question.id] === option && <FaCheck className="check-icon" />}
+                  {formData[question.id] === option && <FaCheck className="sd-check-icon" />}
                 </button>
               ))
             ) : (
               <>
                 <button
-                  className={`option-btn ${formData[question.id] === 'Yes' ? 'selected' : ''}`}
+                  className={`sd-option-btn ${formData[question.id] === 'Yes' ? 'sd-selected' : ''}`}
                   onClick={() => handleInputChange(question.id, 'Yes')}
                 >
                   Yes
-                  {formData[question.id] === 'Yes' && <FaCheck className="check-icon" />}
+                  {formData[question.id] === 'Yes' && <FaCheck className="sd-check-icon" />}
                 </button>
                 <button
-                  className={`option-btn ${formData[question.id] === 'No' ? 'selected' : ''}`}
+                  className={`sd-option-btn ${formData[question.id] === 'No' ? 'sd-selected' : ''}`}
                   onClick={() => handleInputChange(question.id, 'No')}
                 >
                   No
-                  {formData[question.id] === 'No' && <FaCheck className="check-icon" />}
+                  {formData[question.id] === 'No' && <FaCheck className="sd-check-icon" />}
                 </button>
               </>
             )}
@@ -994,22 +994,22 @@ ${reportData?.disclaimer}
       case 'smoking':
         return (
           <>
-            <div className="options-grid">
+            <div className="sd-options-grid">
               {question.options.map((option) => (
                 <button
                   key={option}
-                  className={`option-btn ${formData.smokingStatus === option ? 'selected' : ''}`}
+                  className={`sd-option-btn ${formData.smokingStatus === option ? 'sd-selected' : ''}`}
                   onClick={() => handleInputChange('smokingStatus', option)}
                 >
                   {option}
-                  {formData.smokingStatus === option && <FaCheck className="check-icon" />}
+                  {formData.smokingStatus === option && <FaCheck className="sd-check-icon" />}
                 </button>
               ))}
             </div>
             
             {showCigarettes && (
-              <div className="conditional-field">
-                <label className="conditional-label">How many cigarettes per day?</label>
+              <div className="sd-conditional-section">
+                <label className="sd-conditional-label">How many cigarettes per day?</label>
                 <input
                   type="number"
                   min="1"
@@ -1017,7 +1017,7 @@ ${reportData?.disclaimer}
                   value={formData.cigarettesPerDay}
                   onChange={(e) => handleInputChange('cigarettesPerDay', e.target.value)}
                   placeholder="e.g., 10"
-                  className="number-input"
+                  className="sd-number-input"
                 />
               </div>
             )}
@@ -1027,46 +1027,46 @@ ${reportData?.disclaimer}
       case 'bp-input':
         return (
           <>
-            <div className="options-grid">
+            <div className="sd-options-grid">
               <button
-                className={`option-btn ${formData.knowsBP === 'I don’t know' ? 'selected' : ''}`}
+                className={`sd-option-btn ${formData.knowsBP === 'I don’t know' ? 'sd-selected' : ''}`}
                 onClick={() => handleInputChange('knowsBP', 'I don’t know')}
               >
                 I don’t know
-                {formData.knowsBP === 'I don’t know' && <FaCheck className="check-icon" />}
+                {formData.knowsBP === 'I don’t know' && <FaCheck className="sd-check-icon" />}
               </button>
               <button
-                className={`option-btn ${formData.knowsBP === 'I know it' ? 'selected' : ''}`}
+                className={`sd-option-btn ${formData.knowsBP === 'I know it' ? 'sd-selected' : ''}`}
                 onClick={() => handleInputChange('knowsBP', 'I know it')}
               >
                 I know it
-                {formData.knowsBP === 'I know it' && <FaCheck className="check-icon" />}
+                {formData.knowsBP === 'I know it' && <FaCheck className="sd-check-icon" />}
               </button>
             </div>
             
             {showBpInputs && (
-              <div className="bp-inputs">
-                <div className="bp-field">
+              <div className="sd-bp-inputs">
+                <div className="sd-bp-field">
                   <label>Systolic</label>
                   <input
                     type="number"
                     placeholder="120"
                     value={formData.systolic}
                     onChange={(e) => handleInputChange('systolic', e.target.value)}
-                    className="number-input"
+                    className="sd-number-input"
                   />
-                  <span className="bp-unit">mmHg</span>
+                  <span className="sd-bp-unit">mmHg</span>
                 </div>
-                <div className="bp-field">
+                <div className="sd-bp-field">
                   <label>Diastolic</label>
                   <input
                     type="number"
                     placeholder="80"
                     value={formData.diastolic}
                     onChange={(e) => handleInputChange('diastolic', e.target.value)}
-                    className="number-input"
+                    className="sd-number-input"
                   />
-                  <span className="bp-unit">mmHg</span>
+                  <span className="sd-bp-unit">mmHg</span>
                 </div>
               </div>
             )}
@@ -1076,33 +1076,33 @@ ${reportData?.disclaimer}
       case 'glucose-input':
         return (
           <>
-            <div className="options-grid">
+            <div className="sd-options-grid">
               <button
-                className={`option-btn ${formData.knowsGlucose === 'I don’t know' ? 'selected' : ''}`}
+                className={`sd-option-btn ${formData.knowsGlucose === 'I don’t know' ? 'sd-selected' : ''}`}
                 onClick={() => handleInputChange('knowsGlucose', 'I don’t know')}
               >
                 I don’t know
-                {formData.knowsGlucose === 'I don’t know' && <FaCheck className="check-icon" />}
+                {formData.knowsGlucose === 'I don’t know' && <FaCheck className="sd-check-icon" />}
               </button>
               <button
-                className={`option-btn ${formData.knowsGlucose === 'I know it' ? 'selected' : ''}`}
+                className={`sd-option-btn ${formData.knowsGlucose === 'I know it' ? 'sd-selected' : ''}`}
                 onClick={() => handleInputChange('knowsGlucose', 'I know it')}
               >
                 I know it
-                {formData.knowsGlucose === 'I know it' && <FaCheck className="check-icon" />}
+                {formData.knowsGlucose === 'I know it' && <FaCheck className="sd-check-icon" />}
               </button>
             </div>
             
             {showGlucoseInput && (
-              <div className="glucose-input">
+              <div className="sd-glucose-input">
                 <input
                   type="number"
                   placeholder="e.g., 100"
                   value={formData.glucose}
                   onChange={(e) => handleInputChange('glucose', e.target.value)}
-                  className="number-input"
+                  className="sd-number-input"
                 />
-                <span className="glucose-unit">mg/dL</span>
+                <span className="sd-glucose-unit">mg/dL</span>
               </div>
             )}
           </>
@@ -1126,22 +1126,22 @@ ${reportData?.disclaimer}
     }
     
     return (
-      <div className="conditional-section">
-        <label className="conditional-label">{conditionLabel}</label>
-        <div className="options-grid">
+      <div className="sd-conditional-section">
+        <label className="sd-conditional-label">{conditionLabel}</label>
+        <div className="sd-options-grid">
           <button
-            className={`option-btn ${formData[conditionField] === 'Yes' ? 'selected' : ''}`}
+            className={`sd-option-btn ${formData[conditionField] === 'Yes' ? 'sd-selected' : ''}`}
             onClick={() => handleInputChange(conditionField, 'Yes')}
           >
             Yes
-            {formData[conditionField] === 'Yes' && <FaCheck className="check-icon" />}
+            {formData[conditionField] === 'Yes' && <FaCheck className="sd-check-icon" />}
           </button>
           <button
-            className={`option-btn ${formData[conditionField] === 'No' ? 'selected' : ''}`}
+            className={`sd-option-btn ${formData[conditionField] === 'No' ? 'sd-selected' : ''}`}
             onClick={() => handleInputChange(conditionField, 'No')}
           >
             No
-            {formData[conditionField] === 'No' && <FaCheck className="check-icon" />}
+            {formData[conditionField] === 'No' && <FaCheck className="sd-check-icon" />}
           </button>
         </div>
       </div>
@@ -1151,58 +1151,61 @@ ${reportData?.disclaimer}
   // ---------- Full Report View ----------
   if (showFullReport && reportData) {
     return (
-      <div className="symptom-detector">
-        <div className="full-report-container">
-          <div className="report-header">
-            <button className="report-back-btn" onClick={() => setShowFullReport(false)}>
+      <div className="sd-container">
+        <div className="sd-bg-blob sd-blob-1"></div>
+        <div className="sd-bg-blob sd-blob-2"></div>
+        
+        <div className="sd-report-container">
+          <div className="sd-report-header">
+            <button className="sd-report-back" onClick={() => setShowFullReport(false)}>
               <FaArrowLeft /> Back to Summary
             </button>
-            <div className="report-actions">
-              <button className="report-action-btn" onClick={handlePrintReport}>
+            <div className="sd-report-actions">
+              <button className="sd-report-action" onClick={handlePrintReport}>
                 <FaPrint /> Print
               </button>
-              <button className="report-action-btn" onClick={handleDownloadReport}>
+              <button className="sd-report-action" onClick={handleDownloadReport}>
                 <FaDownload /> Download
               </button>
-              <button className="report-action-btn">
+              <button className="sd-report-action">
                 <FaShare /> Share
               </button>
             </div>
           </div>
 
-          <div className="report-card">
-            <div className="report-brand">
-              <div className="report-logo">STROKIFY</div>
-              <div className="report-date">Generated: {reportData.generated}</div>
+          <div className="sd-report-card">
+            <div className="sd-report-brand">
+              <div className="sd-report-logo">STROKIFY</div>
+              <div className="sd-report-date">Generated: {reportData.generated}</div>
             </div>
 
-            <div className="report-title-section">
-              <FaFileAlt className="report-icon" />
-              <h1 className="report-title">Comprehensive Health Assessment Report</h1>
-              <p className="report-subtitle">Stroke Risk Evaluation & Personalized Recommendations</p>
+            <div className="sd-report-title-section">
+              <FaFileAlt className="sd-report-icon" />
+              <h1 className="sd-report-title">Comprehensive Health Assessment Report</h1>
+              <p className="sd-report-subtitle">Stroke Risk Evaluation & Personalized Recommendations</p>
             </div>
 
             {/* Risk Summary */}
-            <div className="report-section">
-              <h2 className="report-section-title">Risk Summary</h2>
-              <div className="risk-summary-card" style={{ borderLeftColor: reportData.risk.color }}>
-                <div className="risk-summary-header">
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Risk Summary</h2>
+              <div className="sd-risk-summary-card" style={{ borderLeftColor: reportData.risk.color }}>
+                <div className="sd-risk-summary-header">
                   <div>
-                    <span className="risk-level-label">Overall Stroke Risk</span>
-                    <span className="risk-level-value" style={{ color: reportData.risk.color }}>
+                    <span className="sd-risk-level-label">Overall Stroke Risk</span>
+                    <span className="sd-risk-level-value" style={{ color: reportData.risk.color }}>
                       {reportData.risk.level}
                     </span>
                   </div>
-                  <span className="risk-score">{reportData.risk.score}%</span>
+                  <span className="sd-risk-score">{reportData.risk.score}%</span>
                 </div>
-                <div className="risk-meter-large">
-                  <div className="risk-bar-large">
+                <div className="sd-risk-meter-large">
+                  <div className="sd-risk-bar-large">
                     <div 
-                      className="risk-progress-large" 
+                      className="sd-risk-progress-large" 
                       style={{ width: `${reportData.risk.score}%`, backgroundColor: reportData.risk.color }}
                     ></div>
                   </div>
-                  <div className="risk-scale">
+                  <div className="sd-risk-scale">
                     <span>0%</span>
                     <span>25%</span>
                     <span>50%</span>
@@ -1210,10 +1213,10 @@ ${reportData?.disclaimer}
                     <span>100%</span>
                   </div>
                 </div>
-                <p className="risk-description">{reportData.risk.description}</p>
-                <div className="ten-year-risk">
-                  <span className="ten-year-label">10-Year Stroke Risk:</span>
-                  <span className="ten-year-value" style={{ color: reportData.risk.color }}>
+                <p className="sd-risk-description">{reportData.risk.description}</p>
+                <div className="sd-ten-year-risk">
+                  <span className="sd-ten-year-label">10-Year Stroke Risk:</span>
+                  <span className="sd-ten-year-value" style={{ color: reportData.risk.color }}>
                     {reportData.risk.tenYearRisk}%
                   </span>
                 </div>
@@ -1221,36 +1224,36 @@ ${reportData?.disclaimer}
             </div>
 
             {/* Patient Information */}
-            <div className="report-section">
-              <h2 className="report-section-title">Patient Information</h2>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="info-label">Age</span>
-                  <span className="info-value">{reportData.patientInfo.age} years</span>
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Patient Information</h2>
+              <div className="sd-info-grid">
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Age</span>
+                  <span className="sd-info-value">{reportData.patientInfo.age} years</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">Sex</span>
-                  <span className="info-value">{reportData.patientInfo.sex}</span>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Sex</span>
+                  <span className="sd-info-value">{reportData.patientInfo.sex}</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">Ethnicity</span>
-                  <span className="info-value">{reportData.patientInfo.ethnicity}</span>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Ethnicity</span>
+                  <span className="sd-info-value">{reportData.patientInfo.ethnicity}</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">Marital Status</span>
-                  <span className="info-value">{reportData.patientInfo.maritalStatus}</span>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Marital Status</span>
+                  <span className="sd-info-value">{reportData.patientInfo.maritalStatus}</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">Height</span>
-                  <span className="info-value">{reportData.patientInfo.height} cm</span>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Height</span>
+                  <span className="sd-info-value">{reportData.patientInfo.height} cm</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">Weight</span>
-                  <span className="info-value">{reportData.patientInfo.weight} kg</span>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">Weight</span>
+                  <span className="sd-info-value">{reportData.patientInfo.weight} kg</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">BMI</span>
-                  <span className="info-value" style={{ color: reportData.patientInfo.bmiColor }}>
+                <div className="sd-info-item">
+                  <span className="sd-info-label">BMI</span>
+                  <span className="sd-info-value" style={{ color: reportData.patientInfo.bmiColor }}>
                     {reportData.patientInfo.bmi} ({reportData.patientInfo.bmiCategory})
                   </span>
                 </div>
@@ -1258,15 +1261,15 @@ ${reportData?.disclaimer}
             </div>
 
             {/* Vital Signs */}
-            <div className="report-section">
-              <h2 className="report-section-title">Vital Signs</h2>
-              <div className="vitals-grid">
-                <div className="vital-card">
-                  <FaHeartbeat className="vital-icon" style={{ color: '#E63E4E' }} />
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Vital Signs</h2>
+              <div className="sd-vitals-grid">
+                <div className="sd-vital-card">
+                  <FaHeartbeat className="sd-vital-icon" style={{ color: '#E63E4E' }} />
                   <div>
-                    <div className="vital-label">Blood Pressure</div>
-                    <div className="vital-value">{reportData.vitalSigns.bloodPressure}</div>
-                    <div className="vital-status" style={{ 
+                    <div className="sd-vital-label">Blood Pressure</div>
+                    <div className="sd-vital-value">{reportData.vitalSigns.bloodPressure}</div>
+                    <div className="sd-vital-status" style={{ 
                       color: reportData.vitalSigns.bpStatus === 'Normal' ? '#10B981' : 
                              reportData.vitalSigns.bpStatus === 'Borderline' ? '#F59E0B' : '#EF4444'
                     }}>
@@ -1274,12 +1277,12 @@ ${reportData?.disclaimer}
                     </div>
                   </div>
                 </div>
-                <div className="vital-card">
-                  <FaTint className="vital-icon" style={{ color: '#10B981' }} />
+                <div className="sd-vital-card">
+                  <FaTint className="sd-vital-icon" style={{ color: '#10B981' }} />
                   <div>
-                    <div className="vital-label">Blood Glucose</div>
-                    <div className="vital-value">{reportData.vitalSigns.glucose}</div>
-                    <div className="vital-status" style={{ 
+                    <div className="sd-vital-label">Blood Glucose</div>
+                    <div className="sd-vital-value">{reportData.vitalSigns.glucose}</div>
+                    <div className="sd-vital-status" style={{ 
                       color: reportData.vitalSigns.glucose !== 'Not provided' && 
                              parseInt(reportData.vitalSigns.glucose) > 125 ? '#EF4444' : 
                              parseInt(reportData.vitalSigns.glucose) > 100 ? '#F59E0B' : '#10B981'
@@ -1295,20 +1298,20 @@ ${reportData?.disclaimer}
             </div>
 
             {/* Risk Factors */}
-            <div className="report-section">
-              <h2 className="report-section-title">Identified Risk Factors</h2>
-              <div className="risk-factors-list">
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Identified Risk Factors</h2>
+              <div className="sd-risk-factors-list">
                 {reportData.risk.factors.map((factor, index) => (
-                  <div key={index} className="risk-factor-item">
-                    <div className="risk-factor-header">
-                      <span className="risk-factor-name">{factor.factor}</span>
-                      <span className={`risk-factor-impact ${factor.impact}`}>
+                  <div key={index} className="sd-risk-factor-item">
+                    <div className="sd-risk-factor-header">
+                      <span className="sd-risk-factor-name">{factor.factor}</span>
+                      <span className={`sd-risk-factor-impact ${factor.impact === 'high' ? 'sd-high' : factor.impact === 'moderate' ? 'sd-moderate' : 'sd-low'}`}>
                         {factor.impact} • +{factor.points} points
                       </span>
                     </div>
-                    <div className="risk-factor-bar">
+                    <div className="sd-risk-factor-bar">
                       <div 
-                        className="risk-factor-progress"
+                        className="sd-risk-factor-progress"
                         style={{ 
                           width: `${(factor.points / 25) * 100}%`,
                           backgroundColor: factor.impact === 'high' ? '#EF4444' : 
@@ -1322,19 +1325,19 @@ ${reportData?.disclaimer}
             </div>
 
             {/* Recommendations */}
-            <div className="report-section">
-              <h2 className="report-section-title">Personalized Recommendations</h2>
-              <div className="recommendations-grid">
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Personalized Recommendations</h2>
+              <div className="sd-recommendations-grid">
                 {reportData.recommendations.map((rec, index) => (
-                  <div key={index} className="recommendation-card">
-                    <div className="recommendation-header" style={{ color: rec.color }}>
+                  <div key={index} className="sd-recommendation-card">
+                    <div className="sd-recommendation-header" style={{ color: rec.color }}>
                       {rec.icon}
                       <h3>{rec.category}</h3>
                     </div>
-                    <ul className="recommendation-list">
+                    <ul className="sd-recommendation-list">
                       {rec.items.map((item, i) => (
                         <li key={i}>
-                          <FaCheck className="recommendation-check" style={{ color: rec.color }} />
+                          <FaCheck className="sd-recommendation-check" style={{ color: rec.color }} />
                           {item}
                         </li>
                       ))}
@@ -1345,33 +1348,33 @@ ${reportData?.disclaimer}
             </div>
 
             {/* FAST Signs */}
-            <div className="report-section">
-              <h2 className="report-section-title">Stroke Warning Signs (FAST)</h2>
-              <div className="fast-grid">
-                <div className="fast-card">
-                  <div className="fast-letter">F</div>
-                  <div className="fast-content">
+            <div className="sd-report-section">
+              <h2 className="sd-section-heading">Stroke Warning Signs (FAST)</h2>
+              <div className="sd-fast-grid">
+                <div className="sd-fast-card">
+                  <div className="sd-fast-letter">F</div>
+                  <div className="sd-fast-content">
                     <strong>Face Drooping</strong>
                     <p>Does one side of the face droop or is it numb? Ask the person to smile.</p>
                   </div>
                 </div>
-                <div className="fast-card">
-                  <div className="fast-letter">A</div>
-                  <div className="fast-content">
+                <div className="sd-fast-card">
+                  <div className="sd-fast-letter">A</div>
+                  <div className="sd-fast-content">
                     <strong>Arm Weakness</strong>
                     <p>Is one arm weak or numb? Ask the person to raise both arms.</p>
                   </div>
                 </div>
-                <div className="fast-card">
-                  <div className="fast-letter">S</div>
-                  <div className="fast-content">
+                <div className="sd-fast-card">
+                  <div className="sd-fast-letter">S</div>
+                  <div className="sd-fast-content">
                     <strong>Speech Difficulty</strong>
                     <p>Is speech slurred? Ask the person to repeat a simple sentence.</p>
                   </div>
                 </div>
-                <div className="fast-card">
-                  <div className="fast-letter">T</div>
-                  <div className="fast-content">
+                <div className="sd-fast-card">
+                  <div className="sd-fast-letter">T</div>
+                  <div className="sd-fast-content">
                     <strong>Time to Call Emergency</strong>
                     <p>If someone shows any of these symptoms, call 911 immediately.</p>
                   </div>
@@ -1380,13 +1383,13 @@ ${reportData?.disclaimer}
             </div>
 
             {/* Disclaimer */}
-            <div className="report-disclaimer">
+            <div className="sd-report-disclaimer">
               <FaInfoCircle />
               <p>{reportData.disclaimer}</p>
             </div>
 
-            <div className="report-footer">
-              <button className="btn-primary" onClick={() => setShowFullReport(false)}>
+            <div className="sd-report-footer">
+              <button className="sd-btn-primary" onClick={() => setShowFullReport(false)}>
                 Back to Summary
               </button>
             </div>
@@ -1401,58 +1404,61 @@ ${reportData?.disclaimer}
     const risk = reportData || generateReport();
     
     return (
-      <div className="symptom-detector">
-        <div className="results-container">
-          <div className="results-card">
-            <div className="results-icon">
+      <div className="sd-container">
+        <div className="sd-bg-blob sd-blob-1"></div>
+        <div className="sd-bg-blob sd-blob-2"></div>
+        
+        <div className="sd-results-container">
+          <div className="sd-results-card">
+            <div className="sd-results-icon">
               <FaHeartbeat />
             </div>
-            <h1 className="results-title">Analysis Complete</h1>
-            <p className="results-subtitle">
+            <h1 className="sd-results-title">Analysis Complete</h1>
+            <p className="sd-results-subtitle">
               Your symptom analysis has been processed by our AI
             </p>
             
-            <div className="risk-meter">
-              <div className="risk-label">
+            <div className="sd-risk-meter">
+              <div className="sd-risk-label">
                 <span>Stroke Risk Level</span>
-                <span className="risk-value" style={{ color: risk.risk.color }}>{risk.risk.level}</span>
+                <span className="sd-risk-value" style={{ color: risk.risk.color }}>{risk.risk.level}</span>
               </div>
-              <div className="risk-bar">
+              <div className="sd-risk-bar">
                 <div 
-                  className="risk-progress" 
+                  className="sd-risk-progress" 
                   style={{ width: `${risk.risk.score}%`, backgroundColor: risk.risk.color }}
                 ></div>
               </div>
             </div>
             
-            <div className="results-details">
-              <div className="detail-item">
-                <span className="detail-label">BMI</span>
-                <span className="detail-value">{calculateBMI()}</span>
+            <div className="sd-results-details">
+              <div className="sd-detail-item">
+                <span className="sd-detail-label">BMI</span>
+                <span className="sd-detail-value">{calculateBMI()}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Blood Pressure</span>
-                <span className="detail-value">
+              <div className="sd-detail-item">
+                <span className="sd-detail-label">Blood Pressure</span>
+                <span className="sd-detail-value">
                   {formData.systolic && formData.diastolic 
                     ? `${formData.systolic}/${formData.diastolic}`
                     : 'Not provided'}
                 </span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Risk Factors</span>
-                <span className="detail-value">{risk.risk.factors.length} identified</span>
+              <div className="sd-detail-item">
+                <span className="sd-detail-label">Risk Factors</span>
+                <span className="sd-detail-value">{risk.risk.factors.length} identified</span>
               </div>
             </div>
             
-            <div className="risk-summary-text">
+            <div className="sd-risk-summary">
               <p>{risk.risk.description}</p>
             </div>
             
-            <div className="results-actions">
-              <button className="btn-primary" onClick={handleReset}>
-                Start New Assessment
+            <div className="sd-results-actions">
+              <button className="sd-btn-primary" onClick={handleReset}>
+                New Assessment
               </button>
-              <button className="btn-secondary" onClick={handleViewFullReport}>
+              <button className="sd-btn-secondary" onClick={handleViewFullReport}>
                 <FaFileAlt /> View Full Report
               </button>
             </div>
@@ -1464,78 +1470,81 @@ ${reportData?.disclaimer}
 
   // ---------- Main Form View ----------
   return (
-    <div className="symptom-detector">
-      {/* COMPACT HEADER - FIXED VERSION */}
-      <div className="detector-header">
-        <div className="header-content">
-          <div className="section-info-compact">
-            <span className="section-pill">Section {currentSection}/3</span>
-            <span className="section-title-compact">{currentSectionData?.title || 'Loading...'}</span>
+    <div className="sd-container">
+      <div className="sd-bg-blob sd-blob-1"></div>
+      <div className="sd-bg-blob sd-blob-2"></div>
+      
+      {/* COMPACT HEADER */}
+      <div className="sd-header">
+        <div className="sd-header-content">
+          <div className="sd-section-info">
+            <span className="sd-section-pill">Section {currentSection}/3</span>
+            <span className="sd-section-title">{currentSectionData?.title || 'Loading...'}</span>
           </div>
           
-          <div className="progress-compact">
-            <div className="progress-text">
-              <span className="progress-number">{progress}%</span>
+          <div className="sd-progress">
+            <div className="sd-progress-text">
+              <span className="sd-progress-number">{progress}%</span>
             </div>
-            <div className="progress-bar-compact">
-              <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+            <div className="sd-progress-bar">
+              <div className="sd-progress-fill" style={{ width: `${progress}%` }}></div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Question Card */}
-      <div className="question-container">
-        <div className="question-card">
+      <div className="sd-question-container">
+        <div className="sd-question-card">
           <div 
-            className="section-badge"
+            className="sd-section-badge"
             style={{ backgroundColor: `${currentSectionData?.color}15`, color: currentSectionData?.color }}
           >
             {currentSectionData?.icon}
             <span>{currentSectionData?.title}</span>
           </div>
           
-          <div className="question-content">
-            <div className="question-icon-wrapper">
+          <div className="sd-question-content">
+            <div className="sd-icon-wrapper">
               <div 
-                className="question-icon"
+                className="sd-question-icon"
                 style={{ backgroundColor: `${currentSectionData?.color}15`, color: currentSectionData?.color }}
               >
                 {currentQuestionData?.icon}
               </div>
             </div>
             
-            <h2 className="question-text">
+            <h2 className="sd-question-text">
               {currentQuestionData?.label}
             </h2>
             
-            <div className="question-input">
+            <div className="sd-question-input">
               {renderQuestion(currentQuestionData)}
               {renderConditionalField()}
             </div>
           </div>
           
           {/* Navigation */}
-          <div className="navigation-footer">
+          <div className="sd-navigation">
             <button 
-              className={`nav-btn back ${currentSection === 1 && currentStep === 1 ? 'disabled' : ''}`}
+              className={`sd-nav-btn sd-back ${currentSection === 1 && currentStep === 1 ? 'sd-disabled' : ''}`}
               onClick={goToPrevious}
               disabled={currentSection === 1 && currentStep === 1}
             >
               <FaArrowLeft /> Back
             </button>
             
-            <div className="step-indicator">
+            <div className="sd-step-indicator">
               {currentSectionData?.questions.map((_, index) => (
                 <div 
                   key={index}
-                  className={`step-dot ${index + 1 === currentStep ? 'active' : ''} ${index + 1 < currentStep ? 'completed' : ''}`}
+                  className={`sd-step-dot ${index + 1 === currentStep ? 'sd-active' : ''} ${index + 1 < currentStep ? 'sd-completed' : ''}`}
                 />
               ))}
             </div>
             
             <button 
-              className="nav-btn next"
+              className="sd-nav-btn sd-next"
               onClick={goToNext}
               disabled={isSubmitting}
             >
@@ -1548,14 +1557,14 @@ ${reportData?.disclaimer}
 
       {/* Loading Overlay */}
       {isSubmitting && (
-        <div className="loading-overlay">
-          <div className="loading-card">
-            <div className="spinner-large"></div>
-            <h3 className="loading-title">Analyzing Your Health Profile</h3>
-            <p className="loading-subtitle">
+        <div className="sd-loading-overlay">
+          <div className="sd-loading-card">
+            <div className="sd-spinner-large"></div>
+            <h3 className="sd-loading-title">Analyzing Your Health Profile</h3>
+            <p className="sd-loading-subtitle">
               Our AI is processing your responses...
             </p>
-            <div className="loading-dots">
+            <div className="sd-loading-dots">
               <span></span>
               <span></span>
               <span></span>

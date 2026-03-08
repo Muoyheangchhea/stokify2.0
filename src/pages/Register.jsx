@@ -435,7 +435,7 @@ const Register = () => {
             >
               <FaGoogle /> Google
             </button>
-            <button
+            {/* <button
               className="social-btn facebook"
               type="button"
               onClick={handleFacebookSignup}
@@ -450,7 +450,7 @@ const Register = () => {
               disabled={isLoading}
             >
               <FaApple /> Apple
-            </button>
+            </button> */}
           </div>
 
           <div className="divider">

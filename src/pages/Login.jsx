@@ -375,7 +375,7 @@ const Login = () => {
             >
               <FaGoogle /> Google
             </button>
-            <button
+            {/* <button
               className="social-btn facebook"
               type="button"
               onClick={handleFacebookLogin}
@@ -390,7 +390,7 @@ const Login = () => {
               disabled={isLoading}
             >
               <FaApple /> Apple
-            </button>
+            </button> */}
           </div>
 
           <div className="divider">

@@ -74,21 +74,21 @@ const Dashboard = () => {
           <span>New Assessment</span>
           <FaArrowRight className="action-arrow" />
         </Link>
-        <Link to="/caregivers" className="quick-action-card">
+        <Link to="/lifesync" className="quick-action-card">
           <FaHeartbeat className="action-icon" />
           <span>Find Caregiver</span>
           <FaArrowRight className="action-arrow" />
         </Link>
-        <Link to="/family/add" className="quick-action-card">
+        <Link to="/family-accounts" className="quick-action-card">
           <FaUsers className="action-icon" />
           <span>Add Family Member</span>
           <FaArrowRight className="action-arrow" />
         </Link>
-        <Link to="/appointments" className="quick-action-card">
+        {/* <Link to="/appointments" className="quick-action-card">
           <FaCalendar className="action-icon" />
           <span>Schedule</span>
           <FaArrowRight className="action-arrow" />
-        </Link>
+        </Link> */}
       </div>
 
       {/* Stats Grid */}

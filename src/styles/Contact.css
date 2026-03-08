@@ -5,7 +5,7 @@
    • No broken UI on any screen
    • Perfect spacing
    ============================================ */
-
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap");
 .contact-page {
   padding-top: 0px;
   overflow-x: hidden;
@@ -65,7 +65,7 @@
 }
 
 .hero-subtitle {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: clamp(0.95rem, 3vw, 1.1rem);
   line-height: 1.6;
   max-width: 600px;
@@ -928,3 +928,4 @@
     display: none;
   }
 }
+

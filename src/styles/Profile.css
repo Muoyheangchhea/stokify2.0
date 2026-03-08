@@ -34,7 +34,7 @@ body {
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-crimson: 0 12px 40px -8px rgba(214, 52, 72, 0.35);
-  --font: "DM Sans", system-ui, sans-serif;
+  --font: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --mono: "DM Mono", monospace;
   --sidebar-w: 300px;
 }

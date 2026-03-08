@@ -103,13 +103,13 @@ const B = {
 
 // ─── Helper to get first name ───
 const getFirstName = (fullName) => {
-  if (!fullName) return "there";
+  if (!fullName) return "User";
   return fullName.split(" ")[0];
 };
 
 export default function HealthAdvisor() {
   const { user } = useAuth();
-  const userName = user?.name || "there";
+  const userName = user?.name || "User";
   const firstName = getFirstName(userName);
 
   // User data - in a real app, this would come from your API/context
@@ -414,7 +414,7 @@ export default function HealthAdvisor() {
       style={{
         minHeight: "100vh",
         background: B.gray50,
-        fontFamily: "'DM Sans','Helvetica Neue',sans-serif",
+        fontFamily: "'DM Sans',-apple-system, BlinkMacSystemFont, sans-serif",
         color: B.gray900,
         paddingBottom: "80px",
       }}
@@ -469,7 +469,7 @@ export default function HealthAdvisor() {
             </h1>
             <p
               style={{
-                fontSize: "0.85rem",
+                fontSize: "0.9rem",
                 color: B.gray400,
                 marginTop: "6px",
                 fontWeight: "400",

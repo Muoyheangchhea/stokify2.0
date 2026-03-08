@@ -84,7 +84,7 @@ const Navbar = ({ scrolled }) => {
     { to: "/dashboard", icon: <FaChartLine />, text: "Dashboard" },
     { to: "/profile", icon: <FaUser />, text: "My Profile" },
     { to: "/family-accounts", icon: <FaUsers />, text: "Family" },
-    { to: "/appointments", icon: <FaCalendar />, text: "Appointments" },
+    // { to: "/appointments", icon: <FaCalendar />, text: "Appointments" },
   ];
 
   const quickActions = [
