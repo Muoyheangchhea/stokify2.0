@@ -6,6 +6,7 @@
    • Premium gradients
    • Micro-interactions
    • Modern typography
+   • MOBILE-FIRST RESPONSIVE
    ============================================ */
 
 * {
@@ -21,6 +22,7 @@
   background: white;
 }
 
+<<<<<<< Updated upstream
 /* ========== HERO SECTION - MODERN 3D ========== */
 .home-hero {
   min-height: 100vh;
@@ -28,27 +30,47 @@
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   padding: 2rem 4rem 4rem;
+=======
+/* ========== HERO SECTION - MOBILE FIRST ========== */
+.home-page-hero {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 7rem 1.25rem 3rem;
+>>>>>>> Stashed changes
   max-width: 1400px;
   margin: 0 auto;
   align-items: center;
   position: relative;
   isolation: isolate;
+  text-align: center;
 }
 
 /* Animated background orbs */
 .home-hero::before {
   content: '';
   position: absolute;
-  width: 60vmax;
-  height: 60vmax;
+  width: 80vmax;
+  height: 80vmax;
   top: -20%;
+<<<<<<< Updated upstream
   right: -20%;
   background: radial-gradient(circle at 30% 30%, 
     rgba(230, 62, 78, 0.15) 0%, 
     rgba(255, 107, 122, 0.05) 40%, 
     transparent 70%);
+=======
+  right: -30%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(230, 62, 78, 0.12) 0%,
+    rgba(255, 107, 122, 0.04) 40%,
+    transparent 70%
+  );
+>>>>>>> Stashed changes
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(60px);
   z-index: -1;
   animation: float 20s ease-in-out infinite;
 }
@@ -56,20 +78,31 @@
 .home-hero::after {
   content: '';
   position: absolute;
-  width: 50vmax;
-  height: 50vmax;
+  width: 60vmax;
+  height: 60vmax;
   bottom: -20%;
+<<<<<<< Updated upstream
   left: -20%;
   background: radial-gradient(circle at 70% 70%,
     rgba(255, 229, 232, 0.2) 0%,
     rgba(230, 62, 78, 0.05) 40%,
     transparent 70%);
+=======
+  left: -30%;
+  background: radial-gradient(
+    circle at 70% 70%,
+    rgba(255, 229, 232, 0.2) 0%,
+    rgba(230, 62, 78, 0.04) 40%,
+    transparent 70%
+  );
+>>>>>>> Stashed changes
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(60px);
   z-index: -1;
   animation: float 25s ease-in-out reverse infinite;
 }
 
+<<<<<<< Updated upstream
 @keyframes float {
   0%, 100% { transform: translate(0, 0) scale(1); }
   50% { transform: translate(-5%, 5%) scale(1.05); }
@@ -107,11 +140,35 @@
 /* Gradient text effect */
 .home-hero-content h1 span {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+=======
+@keyframes homePageFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5%, 5%) scale(1.05); }
+}
+
+/* ========== PREMIUM STACKED HEADLINE ========== */
+.home-page-hero-content h1 {
+  font-family: "DM Sans", sans-serif;
+  /* clamp ensures it stays large on desktop but fits on mobile */
+  font-size: clamp(2.8rem, 9vw, 5rem); 
+  font-weight: 800;
+  letter-spacing: -0.05em; /* Tighter tracking for a high-end look */
+  line-height: 1.0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  
+  /* Metallic Gradient Effect */
+  background: linear-gradient(180deg, #111827 30%, #6b7280 100%);
+>>>>>>> Stashed changes
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  
+  /* Subtle drop shadow to make text pop against background orbs */
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.05));
 }
 
+<<<<<<< Updated upstream
 /* Animated underline */
 .home-hero-content h1::after {
   content: '';
@@ -133,18 +190,39 @@
 
 .home-hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.3rem);
+=======
+/* Adjust for desktop alignment if your hero is side-by-side */
+@media (min-width: 1024px) {
+  .home-page-hero-content h1 {
+    text-align: left;
+  }
+}
+
+.home-page-hero-subtitle {
+  font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+>>>>>>> Stashed changes
   color: var(--gray-600);
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   line-height: 1.7;
   max-width: 90%;
+<<<<<<< Updated upstream
   animation: fadeIn 1s ease-out 0.3s both;
 }
 
 @keyframes fadeIn {
+=======
+  margin-left: auto;
+  margin-right: auto;
+  animation: homePageFadeIn 1s ease-out 0.3s both;
+}
+
+@keyframes homePageFadeIn {
+>>>>>>> Stashed changes
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+<<<<<<< Updated upstream
 /* Premium Button Group */
 .home-hero-buttons {
   display: flex;
@@ -163,17 +241,38 @@
     opacity: 1;
     transform: translateY(0);
   }
+=======
+/* Button Group — stacked on mobile */
+.home-page-hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  animation: homePageSlideInUp 1s ease-out 0.5s both;
+  width: 100%;
+}
+
+@keyframes homePageSlideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+>>>>>>> Stashed changes
 }
 
 .btn-primary,
 .btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
-  padding: 1rem 2rem;
+  padding: 0.9rem 1.75rem;
   border-radius: 60px;
+<<<<<<< Updated upstream
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 1rem;
+=======
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+>>>>>>> Stashed changes
   font-weight: 600;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -182,9 +281,14 @@
   position: relative;
   overflow: hidden;
   z-index: 1;
+  width: 100%;
 }
 
+<<<<<<< Updated upstream
 .btn-primary {
+=======
+.home-page-btn-primary {
+>>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: white;
   box-shadow: var(--shadow-primary);
@@ -197,11 +301,16 @@
   left: -100%;
   width: 100%;
   height: 100%;
+<<<<<<< Updated upstream
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+=======
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+>>>>>>> Stashed changes
   transition: left 0.5s ease;
   z-index: -1;
 }
 
+<<<<<<< Updated upstream
 .btn-primary:hover::before {
   left: 100%;
 }
@@ -209,23 +318,30 @@
 .btn-primary:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 25px 35px -12px rgba(230, 62, 78, 0.4);
+=======
+.home-page-btn-primary:hover::before { left: 100%; }
+.home-page-btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 30px -10px rgba(230, 62, 78, 0.4);
+>>>>>>> Stashed changes
 }
 
 .btn-secondary {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   color: var(--primary);
-  border: 1px solid rgba(230, 62, 78, 0.2);
-  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid rgba(230, 62, 78, 0.25);
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.06);
 }
 
 .btn-secondary:hover {
   background: white;
   border-color: var(--primary);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 30px -10px rgba(230, 62, 78, 0.15);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 24px -8px rgba(230, 62, 78, 0.15);
 }
 
+<<<<<<< Updated upstream
 .btn-large {
   padding: 1.2rem 2.5rem;
   font-size: 1.1rem;
@@ -240,10 +356,34 @@
 }
 
 .home-hero-stat {
+=======
+.home-page-btn-large {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* Stat Pills — horizontal scroll on mobile */
+.home-page-hero-stats {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  width: 100%;
+  justify-content: center;
+  animation: homePageSlideInUp 1s ease-out 0.7s both;
+}
+
+.home-page-hero-stats::-webkit-scrollbar { display: none; }
+
+.home-page-hero-stat {
+>>>>>>> Stashed changes
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1.5rem;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
@@ -252,36 +392,53 @@
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .home-hero-stat::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
+<<<<<<< Updated upstream
 .home-hero-stat:hover {
   transform: translateY(-4px) scale(1.02);
+=======
+.home-page-hero-stat:hover {
+  transform: translateY(-3px) scale(1.02);
+>>>>>>> Stashed changes
   background: white;
   border-color: var(--primary);
   box-shadow: var(--shadow-primary);
 }
 
+<<<<<<< Updated upstream
 .home-hero-stat:hover::before {
   opacity: 1;
 }
 
 .home-stat-icon {
   font-size: 1.4rem;
+=======
+.home-page-hero-stat:hover::before { opacity: 1; }
+
+.home-page-stat-icon {
+  font-size: 1.1rem;
+>>>>>>> Stashed changes
   color: var(--primary);
   background: white;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 50%;
-  box-shadow: 0 5px 15px rgba(230, 62, 78, 0.15);
+  box-shadow: 0 4px 10px rgba(230, 62, 78, 0.15);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-hero-stat:hover .home-stat-icon {
@@ -290,22 +447,39 @@
   color: white;
 }
 
+<<<<<<< Updated upstream
 .home-stat-value {
   font-size: 1.3rem;
+=======
+.home-page-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page-stat-value {
+  font-size: 1.1rem;
+>>>>>>> Stashed changes
   font-weight: 800;
   color: var(--gray-900);
   line-height: 1;
   font-family: 'Cal Sans', sans-serif;
 }
 
+<<<<<<< Updated upstream
 .home-stat-label {
   font-size: 0.7rem;
+=======
+.home-page-stat-label {
+  font-size: 0.62rem;
+>>>>>>> Stashed changes
   font-weight: 600;
   color: var(--gray-600);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
+  margin-top: 2px;
 }
 
+<<<<<<< Updated upstream
 /* Hero Visual - 3D Morphing Shape */
 .hero-placeholder {
   width: 100%;
@@ -356,11 +530,82 @@
   max-width: 300px;
   filter: brightness(0) invert(1);
   animation: pulse 3s ease-in-out infinite;
-  display: block;
+=======
+/* ========== HERO IMAGE — Premium Phone Mockup ========== */
+.home-page-hero-image {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
   position: relative;
-  z-index: 2;
+  perspective: 2000px; 
+  flex-shrink: 0;
+  z-index: 10;
 }
 
+.home-page-phone-shell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.5;
+  background: #080808; /* Deep black for the screen bezel */
+  border-radius: 50px;
+  padding: 10px; 
+  
+  /* THE 3D ANGLE */
+  transform: rotateY(-22deg) rotateX(6deg) rotateZ(1deg);
+  transform-style: preserve-3d;
+  
+  /* THE "REALISTIC THICKNESS" STACK 
+     We use a long string of shadows to build a 12px metal wall */
+  box-shadow: 
+    1px 0px 0px #d1d1d6,
+    2px 0px 0px #c7c7cc,
+    3px 0px 0px #b0b0b5,
+    4px 0px 0px #a1a1a6,
+    5px 0px 0px #919196,
+    6px 0px 0px #8e8e93,
+    7px 0px 0.5px #848489,
+    8px 0px 1px #7a7a7f,
+    9px 0px 1.5px #6b6b70,
+    10px 0px 2px #5a5a5f,
+    11px 0px 2.5px #4a4a4f,
+    12px 0px 3px #3a3a3f,
+    /* Soft environmental shadows */
+    25px 35px 70px rgba(0,0,0,0.35),
+    10px 15px 30px rgba(230, 62, 78, 0.1); 
+    
+  transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: homePageFloatImg 6s ease-in-out infinite;
+}
+
+@keyframes homePageFloatImg {
+  0%, 100% { transform: rotateY(-22deg) rotateX(6deg) translateY(0px); }
+  50%       { transform: rotateY(-20deg) rotateX(5deg) translateY(-20px); }
+}
+
+/* Inner Screen Container */
+.home-page-hero-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fdf0f2; 
+  border-radius: 40px; /* Matching the outer shell curve */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* This adds a slight "recessed" look to the glass */
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+}
+
+.home-page-hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+>>>>>>> Stashed changes
+  display: block;
+}
+
+<<<<<<< Updated upstream
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(1.05); opacity: 1; }
@@ -389,16 +634,23 @@
 
 .section-header h2::after {
   content: '';
+=======
+/* The Dynamic Island */
+.home-page-hero-placeholder::before {
+  content: "";
+>>>>>>> Stashed changes
   position: absolute;
-  bottom: -0.5rem;
+  top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-light));
-  border-radius: 100px;
+  width: 30%;
+  height: 22px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 20;
 }
 
+<<<<<<< Updated upstream
 .section-header p {
   font-size: 1.1rem;
   color: var(--gray-600);
@@ -408,6 +660,45 @@
 /* ========== FEATURES SECTION - 3D CARDS ========== */
 .features {
   padding: 6rem 2rem;
+=======
+/* Realistic Brushed Metal Side Buttons */
+.home-page-phone-shell::after {
+  content: "";
+  position: absolute;
+  right: -13px; /* Moved further out because the phone is thicker now */
+  top: 25%;
+  width: 5px;
+  height: 14%;
+  background: linear-gradient(to bottom, #e5e5e7, #8e8e93);
+  border-radius: 0 5px 5px 0;
+  box-shadow: 0 70px 0 -1px #a1a1a6; /* Volume/Action Button */
+  transform: translateZ(5px); /* Keeps buttons on top of the 3D stack */
+}
+
+/* Floor Shadow (Matches the weight of the phone) */
+.home-page-hero-image::before {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 25px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 80%);
+  filter: blur(12px);
+  z-index: -1;
+  animation: homePageShadowPulse 6s ease-in-out infinite;
+}
+
+@keyframes homePageShadowPulse {
+  0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1.1); }
+  50%       { opacity: 0.5; transform: translateX(-50%) scale(0.9); }
+}
+
+/* ========== FEATURES SECTION ========== */
+.home-page-features {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
   position: relative;
   overflow: hidden;
@@ -425,8 +716,8 @@
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
@@ -435,8 +726,8 @@
 
 .feature-card {
   background: white;
-  padding: 2.5rem 2rem;
-  border-radius: 32px;
+  padding: 1.75rem 1.5rem;
+  border-radius: 24px;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--gray-200);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -460,12 +751,18 @@
   transform-origin: left;
 }
 
+<<<<<<< Updated upstream
 .feature-card:hover {
   transform: translateY(-10px) scale(1.02);
+=======
+.home-page-feature-card:hover {
+  transform: translateY(-8px) scale(1.01);
+>>>>>>> Stashed changes
   border-color: var(--primary);
   box-shadow: var(--shadow-2xl), var(--shadow-primary);
 }
 
+<<<<<<< Updated upstream
 .feature-card:hover::before {
   transform: scaleX(1);
 }
@@ -476,45 +773,65 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   padding: 1rem;
   border-radius: 20px;
+=======
+.home-page-feature-card:hover::before { transform: scaleX(1); }
+
+.home-page-feature-icon {
+  font-size: 1.8rem;
+  color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 0.85rem;
+  border-radius: 16px;
+>>>>>>> Stashed changes
   display: inline-block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   width: fit-content;
-  box-shadow: 0 10px 20px -5px rgba(230, 62, 78, 0.3);
+  box-shadow: 0 8px 16px -4px rgba(230, 62, 78, 0.3);
   transition: all 0.3s ease;
+  line-height: 1;
 }
 
 .feature-card:hover .feature-icon {
   transform: scale(1.1) rotate(5deg);
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
+<<<<<<< Updated upstream
 .feature-card h3 {
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--gray-900);
   margin-bottom: 1rem;
   font-family: 'Cal Sans', sans-serif;
+=======
+.home-page-feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.6rem;
+  font-family: "Cal Sans", sans-serif;
+>>>>>>> Stashed changes
 }
 
 .feature-card p {
   color: var(--gray-600);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
   flex-grow: 1;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .feature-benefits {
   list-style: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .feature-benefits li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
   color: var(--gray-700);
 }
 
@@ -523,14 +840,20 @@
   color: white;
   font-weight: bold;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+<<<<<<< Updated upstream
   width: 20px;
   height: 20px;
+=======
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+>>>>>>> Stashed changes
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 0.7rem;
-  box-shadow: 0 5px 10px rgba(230, 62, 78, 0.2);
+  font-size: 0.6rem;
+  box-shadow: 0 4px 8px rgba(230, 62, 78, 0.2);
 }
 
 .feature-link {
@@ -540,12 +863,14 @@
   color: var(--primary);
   text-decoration: none;
   font-weight: 700;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   margin-top: auto;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
   border-bottom: 2px solid transparent;
 }
 
+<<<<<<< Updated upstream
 .feature-link:hover {
   gap: 1rem;
   border-bottom-color: var(--primary);
@@ -554,6 +879,16 @@
 /* ========== RISK ASSESSMENT - GLASS CARDS ========== */
 .risk-assessment-section {
   padding: 6rem 2rem;
+=======
+.home-page-feature-link:hover {
+  gap: 0.85rem;
+  border-bottom-color: var(--primary);
+}
+
+/* ========== RISK ASSESSMENT ========== */
+.home-page-risk-section {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
   background: white;
   position: relative;
   overflow: hidden;
@@ -571,29 +906,133 @@
 
 .risk-flow {
   display: flex;
-  align-items: stretch;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1rem;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
 }
 
+<<<<<<< Updated upstream
 .risk-node {
   flex: 1;
   min-width: 280px;
+=======
+/* ========== SECTION HEADERS (shared) ========== */
+.home-page-section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+  animation: homePageFadeIn 0.8s ease-out both;
+}
+
+/* Eyebrow label — small pill above the title */
+.home-page-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: rgba(230, 62, 78, 0.08);
+  border: 1px solid rgba(230, 62, 78, 0.18);
+  border-radius: 100px;
+  padding: 0.35rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.home-page-section-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: homePagePulseDot 2s ease-in-out infinite;
+}
+
+@keyframes homePagePulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* Main title */
+.home-page-section-header h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(1.75rem, 5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 0.85rem;
+
+  /* Matches the hero's metallic gradient */
+  background: linear-gradient(180deg, #111827 30%, #6b7280 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.04));
+}
+
+/* Underline accent */
+.home-page-section-header h2::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  margin: 0.6rem auto 0;
+  transition: width 0.4s ease;
+}
+
+.home-page-section-header:hover h2::after {
+  width: 70px;
+}
+
+/* Subtitle */
+.home-page-section-header p {
+  font-size: clamp(0.9rem, 3vw, 1.05rem);
+  color: var(--gray-600);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ===== Desktop overrides ===== */
+@media (min-width: 1024px) {
+  .home-page-section-header {
+    margin-bottom: 4rem;
+  }
+
+  .home-page-section-header h2::after {
+    width: 60px;
+    height: 4px;
+  }
+}
+
+/* ========== RISK NODE ========== */
+.home-page-risk-node {
+  width: 100%;
+>>>>>>> Stashed changes
   background: white;
-  padding: 2rem;
-  border-radius: 28px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 1.75rem 1.5rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
   border: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-md);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
 }
 
+<<<<<<< Updated upstream
 .risk-node:hover {
   transform: translateY(-8px) scale(1.02);
   border-color: var(--primary);
@@ -603,39 +1042,103 @@
 .risk-node-icon {
   font-size: 2.2rem;
   margin-bottom: 1rem;
+=======
+.home-page-risk-node::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+
+.home-page-risk-node:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
+.home-page-risk-node:hover::before { transform: scaleX(1); }
+
+/* ── LOW — green ── */
+.home-page-risk-node--low .home-page-risk-node-icon {
+  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  box-shadow: 0 8px 16px -4px rgba(34, 197, 94, 0.3);
+}
+.home-page-risk-node--low::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.home-page-risk-node--low:hover { border-color: #22c55e; box-shadow: var(--shadow-2xl), 0 16px 32px -12px rgba(34, 197, 94, 0.25); }
+.home-page-risk-node--low .home-page-risk-actions li::before { background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); box-shadow: 0 4px 8px rgba(34, 197, 94, 0.2); }
+
+/* ── MODERATE — orange ── */
+.home-page-risk-node--moderate .home-page-risk-node-icon {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  box-shadow: 0 8px 16px -4px rgba(249, 115, 22, 0.3);
+}
+.home-page-risk-node--moderate::before { background: linear-gradient(90deg, #f97316, #fb923c); }
+.home-page-risk-node--moderate:hover { border-color: #f97316; box-shadow: var(--shadow-2xl), 0 16px 32px -12px rgba(249, 115, 22, 0.25); }
+.home-page-risk-node--moderate .home-page-risk-actions li::before { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); box-shadow: 0 4px 8px rgba(249, 115, 22, 0.2); }
+
+/* ── HIGH — red ── */
+.home-page-risk-node--high .home-page-risk-node-icon {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  box-shadow: 0 8px 16px -4px rgba(220, 38, 38, 0.3);
+}
+.home-page-risk-node--high::before { background: linear-gradient(90deg, #dc2626, #ef4444); }
+.home-page-risk-node--high:hover { border-color: #dc2626; box-shadow: var(--shadow-2xl), 0 16px 32px -12px rgba(220, 38, 38, 0.25); }
+.home-page-risk-node--high .home-page-risk-actions li::before { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2); }
+
+.home-page-risk-node-icon {
+  font-size: 1.8rem;
+  color: white;
+  padding: 0.85rem;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  width: fit-content;
+>>>>>>> Stashed changes
   transition: all 0.3s ease;
+  line-height: 1;
 }
 
 .risk-node:hover .risk-node-icon {
   transform: scale(1.1) rotate(5deg);
+  border-radius: 12px;
 }
 
+<<<<<<< Updated upstream
 .risk-node h4 {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--gray-900);
   margin-bottom: 1rem;
   font-family: 'Cal Sans', sans-serif;
+=======
+.home-page-risk-node h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.75rem;
+  font-family: "Cal Sans", sans-serif;
+>>>>>>> Stashed changes
 }
 
 .risk-actions {
   list-style: none;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .risk-actions li {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-  padding: 0.6rem 1rem;
-  border-radius: 12px;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
   font-size: 0.9rem;
   color: var(--gray-700);
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
 }
 
+<<<<<<< Updated upstream
 .risk-actions li:hover {
   background: white;
   border-color: var(--gray-200);
@@ -660,6 +1163,42 @@
 /* ========== FAMILY PREVIEW - PREMIUM ========== */
 .family-care-section {
   padding: 6rem 2rem;
+=======
+.home-page-risk-actions li::before {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* Flow arrow — hidden between cards on mobile, shown as divider */
+.home-page-flow-arrow {
+  font-size: 1.4rem;
+  color: var(--gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(90deg);
+  animation: homePagePulseArrow 2s ease-in-out infinite;
+}
+
+@keyframes homePagePulseArrow {
+  0%, 100% { opacity: 0.4; transform: rotate(90deg) scale(1); }
+  50% { opacity: 1; transform: rotate(90deg) scale(1.2); color: var(--primary-light); }
+}
+
+/* ========== FAMILY PREVIEW ========== */
+.home-page-family-section {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
   position: relative;
   overflow: hidden;
@@ -667,16 +1206,18 @@
 
 .family-preview {
   background: white;
-  padding: 3rem;
-  border-radius: 40px;
+  padding: 2rem 1.5rem;
+  border-radius: 28px;
   border: 1px solid var(--gray-200);
   box-shadow: var(--shadow-xl);
   max-width: 1200px;
   margin: 0 auto;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 4rem;
+  gap: 1.5rem;
+  text-align: center;
   position: relative;
   overflow: hidden;
 }
@@ -686,6 +1227,7 @@
   position: absolute;
   top: -50%;
   right: -20%;
+<<<<<<< Updated upstream
   width: 300px;
   height: 300px;
   background: radial-gradient(circle, rgba(230, 62, 78, 0.1) 0%, transparent 70%);
@@ -704,20 +1246,40 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   padding: 1.5rem;
   border-radius: 30px;
+=======
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(230, 62, 78, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.home-page-family-preview:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-2xl), 0 20px 30px -15px rgba(230, 62, 78, 0.2);
+}
+
+.home-page-family-preview-icon {
+  font-size: 2rem;
+  color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 1.25rem;
+  border-radius: 24px;
+>>>>>>> Stashed changes
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: fit-content;
   flex-shrink: 0;
   transition: all 0.4s ease;
-  box-shadow: 0 15px 25px -8px rgba(230, 62, 78, 0.3);
+  box-shadow: 0 10px 20px -6px rgba(230, 62, 78, 0.3);
 }
 
 .family-preview:hover .family-preview-icon {
   transform: scale(1.1) rotate(5deg);
-  border-radius: 24px;
+  border-radius: 18px;
 }
 
+<<<<<<< Updated upstream
 .family-preview-content {
   flex: 1;
   position: relative;
@@ -730,31 +1292,42 @@
   color: var(--gray-900);
   margin-bottom: 1rem;
   font-family: 'Cal Sans', sans-serif;
+=======
+.home-page-family-preview-content { width: 100%; }
+
+.home-page-family-preview-content h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.75rem;
+  font-family: "Cal Sans", sans-serif;
+>>>>>>> Stashed changes
 }
 
 .family-preview-content p {
   color: var(--gray-600);
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 
 .family-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  color: var(--primary);
+  gap: 0.6rem;
+  color: white;
   text-decoration: none;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
-  padding: 0.8rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 50px;
-  background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+  background: var(--primary);
   border: 1px solid rgba(230, 62, 78, 0.2);
   box-shadow: var(--shadow-sm);
 }
 
+<<<<<<< Updated upstream
 .family-link:hover {
   gap: 1.25rem;
   background: var(--primary);
@@ -766,6 +1339,19 @@
 /* ========== CTA SECTION - CINEMATIC ========== */
 .home-cta {
   padding: 6rem 2rem;
+=======
+.home-page-family-link:hover {
+  gap: 1rem;
+  color: var(--primary);
+  background: var(--gray-50);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== CTA SECTION ========== */
+.home-page-cta {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   text-align: center;
@@ -780,11 +1366,19 @@
   left: -20%;
   width: 140%;
   height: 200%;
+<<<<<<< Updated upstream
   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
   animation: rotate 30s linear infinite;
 }
 
 @keyframes rotate {
+=======
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+  animation: homePageRotate 30s linear infinite;
+}
+
+@keyframes homePageRotate {
+>>>>>>> Stashed changes
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
@@ -792,53 +1386,70 @@
 .home-cta-content {
   max-width: 700px;
   margin: 0 auto;
-  padding: 0 1rem;
   position: relative;
   z-index: 2;
 }
 
+<<<<<<< Updated upstream
 .home-cta-content h2 {
   font-family: 'Cal Sans', sans-serif;
   font-size: clamp(2.2rem, 4vw, 2.8rem);
+=======
+.home-page-cta-content h2 {
+  font-family: "Cal Sans", sans-serif;
+  font-size: clamp(1.7rem, 6vw, 2.8rem);
+>>>>>>> Stashed changes
   font-weight: 700;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
 }
 
+<<<<<<< Updated upstream
 .home-cta-content p {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 2.5rem;
+=======
+.home-page-cta-content p {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 2rem;
+>>>>>>> Stashed changes
   line-height: 1.7;
 }
 
 .home-cta-buttons {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .home-cta-buttons .btn-primary {
   background: white;
   color: var(--primary);
-  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 24px -8px rgba(0, 0, 0, 0.2);
 }
 
 .home-cta-buttons .btn-primary:hover {
   background: var(--gray-50);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 30px 40px -12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 24px 32px -10px rgba(0, 0, 0, 0.25);
 }
 
+<<<<<<< Updated upstream
 .home-cta-buttons .btn-secondary {
   background: rgba(255, 255, 255, 0.15);
+=======
+.home-page-cta-buttons .home-page-btn-secondary {
+  background: rgba(255,255,255,0.15);
+>>>>>>> Stashed changes
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(255,255,255,0.3);
   backdrop-filter: blur(10px);
 }
 
+<<<<<<< Updated upstream
 .home-cta-buttons .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-4px) scale(1.02);
@@ -883,6 +1494,32 @@
 
   .home-hero-stats {
     justify-content: center;
+=======
+.home-page-cta-buttons .home-page-btn-secondary:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ========== TABLET — 640px+ ========== */
+@media (min-width: 640px) {
+  .home-page-hero {
+    padding: 7.5rem 2rem 3.5rem;
+  }
+
+  .home-page-hero-image {
+    max-width: 380px;
+  }
+
+  .home-page-hero-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .home-page-btn-primary,
+  .home-page-btn-secondary {
+    width: auto;
+>>>>>>> Stashed changes
   }
 
   .features-grid {
@@ -890,6 +1527,7 @@
     gap: 1.5rem;
   }
 
+<<<<<<< Updated upstream
   .risk-flow {
     flex-direction: column;
   }
@@ -1032,10 +1670,158 @@
 
   .family-preview-content p {
     font-size: 0.9rem;
+=======
+  .home-page-risk-flow {
+    gap: 1.25rem;
+  }
+
+  .home-page-family-preview {
+    flex-direction: row;
+    text-align: left;
+    padding: 2.5rem;
+    gap: 2rem;
+  }
+
+  .home-page-cta-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .home-page-cta-buttons .home-page-btn-primary,
+  .home-page-cta-buttons .home-page-btn-secondary {
+    width: auto;
   }
 }
 
-/* Print Styles */
+/* ========== DESKTOP — 1024px+ ========== */
+@media (min-width: 1024px) {
+  .home-page-hero {
+    flex-direction: row;
+    min-height: 100vh;
+    padding: 5rem 4rem 4rem;
+    text-align: left;
+    gap: 4rem;
+  }
+
+  .home-page-hero-content h1::after {
+    left: 0;
+    transform: none;
+  }
+
+  .home-page-hero-subtitle {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .home-page-hero-buttons {
+    justify-content: flex-start;
+  }
+
+  .home-page-hero-stats {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .home-page-hero-image {
+    max-width: 280px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .home-page-features {
+    padding: 6rem 2rem;
+  }
+
+  .home-page-features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .home-page-feature-card {
+    padding: 2.5rem 2rem;
+    border-radius: 32px;
+  }
+
+  .home-page-feature-icon {
+    font-size: 2.2rem;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-page-feature-card h3 { font-size: 1.4rem; }
+  .home-page-feature-card p { font-size: 0.95rem; }
+
+  .home-page-risk-section {
+    padding: 6rem 2rem;
+  }
+
+  .home-page-risk-flow {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2rem;
+  }
+
+  .home-page-flow-arrow {
+    transform: rotate(0deg);
+    flex-shrink: 0;
+  }
+
+  @keyframes homePagePulseArrow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); color: var(--primary-light); }
+  }
+
+  .home-page-risk-node {
+    flex: 1;
+    min-width: 260px;
+    padding: 2.5rem 2rem;
+    border-radius: 32px;
+  }
+
+  .home-page-risk-node-icon {
+    font-size: 2.2rem;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-page-risk-node h4 { font-size: 1.4rem; }
+  .home-page-risk-actions li { font-size: 0.95rem; }
+
+  .home-page-family-section { padding: 6rem 2rem; }
+
+  .home-page-family-preview {
+    padding: 3rem;
+    gap: 4rem;
+    border-radius: 40px;
+  }
+
+  .home-page-family-preview-icon {
+    font-size: 3rem;
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+
+  .home-page-family-preview-content h4 { font-size: 1.8rem; }
+  .home-page-family-preview-content p { font-size: 1rem; }
+
+  .home-page-cta { padding: 6rem 2rem; }
+
+  .home-page-section-header { margin-bottom: 4rem; }
+  .home-page-section-header h2::after { width: 60px; height: 4px; }
+}
+
+/* ========== WIDE DESKTOP — 1280px+ ========== */
+@media (min-width: 1280px) {
+  .home-page-hero {
+    padding: 5rem 5rem 4rem;
+>>>>>>> Stashed changes
+  }
+}
+
+/* ========== Print ========== */
 @media print {
   .home-hero,
   .features,

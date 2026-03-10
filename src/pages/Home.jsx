@@ -30,8 +30,12 @@ const Home = () => {
     {
       level: 'Low Risk',
       icon: <FaCheckCircle />,
+<<<<<<< Updated upstream
       color: '#10B981',
       bg: 'rgba(16, 185, 129, 0.1)',
+=======
+      modifier: "home-page-risk-node--low",
+>>>>>>> Stashed changes
       actions: [
         'Health Advisor recommendations',
         'LifeSync daily tasks',
@@ -41,8 +45,12 @@ const Home = () => {
     {
       level: 'Moderate Risk',
       icon: <FaExclamation />,
+<<<<<<< Updated upstream
       color: '#F59E0B',
       bg: 'rgba(245, 158, 11, 0.1)',
+=======
+      modifier: "home-page-risk-node--moderate",
+>>>>>>> Stashed changes
       actions: [
         'Share report with caregiver',
         'Schedule check-up',
@@ -52,8 +60,12 @@ const Home = () => {
     {
       level: 'High Risk',
       icon: <FaExclamationTriangle />,
+<<<<<<< Updated upstream
       color: '#EF4444',
       bg: 'rgba(239, 68, 68, 0.1)',
+=======
+      modifier: "home-page-risk-node--high",
+>>>>>>> Stashed changes
       actions: [
         'F.A.S.T. stroke test',
         'Emergency guidance',
@@ -120,9 +132,23 @@ const Home = () => {
           </div>
         </div>
 
+<<<<<<< Updated upstream
         <div className="home-hero-image">
           <div className="hero-placeholder animate-float">
             <img src={logo} alt="Strokify Logo" className="hero-logo" />
+=======
+        <div className="home-page-hero-image">
+          <div className="home-page-phone-shell">
+            <div className="home-page-hero-placeholder">
+              <img
+                src={logo}
+                alt="Strokify App"
+                className="home-page-hero-logo"
+              />
+              <div className="home-page-phone-speaker" />
+              <div className="home-page-phone-notch" />
+            </div>
+>>>>>>> Stashed changes
           </div>
         </div>
       </section>
@@ -163,6 +189,7 @@ const Home = () => {
         <div className="risk-flow">
           {riskLevels.map((risk, index) => (
             <React.Fragment key={index}>
+<<<<<<< Updated upstream
               <div className="risk-node" style={{ backgroundColor: risk.bg }}>
                 <div className="risk-node-icon" style={{ color: risk.color }}>
                   {risk.icon}
@@ -174,6 +201,16 @@ const Home = () => {
                       <FaCheckCircle style={{ color: risk.color, marginRight: '8px' }} /> 
                       {action}
                     </li>
+=======
+              <div className={`home-page-risk-node ${risk.modifier}`}>
+                <div className="home-page-risk-node-icon">
+                  {risk.icon}
+                </div>
+                <h4>{risk.level}</h4>
+                <ul className="home-page-risk-actions">
+                  {risk.actions.map((action, i) => (
+                    <li key={i}>{action}</li>
+>>>>>>> Stashed changes
                   ))}
                 </ul>
               </div>
