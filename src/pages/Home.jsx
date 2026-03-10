@@ -41,8 +41,7 @@ const Home = () => {
     {
       level: "Low Risk",
       icon: <FaCheckCircle />,
-      color: "#10B981",
-      bg: "rgba(16, 185, 129, 0.1)",
+      modifier: "home-page-risk-node--low",
       actions: [
         "Health Advisor recommendations",
         "LifeSync daily tasks",
@@ -52,8 +51,7 @@ const Home = () => {
     {
       level: "Moderate Risk",
       icon: <FaExclamation />,
-      color: "#F59E0B",
-      bg: "rgba(245, 158, 11, 0.1)",
+      modifier: "home-page-risk-node--moderate",
       actions: [
         "Share report with caregiver",
         "Schedule check-up",
@@ -63,8 +61,7 @@ const Home = () => {
     {
       level: "High Risk",
       icon: <FaExclamationTriangle />,
-      color: "#EF4444",
-      bg: "rgba(239, 68, 68, 0.1)",
+      modifier: "home-page-risk-node--high",
       actions: [
         "F.A.S.T. stroke test",
         "Emergency guidance",
@@ -139,13 +136,11 @@ const Home = () => {
         </div>
 
         <div className="home-page-hero-image">
-          <div className="home-page-hero-placeholder">
-            <img
-              src={logo}
-              alt="Strokify Logo"
-              className="home-page-hero-logo"
-            />
-          </div>
+          <img
+            src={logo}
+            alt="Strokify App"
+            className="home-page-hero-logo"
+          />
         </div>
       </section>
 
@@ -187,25 +182,14 @@ const Home = () => {
         <div className="home-page-risk-flow">
           {riskLevels.map((risk, index) => (
             <React.Fragment key={index}>
-              <div
-                className="home-page-risk-node"
-                style={{ backgroundColor: risk.bg }}
-              >
-                <div
-                  className="home-page-risk-node-icon"
-                  style={{ color: risk.color }}
-                >
+              <div className={`home-page-risk-node ${risk.modifier}`}>
+                <div className="home-page-risk-node-icon">
                   {risk.icon}
                 </div>
-                <h4 style={{ color: risk.color }}>{risk.level}</h4>
+                <h4>{risk.level}</h4>
                 <ul className="home-page-risk-actions">
                   {risk.actions.map((action, i) => (
-                    <li key={i}>
-                      <FaCheckCircle
-                        style={{ color: risk.color, marginRight: "8px" }}
-                      />
-                      {action}
-                    </li>
+                    <li key={i}>{action}</li>
                   ))}
                 </ul>
               </div>
