@@ -3,10 +3,13 @@
    ============================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap");
+
+/* Reset body margins - this is crucial */
 body {
   margin: 0;
   padding: 0;
 }
+
 /* Main Navbar */
 .navbar {
   position: fixed;
@@ -48,11 +51,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  font-family:
-    "DM Sans",
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: #e63e4e;
@@ -83,8 +82,7 @@ body {
   gap: 0.5rem;
   padding: 0.5rem 1.2rem;
   border-radius: 40px;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
   color: #4b5563;
@@ -155,7 +153,9 @@ body {
   box-shadow: 0 4px 12px rgba(230, 62, 78, 0.1);
 }
 
-.user-avatar {
+/* User avatar styles */
+.user-avatar,
+.mobile-user-avatar-initials {
   width: 30px;
   height: 30px;
   background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
@@ -166,14 +166,48 @@ body {
   justify-content: center;
   font-weight: 600;
   font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.user-avatar-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(230, 62, 78, 0.2);
+}
+
+.user-menu-button:hover .user-avatar-image {
+  transform: scale(1.05);
+  border-color: #e63e4e;
+  transition: all 0.2s ease;
+}
+
+.user-menu-button img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .user-name {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
   color: #1a1c1e;
+}
+
+/* Dropdown arrow */
+.dropdown-arrow {
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+  color: #e63e4e;
 }
 
 /* User Dropdown */
@@ -234,9 +268,27 @@ body {
   z-index: 1001;
 }
 
+/* Mobile user avatar container */
 .mobile-user-avatar {
   width: 36px;
   height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mobile-user-avatar-initials {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
   background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
   color: white;
   border-radius: 50%;
@@ -244,7 +296,40 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.mobile-user-avatar-image-small {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(230, 62, 78, 0.2);
+}
+
+/* Mobile large avatar */
+.mobile-user-avatar-large {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.mobile-user-avatar-image-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(230, 62, 78, 0.3);
 }
 
 /* Hamburger Button */
@@ -371,20 +456,6 @@ body {
   border-bottom: 1px solid #f0f1f2;
 }
 
-.mobile-user-avatar-large {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
 .mobile-user-details {
   display: flex;
   flex-direction: column;
@@ -450,8 +521,7 @@ body {
 
 .quick-text {
   flex: 1;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: #1a1c1e;
@@ -521,8 +591,7 @@ body {
 }
 
 .mobile-link-text {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   flex: 1;
 }
 
@@ -678,10 +747,8 @@ body {
   color: #e63e4e;
 }
 
-/* Navbar Spacer */
-.navbar-spacer {
-  height: 100px;
-}
+/* ========== REMOVED NAVBAR SPACER ========== */
+/* The .navbar-spacer class has been completely removed */
 
 /* ========== RESPONSIVE BREAKPOINTS ========== */
 @media (max-width: 1024px) {
@@ -791,133 +858,4 @@ body {
   .navbar {
     display: none;
   }
-
-  .navbar-spacer {
-    display: none;
-  }
-}
-.user-avatar-image {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(230, 62, 78, 0.2);
-}
-
-/* Mobile small avatar (top right) */
-.mobile-user-avatar-image-small {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(230, 62, 78, 0.2);
-}
-
-/* Mobile large avatar (in menu) */
-.mobile-user-avatar-image-large {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
-  box-shadow: 0 4px 12px rgba(230, 62, 78, 0.3);
-}
-
-/* Also add hover effect for desktop avatar */
-.user-menu-button:hover .user-avatar-image {
-  transform: scale(1.05);
-  border-color: #e63e4e;
-  transition: all 0.2s ease;
-}
-
-/* Update existing user-avatar class to handle fallback initials */
-.user-avatar,
-.mobile-user-avatar-initials {
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-/* Update mobile user avatar initials */
-.mobile-user-avatar-initials {
-  width: 36px;
-  height: 36px;
-  font-size: 1rem;
-}
-
-/* Update mobile large avatar container */
-.mobile-user-avatar-large {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #e63e4e 0%, #ff6b7a 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-/* Fix the user-menu-button to properly contain images */
-.user-menu-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px 5px 5px;
-  background: none;
-  border: 1px solid #f0f1f2;
-  border-radius: 40px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: white;
-}
-
-/* Ensure images in user-menu-button are properly sized */
-.user-menu-button img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* Dropdown arrow styling */
-.dropdown-arrow {
-  color: #9ca3af;
-  transition: transform 0.2s ease;
-  font-size: 0.8rem;
-}
-
-.dropdown-arrow.open {
-  transform: rotate(180deg);
-  color: #e63e4e;
-}
-
-/* Fix mobile user avatar container */
-.mobile-user-avatar {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* Ensure mobile avatar images are properly contained */
-.mobile-user-avatar img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
 }

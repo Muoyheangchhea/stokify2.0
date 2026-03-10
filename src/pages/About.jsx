@@ -12,7 +12,7 @@ import {
   FaQuoteLeft,
   FaQuoteRight,
   FaLinkedin,
-  FaTwitter,
+  FaInstagram,
   FaEnvelope,
   FaGithub,
   FaBrain,
@@ -32,57 +32,48 @@ const founders = [
     name: "Hieng Dara",
     role: ["Co-Founder", "Business Lead"],
     image: daraImage,
-    bio: "Computer Science major with strong business acumen. Experienced in financial leadership, project management, and business intelligence across multiple international projects in Singapore and China.",
+    bio: "CS student with proven business leadership across Singapore Vietnam and China.",
     linkedin: "https://linkedin.com/in/hieng-dara",
-    twitter: "https://twitter.com/hiengdara",
+    instagram: "https://instagram.com/hiengdara",
     email: "dara@strokify.com",
-    quote: "Bridging technical expertise with business strategy to drive innovation.",
-    education: "Computer Science, American University of Phnom Penh",
+    quote: "Bridging tech with business to drive innovation.",
+    education: "Computer Science, AUPP",
     expertise: [
-      "CFO, Real Business Simulations (SmartEdu USD P5)",
-      "1st Place Winner - Sokheap Project, BUPT China",
-      "Business Lead, GreenBite (NUS Singapore)",
-      "Finance Lead, MindEASE",
-      "Project Intern at MPTC",
-      "Completed Business Intelligence Course",
+      "CFO, Real Business Simulations",
+      "1st Place Winner, BUPT China",
+      "Business Lead, GreenBite (NUS)",
     ],
   },
   {
     name: "Van Meysorng",
-    role: ["Co-Founder", "Product Development Lead"],
+    role: ["Co-Founder", "Product Lead"],
     image: meysorngImage,
-    bio: "ICT specialist skilled in web development, UI/UX design, and product innovation. Experienced across international projects in Singapore and China, passionate about creating user-centered digital solutions.",
+    bio: "ICT specialist with international experience in UI/UX design and product innovation.",
     linkedin: "https://linkedin.com/in/van-meysorng",
-    twitter: "https://twitter.com/vanmeysorng",
+    instagram: "https://instagram.com/vanmeysorng",
     email: "meysorng@strokify.com",
-    quote: "Great products blend design thinking with technical excellence.",
-    education: "ICT, American University of Phnom Penh",
+    quote: "Great products blend design with technical excellence.",
+    education: "ICT, AUPP",
     expertise: [
-      "2nd Place - Best AI & UI/UX Design (BUPT China)",
-      "UI Designer, BusMate (NUS Singapore)",
-      "Frontend Lead & Gamification Developer, ScamShield (RMIT)",
-      "Product Designer, MindEASE & SkinApsor",
-      "Web & Product Design Intern, MPTC",
-      "Media & Design Lead, Greensphere Campaign",
+      "2nd Place - Best AI & UI/UX (BUPT)",
+      "UI Designer, BusMate (NUS)",
+      "Product Dev Lead, ScamShield (RMIT)",
     ],
   },
   {
     name: "Chhea Muoyheang",
     role: ["Co-Founder", "Technical Lead"],
     image: muoyheangImage,
-    bio: "Software development specialist with full-stack expertise and a passion for building scalable technical solutions. Experienced in leading development teams and implementing data-driven applications.",
+    bio: "Full-stack developer with expertise in building scalable technical solutions.",
     linkedin: "https://linkedin.com/in/chhea-muoyheang",
-    twitter: "https://twitter.com/chheamuoyheang",
+    instagram: "https://instagram.com/chheamuoyheang",
     email: "muoyheang@strokify.com",
-    quote: "Building robust technical foundations for innovative solutions.",
-    education: "Software Development, American University of Phnom Penh",
+    quote: "Building robust foundations for innovative solutions.",
+    education: "Software Development, AUPP",
     expertise: [
-      "Full Stack & Technical Lead, SkinApsor",
+      "Full Stack Lead, SkinApsor",
       "Frontend Developer, EZ Found",
-      "Project Intern, MPTC",
-      "Completed Data Analytics Bootcamp (UpSkill 2.0)",
-      "Prompt Engineering & UX/UI Intern, Resumely",
-      "Technician, E-Solver Cambodia",
+      "Data Analytics Certification",
     ],
   },
 ];
@@ -171,13 +162,13 @@ const About = () => {
               </ul>
             </div>
 
-            {/* Traction */}
+            {/* Goal */}
             <div className="about-goal-card">
               <div className="about-card-icon"><FaChartLine /></div>
-              <h2>Our Traction</h2>
+              <h2>Our 2026 Goal</h2>
               <p className="about-card-description">
-                Real numbers, real impact — here's where Strokify stands
-                today as we grow across Cambodia.
+                Driving measurable impact across Cambodia—tracking 
+                the real numbers behind our growth.
               </p>
               <div className="about-goal-list">
                 <div className="about-goal-item">
@@ -249,12 +240,12 @@ const About = () => {
                       <FaLinkedin />
                     </a>
                     <a
-                      href={founder.twitter}
+                      href={founder.instagram}
                       className="about-social-link"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <FaTwitter />
+                      <FaInstagram />
                     </a>
                     <a
                       href={`mailto:${founder.email}`}
