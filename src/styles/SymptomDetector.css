@@ -1,5 +1,6 @@
 /* ==============================================
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
    STROKIFY SYMPTOM DETECTOR - PERFECTLY CONSISTENT
    ==============================================
    • Same size box for EVERY question
@@ -96,6 +97,78 @@
   overflow-x: hidden;
 }
 
+=======
+   STROKIFY SYMPTOM DETECTOR — HOMEPAGE UNIFIED
+   ==============================================
+   • DM Sans 800 + metallic gradient headings
+   • Glassmorphism cards (var(--glass-bg))
+   • cubic-bezier(0.34,1.56,0.64,1) spring hovers
+   • Animated background orbs (same as hero)
+   • Primary red gradient system
+   • Mobile-first responsive
+   ============================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap");
+
+/* ── Local tokens (mirrors homepage :root) ── */
+:root {
+  --sd-primary:       #E63E4E;
+  --sd-primary-light: #FF6B7A;
+  --sd-primary-dark:  #B31E2C;
+  --sd-pink:          #FFE5E8;
+  --sd-pink-light:    #FFF1F3;
+  --sd-pink-border:   #FFCCD2;
+  --sd-glass:         rgba(255,255,255,0.75);
+  --sd-glass-border:  rgba(255,255,255,0.5);
+
+  --sd-gray-50:  #F9FAFB;
+  --sd-gray-100: #F3F4F6;
+  --sd-gray-200: #E5E7EB;
+  --sd-gray-300: #D1D5DB;
+  --sd-gray-400: #9CA3AF;
+  --sd-gray-500: #6B7280;
+  --sd-gray-600: #4B5563;
+  --sd-gray-700: #374151;
+  --sd-gray-800: #1F2937;
+  --sd-gray-900: #111827;
+
+  --sd-green:    #22C55E;
+  --sd-orange:   #F97316;
+  --sd-yellow:   #F59E0B;
+
+  --sd-shadow-sm:  0 1px 3px rgba(0,0,0,0.06);
+  --sd-shadow-md:  0 4px 12px rgba(0,0,0,0.08);
+  --sd-shadow-lg:  0 10px 30px -10px rgba(0,0,0,0.12);
+  --sd-shadow-xl:  0 20px 40px -15px rgba(0,0,0,0.15);
+  --sd-shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.2);
+  --sd-shadow-red: 0 8px 24px -4px rgba(230,62,78,0.25);
+
+  --sd-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sd-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  --sd-r-sm:   8px;
+  --sd-r-md:   14px;
+  --sd-r-lg:   20px;
+  --sd-r-xl:   24px;
+  --sd-r-2xl:  32px;
+  --sd-r-3xl:  40px;
+  --sd-r-full: 9999px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ========== PAGE SHELL ========== */
+.sd-container {
+  min-height: 100vh;
+  background: white;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--sd-gray-900);
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+
+>>>>>>> Stashed changes
 /* Animated background orbs — identical to homepage hero */
 .sd-bg-blob {
   position: fixed;
@@ -131,6 +204,9 @@
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--sd-pink-border);
   padding: 1rem 0;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   position: sticky;
   top: 80px;
@@ -138,6 +214,7 @@
   flex-shrink: 0;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .header-content {
   max-width: 1000px;
@@ -168,10 +245,27 @@
 =======
   gap: 1rem;
 >>>>>>> Stashed changes
+=======
+.sd-header-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.sd-section-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+>>>>>>> Stashed changes
   flex: 1;
   min-width: 0;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .section-pill {
   background: linear-gradient(135deg, #E63E4E 0%, #FF6B7A 100%);
@@ -200,6 +294,15 @@
   gap: 0.35rem;
   background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
   color: white;
+=======
+/* Eyebrow pill — matches homepage stat pills */
+.sd-section-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
+  color: white;
+>>>>>>> Stashed changes
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -233,6 +336,7 @@
   text-overflow: ellipsis;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 /* Right side - Beautiful progress */
 .progress-compact {
@@ -415,6 +519,97 @@
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
+=======
+/* Progress widget — glassmorphism pill */
+.sd-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+  background: var(--sd-glass);
+  backdrop-filter: blur(10px);
+  padding: 0.45rem 1rem 0.45rem 1.1rem;
+  border-radius: var(--sd-r-full);
+  border: 1px solid var(--sd-pink-border);
+  box-shadow: var(--sd-shadow-sm);
+}
+.sd-progress-number {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--sd-primary);
+  letter-spacing: -0.02em;
+}
+.sd-progress-bar {
+  width: 90px; height: 4px;
+  background: var(--sd-pink);
+  border-radius: var(--sd-r-full);
+  overflow: hidden;
+}
+.sd-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
+  border-radius: var(--sd-r-full);
+  transition: width 0.5s var(--sd-spring);
+}
+
+/* ========== QUESTION CONTAINER ========== */
+.sd-question-container {
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 0 1.25rem;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main card — matches home-page-feature-card elevated */
+.sd-question-card {
+  background: white;
+  border-radius: var(--sd-r-3xl);
+  padding: 3rem 3rem 0 3rem;
+  box-shadow: var(--sd-shadow-2xl);
+  border: 1px solid var(--sd-gray-200);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 560px;
+  max-height: 560px;
+  transition: box-shadow 0.4s var(--sd-spring), border-color 0.4s ease;
+  animation: sdSlideIn 0.5s var(--sd-spring) both;
+  overflow: hidden;
+}
+.sd-question-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--sd-primary), var(--sd-primary-light));
+  border-radius: var(--sd-r-3xl) var(--sd-r-3xl) 0 0;
+}
+.sd-question-card:hover {
+  border-color: rgba(230,62,78,0.2);
+  box-shadow: var(--sd-shadow-2xl), var(--sd-shadow-red);
+}
+@keyframes sdSlideIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating badge above card */
+.sd-section-badge {
+  position: absolute;
+  top: -14px; left: 3rem;
+  background: white;
+  padding: 0.4rem 1.25rem;
+  border-radius: var(--sd-r-full);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+>>>>>>> Stashed changes
   gap: 0.5rem;
   box-shadow: 0 4px 16px -4px rgba(230,62,78,0.2);
   border: 1px solid var(--sd-pink-border);
@@ -422,14 +617,21 @@
   z-index: 20;
 }
 .sd-section-badge svg { color: var(--sd-primary); font-size: 0.9rem; }
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 /* ========== SCROLLABLE QUESTION CONTENT ========== */
 .question-content {
+=======
+
+/* ========== QUESTION CONTENT ========== */
+.sd-question-content {
+>>>>>>> Stashed changes
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   padding-right: 8px;
   margin-bottom: 0;
@@ -460,6 +662,11 @@
   scrollbar-width: thin;
   scrollbar-color: var(--sd-primary) var(--sd-gray-200);
 >>>>>>> Stashed changes
+=======
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sd-primary) var(--sd-gray-200);
+>>>>>>> Stashed changes
 }
 .sd-question-content::-webkit-scrollbar { width: 4px; }
 .sd-question-content::-webkit-scrollbar-track { background: var(--sd-gray-100); border-radius: var(--sd-r-full); }
@@ -468,6 +675,7 @@
 .question-icon-wrapper {
   display: flex;
   justify-content: center;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   margin: 0 0 16px 0;
   flex-shrink: 0;
@@ -482,24 +690,39 @@
   flex-shrink: 0;
 }
 
+=======
+  margin: 1.25rem 0 1rem;
+  flex-shrink: 0;
+}
+
+>>>>>>> Stashed changes
 /* Icon — matches home-page-feature-icon */
 .sd-question-icon {
   width: 72px; height: 72px;
   border-radius: var(--sd-r-xl);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   background: linear-gradient(135deg, #FFF1F3 0%, #FFE5E8 100%);
   color: #E63E4E;
   box-shadow: 0 8px 16px -8px rgba(230, 62, 78, 0.2);
 =======
+=======
+>>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
   color: white;
   box-shadow: 0 8px 20px -6px rgba(230,62,78,0.35);
   transition: all 0.3s ease;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   flex-shrink: 0;
 }
@@ -508,6 +731,7 @@
   border-radius: var(--sd-r-lg);
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .question-text {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -528,6 +752,14 @@
   letter-spacing: -0.04em;
   line-height: 1.2;
   text-align: center;
+=======
+.sd-question-text {
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  text-align: center;
+>>>>>>> Stashed changes
   margin: 0 auto 1.5rem;
   max-width: 580px;
   /* metallic gradient — same as homepage h1 */
@@ -536,6 +768,9 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   flex-shrink: 0;
 }
@@ -545,6 +780,7 @@
   max-width: 520px;
   margin: 0 auto;
   flex-shrink: 0;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   padding-bottom: 20px; /* Space before scroll ends */
 }
@@ -589,6 +825,8 @@
   box-shadow: 0 8px 16px -8px rgba(230, 62, 78, 0.4);
   transform: translateY(-2px);
 =======
+=======
+>>>>>>> Stashed changes
   padding-bottom: 1.5rem;
 }
 
@@ -640,6 +878,7 @@
   color: white;
   box-shadow: 0 10px 24px -6px rgba(230,62,78,0.4);
   transform: translateY(-3px) scale(1.02);
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 }
 .sd-check-icon { font-size: 0.85rem; }
@@ -654,11 +893,19 @@
 /* ========== SLIDER ========== */
 .sd-slider-container { width: 100%; padding: 0.5rem 0; }
 >>>>>>> Stashed changes
+=======
+}
+.sd-check-icon { font-size: 0.85rem; }
+
+/* ========== SLIDER ========== */
+.sd-slider-container { width: 100%; padding: 0.5rem 0; }
+>>>>>>> Stashed changes
 
 .slider-value {
   display: flex;
   align-items: baseline;
   justify-content: center;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   gap: 6px;
   margin-bottom: 24px;
@@ -692,6 +939,22 @@
   background-clip: text;
   filter: drop-shadow(0 2px 8px rgba(230,62,78,0.2));
 }
+=======
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.sd-slider-number {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(230,62,78,0.2));
+}
+>>>>>>> Stashed changes
 .sd-slider-unit {
   font-size: 1rem;
   font-weight: 600;
@@ -704,6 +967,7 @@
   height: 6px;
   -webkit-appearance: none;
   appearance: none;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   background: linear-gradient(90deg, #E63E4E 0%, #E63E4E var(--progress, 0%), #F0F1F2 var(--progress, 0%));
   border-radius: 100px;
@@ -770,6 +1034,28 @@
   transform: scale(1.2);
   box-shadow: 0 6px 18px rgba(230,62,78,0.4);
 }
+=======
+  background: linear-gradient(90deg, var(--sd-primary) var(--progress, 0%), var(--sd-gray-200) var(--progress, 0%));
+  border-radius: var(--sd-r-full);
+  outline: none;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+.sd-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px; height: 26px;
+  background: white;
+  border: 3px solid var(--sd-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s var(--sd-spring);
+  box-shadow: 0 4px 12px rgba(230,62,78,0.3);
+}
+.sd-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 18px rgba(230,62,78,0.4);
+}
+>>>>>>> Stashed changes
 .sd-slider-labels {
   display: flex;
   justify-content: space-between;
@@ -816,6 +1102,7 @@
   border: 1.5px solid var(--sd-gray-200);
   border-radius: var(--sd-r-full);
   font-family: "DM Sans", sans-serif;
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
   font-size: 1rem;
   font-weight: 600;
@@ -825,14 +1112,23 @@
 =======
   color: var(--sd-gray-900);
 >>>>>>> Stashed changes
+=======
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--sd-gray-900);
+>>>>>>> Stashed changes
   background: white;
   transition: all 0.3s var(--sd-spring);
   box-shadow: var(--sd-shadow-sm);
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 .bp-inputs {
 =======
+=======
+>>>>>>> Stashed changes
 .sd-number-input:focus {
   border-color: var(--sd-primary);
   outline: none;
@@ -846,6 +1142,7 @@
   gap: 1.5rem;
   justify-content: center;
   margin-top: 1.25rem;
+<<<<<<< Updated upstream
 }
 <<<<<<< Updated upstream
 
@@ -865,6 +1162,9 @@
   padding: 20px 0 28px 0; /* Padding top and bottom */
   border-top: 2px solid #F0F1F2;
 =======
+=======
+}
+>>>>>>> Stashed changes
 .sd-bp-field {
   display: flex;
   flex-direction: column;
@@ -906,11 +1206,15 @@
   justify-content: space-between;
   padding: 1.25rem 0 1.75rem;
   border-top: 1px solid var(--sd-gray-200);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   flex-shrink: 0;
   background: white;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .nav-btn {
   display: flex;
@@ -940,11 +1244,27 @@
   border: none;
   min-width: 120px;
 >>>>>>> Stashed changes
+=======
+.sd-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--sd-r-full);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s var(--sd-spring);
+  border: none;
+  min-width: 120px;
+>>>>>>> Stashed changes
   justify-content: center;
   position: relative;
   overflow: hidden;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .nav-btn.back {
   background: white;
@@ -966,6 +1286,8 @@
 
 .step-indicator {
 =======
+=======
+>>>>>>> Stashed changes
 .sd-nav-btn.sd-back {
   background: var(--sd-glass);
   backdrop-filter: blur(10px);
@@ -1007,6 +1329,7 @@
   gap: 0.5rem;
   align-items: center;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   background: #F8F9FA;
   padding: 6px 16px;
   border-radius: 40px;
@@ -1043,11 +1366,26 @@
   background: var(--sd-gray-300);
   transition: all 0.35s var(--sd-spring);
 }
+=======
+  background: var(--sd-glass);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--sd-r-full);
+  border: 1px solid var(--sd-gray-200);
+}
+.sd-step-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--sd-gray-300);
+  transition: all 0.35s var(--sd-spring);
+}
+>>>>>>> Stashed changes
 .sd-step-dot.sd-active {
   width: 28px;
   background: linear-gradient(90deg, var(--sd-primary), var(--sd-primary-light));
   border-radius: var(--sd-r-full);
   box-shadow: 0 0 0 3px rgba(230,62,78,0.15);
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 }
 .sd-step-dot.sd-completed { background: var(--sd-pink-border); }
@@ -1067,7 +1405,10 @@
   margin-bottom: 16px;
   display: block;
   text-align: center;
+=======
+>>>>>>> Stashed changes
 }
+.sd-step-dot.sd-completed { background: var(--sd-pink-border); }
 
 /* ========== BEAUTIFUL RESULTS ========== */
 .results-container {
@@ -1075,6 +1416,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   padding: 32px 20px;
   background: radial-gradient(circle at 10% 30%, rgba(255, 229, 232, 0.3) 0%, transparent 50%),
@@ -1099,6 +1441,8 @@
   height: 96px;
   background: linear-gradient(135deg, #FFE5E8 0%, #FFD1D6 100%);
 =======
+=======
+>>>>>>> Stashed changes
   padding: 3rem 1.25rem;
   position: relative;
   z-index: 10;
@@ -1128,11 +1472,15 @@
 .sd-results-icon {
   width: 88px; height: 88px;
   background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   margin: 0 auto 28px;
   color: #E63E4E;
@@ -1272,6 +1620,81 @@
   transition: width 1s var(--sd-spring);
 }
 
+=======
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 2.5rem;
+  box-shadow: 0 16px 32px -8px rgba(230,62,78,0.4);
+  animation: sdPulseIcon 2.5s ease-in-out infinite;
+}
+@keyframes sdPulseIcon {
+  0%, 100% { transform: scale(1); box-shadow: 0 16px 32px -8px rgba(230,62,78,0.4); }
+  50%       { transform: scale(1.05); box-shadow: 0 20px 40px -8px rgba(230,62,78,0.5); }
+}
+
+.sd-results-title {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(180deg, #111827 30%, #6B7280 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sd-results-subtitle {
+  font-size: 1rem;
+  color: var(--sd-gray-500);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Risk meter */
+.sd-risk-meter {
+  background: var(--sd-gray-50);
+  border-radius: var(--sd-r-xl);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--sd-gray-200);
+  box-shadow: var(--sd-shadow-md);
+  transition: all 0.4s var(--sd-spring);
+}
+.sd-risk-meter:hover {
+  border-color: rgba(230,62,78,0.2);
+  transform: translateY(-3px);
+  box-shadow: var(--sd-shadow-lg);
+}
+.sd-risk-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--sd-gray-700);
+  letter-spacing: -0.01em;
+}
+.sd-risk-value {
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.3rem 1rem;
+  border-radius: var(--sd-r-full);
+  background: white;
+  box-shadow: var(--sd-shadow-sm);
+}
+.sd-risk-bar {
+  height: 8px;
+  background: var(--sd-gray-200);
+  border-radius: var(--sd-r-full);
+  overflow: hidden;
+}
+.sd-risk-progress {
+  height: 100%;
+  border-radius: var(--sd-r-full);
+  transition: width 1s var(--sd-spring);
+}
+
+>>>>>>> Stashed changes
 /* Detail pills */
 .sd-results-details {
 >>>>>>> Stashed changes
@@ -1280,6 +1703,7 @@
   gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 .detail-item {
@@ -1382,6 +1806,51 @@
 
 .sd-results-actions { display: flex; gap: 0.75rem; justify-content: center; }
 
+=======
+.sd-detail-item {
+  background: var(--sd-gray-50);
+  border-radius: var(--sd-r-xl);
+  padding: 1rem 0.75rem;
+  border: 1px solid var(--sd-gray-200);
+  transition: all 0.4s var(--sd-spring);
+  box-shadow: var(--sd-shadow-sm);
+}
+.sd-detail-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--sd-primary);
+  box-shadow: var(--sd-shadow-lg), var(--sd-shadow-red);
+}
+.sd-detail-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--sd-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.sd-detail-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--sd-gray-900);
+}
+
+.sd-risk-summary {
+  background: var(--sd-gray-50);
+  border-radius: var(--sd-r-xl);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--sd-gray-200);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--sd-gray-600);
+  text-align: left;
+}
+
+.sd-results-actions { display: flex; gap: 0.75rem; justify-content: center; }
+
+>>>>>>> Stashed changes
 /* Shared action buttons */
 .sd-btn-primary,
 .sd-btn-secondary {
@@ -1404,6 +1873,7 @@
 }
 .sd-btn-primary {
   background: linear-gradient(135deg, var(--sd-primary) 0%, var(--sd-primary-light) 100%);
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
   color: white;
   box-shadow: var(--sd-shadow-red);
@@ -1443,6 +1913,31 @@
   border: 1.5px solid rgba(230,62,78,0.2);
   box-shadow: var(--sd-shadow-sm);
 }
+=======
+  color: white;
+  box-shadow: var(--sd-shadow-red);
+}
+.sd-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+.sd-btn-primary:hover::before { left: 100%; }
+.sd-btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 28px -8px rgba(230,62,78,0.45);
+}
+.sd-btn-secondary {
+  background: var(--sd-glass);
+  backdrop-filter: blur(10px);
+  color: var(--sd-primary);
+  border: 1.5px solid rgba(230,62,78,0.2);
+  box-shadow: var(--sd-shadow-sm);
+}
+>>>>>>> Stashed changes
 .sd-btn-secondary:hover {
   background: white;
   border-color: var(--sd-primary);
@@ -1854,12 +2349,16 @@
 .sd-loading-overlay {
   position: fixed; inset: 0;
   background: rgba(255,255,255,0.88);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
   animation: sdFadeIn 0.3s ease;
@@ -1875,6 +2374,12 @@
   border-radius: 64px;
   box-shadow: 0 40px 70px -20px rgba(0, 0, 0, 0.2);
 =======
+=======
+  animation: sdFadeIn 0.3s ease;
+}
+@keyframes sdFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+>>>>>>> Stashed changes
 .sd-loading-card {
   background: white;
   padding: 3rem;
@@ -1884,6 +2389,7 @@
   text-align: center;
   max-width: 380px;
   width: 90%;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
@@ -1897,6 +2403,8 @@
   animation: spin 1s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
   margin: 0 auto 24px;
 =======
+=======
+>>>>>>> Stashed changes
   border: 1px solid var(--sd-pink-border);
   position: relative;
   overflow: hidden;
@@ -1916,6 +2424,7 @@
   border-radius: 50%;
   animation: sdSpin 0.8s linear infinite;
   margin: 0 auto 1.5rem;
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 }
 @keyframes sdSpin { to { transform: rotate(360deg); } }
@@ -2117,10 +2626,74 @@
   .sd-report-disclaimer { flex-direction: column; align-items: center; text-align: center; }
 }
 
+=======
+}
+@keyframes sdSpin { to { transform: rotate(360deg); } }
+
+.sd-loading-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.03em; color: var(--sd-gray-900); margin-bottom: 0.4rem; }
+.sd-loading-subtitle { font-size: 0.9rem; color: var(--sd-gray-500); margin-bottom: 1.5rem; line-height: 1.6; }
+
+.sd-loading-dots { display: flex; gap: 0.5rem; justify-content: center; }
+.sd-loading-dots span {
+  width: 9px; height: 9px;
+  background: linear-gradient(135deg, var(--sd-primary), var(--sd-primary-light));
+  border-radius: 50%;
+  animation: sdBounce 1.4s ease-in-out infinite;
+}
+.sd-loading-dots span:nth-child(2) { animation-delay: 0.18s; }
+.sd-loading-dots span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes sdBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (min-width: 1024px) {
+  .sd-question-card { height: 560px; max-height: 560px; padding: 3rem 3.5rem 0; }
+  .sd-section-badge { left: 3.5rem; }
+}
+
+@media (max-width: 768px) {
+  .sd-question-card { height: 580px; max-height: 580px; padding: 2.5rem 1.75rem 0; }
+  .sd-question-text { font-size: 1.25rem; }
+  .sd-options-grid { grid-template-columns: 1fr; }
+  .sd-bp-inputs { flex-direction: column; align-items: center; }
+  .sd-navigation { flex-direction: column; gap: 1rem; }
+  .sd-step-indicator { order: -1; }
+  .sd-nav-btn { width: 100%; }
+  .sd-results-details { grid-template-columns: 1fr; }
+  .sd-results-actions { flex-direction: column; align-items: center; }
+  .sd-btn-primary, .sd-btn-secondary { max-width: 100%; width: 100%; }
+  .sd-report-card { padding: 2rem; }
+  .sd-report-title { font-size: 1.5rem; }
+  .sd-info-grid { grid-template-columns: 1fr 1fr; padding: 1.5rem; }
+  .sd-vitals-grid, .sd-recommendations-grid, .sd-fast-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .sd-header-content { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .sd-section-info { width: 100%; }
+  .sd-progress { width: 100%; justify-content: space-between; }
+  .sd-progress-bar { flex: 1; width: auto; }
+  .sd-question-card { height: 560px; max-height: 560px; padding: 2rem 1.25rem 0; border-radius: var(--sd-r-2xl); }
+  .sd-section-badge { left: 1.25rem; }
+  .sd-question-icon { width: 60px; height: 60px; font-size: 1.7rem; }
+  .sd-slider-number { font-size: 2.5rem; }
+  .sd-results-card { padding: 2.5rem 1.5rem; }
+  .sd-report-card { padding: 1.5rem; border-radius: var(--sd-r-2xl); }
+  .sd-info-grid { grid-template-columns: 1fr; padding: 1.25rem; }
+  .sd-fast-card { flex-direction: column; align-items: center; text-align: center; }
+  .sd-report-disclaimer { flex-direction: column; align-items: center; text-align: center; }
+}
+
+>>>>>>> Stashed changes
 /* ========== PRINT ========== */
 @media print {
   .sd-header, .sd-navigation, .sd-report-header, .sd-report-footer, .sd-loading-overlay { display: none; }
   .sd-report-card { box-shadow: none; }
   .sd-risk-summary-card, .sd-recommendation-card { break-inside: avoid; }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

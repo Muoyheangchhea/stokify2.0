@@ -31,8 +31,12 @@ const Home = () => {
       level: 'Low Risk',
       icon: <FaCheckCircle />,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       color: '#10B981',
       bg: 'rgba(16, 185, 129, 0.1)',
+=======
+      modifier: "home-page-risk-node--low",
+>>>>>>> Stashed changes
 =======
       modifier: "home-page-risk-node--low",
 >>>>>>> Stashed changes
@@ -46,8 +50,12 @@ const Home = () => {
       level: 'Moderate Risk',
       icon: <FaExclamation />,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       color: '#F59E0B',
       bg: 'rgba(245, 158, 11, 0.1)',
+=======
+      modifier: "home-page-risk-node--moderate",
+>>>>>>> Stashed changes
 =======
       modifier: "home-page-risk-node--moderate",
 >>>>>>> Stashed changes
@@ -61,8 +69,12 @@ const Home = () => {
       level: 'High Risk',
       icon: <FaExclamationTriangle />,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       color: '#EF4444',
       bg: 'rgba(239, 68, 68, 0.1)',
+=======
+      modifier: "home-page-risk-node--high",
+>>>>>>> Stashed changes
 =======
       modifier: "home-page-risk-node--high",
 >>>>>>> Stashed changes
@@ -148,6 +160,9 @@ const Home = () => {
               <div className="home-page-phone-speaker" />
               <div className="home-page-phone-notch" />
             </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           </div>
         </div>
@@ -190,6 +205,7 @@ const Home = () => {
           {riskLevels.map((risk, index) => (
             <React.Fragment key={index}>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               <div className="risk-node" style={{ backgroundColor: risk.bg }}>
                 <div className="risk-node-icon" style={{ color: risk.color }}>
                   {risk.icon}
@@ -201,6 +217,16 @@ const Home = () => {
                       <FaCheckCircle style={{ color: risk.color, marginRight: '8px' }} /> 
                       {action}
                     </li>
+=======
+              <div className={`home-page-risk-node ${risk.modifier}`}>
+                <div className="home-page-risk-node-icon">
+                  {risk.icon}
+                </div>
+                <h4>{risk.level}</h4>
+                <ul className="home-page-risk-actions">
+                  {risk.actions.map((action, i) => (
+                    <li key={i}>{action}</li>
+>>>>>>> Stashed changes
 =======
               <div className={`home-page-risk-node ${risk.modifier}`}>
                 <div className="home-page-risk-node-icon">

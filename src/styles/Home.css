@@ -23,6 +23,7 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /* ========== HERO SECTION - MODERN 3D ========== */
 .home-hero {
   min-height: 100vh;
@@ -31,6 +32,8 @@
   gap: 4rem;
   padding: 2rem 4rem 4rem;
 =======
+=======
+>>>>>>> Stashed changes
 /* ========== HERO SECTION - MOBILE FIRST ========== */
 .home-page-hero {
   min-height: 100dvh;
@@ -38,6 +41,9 @@
   flex-direction: column;
   gap: 2.5rem;
   padding: 7rem 1.25rem 3rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   max-width: 1400px;
   margin: 0 auto;
@@ -78,6 +84,7 @@
 .home-hero::after {
   content: '';
   position: absolute;
+<<<<<<< Updated upstream
   width: 60vmax;
   height: 60vmax;
   bottom: -20%;
@@ -88,6 +95,30 @@
     rgba(230, 62, 78, 0.05) 40%,
     transparent 70%);
 =======
+=======
+  width: 80vmax;
+  height: 80vmax;
+  top: -20%;
+  right: -30%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(230, 62, 78, 0.12) 0%,
+    rgba(255, 107, 122, 0.04) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: -1;
+  animation: homePageFloat 20s ease-in-out infinite;
+}
+
+.home-page-hero::after {
+  content: "";
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  bottom: -20%;
+>>>>>>> Stashed changes
   left: -30%;
   background: radial-gradient(
     circle at 70% 70%,
@@ -102,6 +133,7 @@
   animation: float 25s ease-in-out reverse infinite;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 @keyframes float {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -155,10 +187,29 @@
   letter-spacing: -0.05em; /* Tighter tracking for a high-end look */
   line-height: 1.0;
   margin-bottom: 1.5rem;
+=======
+@keyframes homePageFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5%, 5%) scale(1.05); }
+}
+
+/* ========== PREMIUM STACKED HEADLINE ========== */
+.home-page-hero-content h1 {
+  font-family: "DM Sans", sans-serif;
+  /* clamp ensures it stays large on desktop but fits on mobile */
+  font-size: clamp(2.8rem, 9vw, 5rem); 
+  font-weight: 800;
+  letter-spacing: -0.05em; /* Tighter tracking for a high-end look */
+  line-height: 1.0;
+  margin-bottom: 1.5rem;
+>>>>>>> Stashed changes
   text-align: center;
   
   /* Metallic Gradient Effect */
   background: linear-gradient(180deg, #111827 30%, #6b7280 100%);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -168,6 +219,7 @@
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.05));
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 /* Animated underline */
 .home-hero-content h1::after {
@@ -191,6 +243,8 @@
 .home-hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.3rem);
 =======
+=======
+>>>>>>> Stashed changes
 /* Adjust for desktop alignment if your hero is side-by-side */
 @media (min-width: 1024px) {
   .home-page-hero-content h1 {
@@ -200,28 +254,38 @@
 
 .home-page-hero-subtitle {
   font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   color: var(--gray-600);
   margin-bottom: 2rem;
   line-height: 1.7;
   max-width: 90%;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   animation: fadeIn 1s ease-out 0.3s both;
 }
 
 @keyframes fadeIn {
 =======
+=======
+>>>>>>> Stashed changes
   margin-left: auto;
   margin-right: auto;
   animation: homePageFadeIn 1s ease-out 0.3s both;
 }
 
 @keyframes homePageFadeIn {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 /* Premium Button Group */
 .home-hero-buttons {
@@ -250,6 +314,21 @@
   margin-bottom: 2rem;
   animation: homePageSlideInUp 1s ease-out 0.5s both;
   width: 100%;
+=======
+/* Button Group — stacked on mobile */
+.home-page-hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  animation: homePageSlideInUp 1s ease-out 0.5s both;
+  width: 100%;
+}
+
+@keyframes homePageSlideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+>>>>>>> Stashed changes
 }
 
 @keyframes homePageSlideInUp {
@@ -267,8 +346,13 @@
   padding: 0.9rem 1.75rem;
   border-radius: 60px;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 1rem;
+=======
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+>>>>>>> Stashed changes
 =======
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.95rem;
@@ -288,6 +372,9 @@
 .btn-primary {
 =======
 .home-page-btn-primary {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: white;
@@ -302,7 +389,11 @@
   width: 100%;
   height: 100%;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+=======
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+>>>>>>> Stashed changes
 =======
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
 >>>>>>> Stashed changes
@@ -310,6 +401,7 @@
   z-index: -1;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .btn-primary:hover::before {
   left: 100%;
@@ -319,10 +411,15 @@
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 25px 35px -12px rgba(230, 62, 78, 0.4);
 =======
+=======
+>>>>>>> Stashed changes
 .home-page-btn-primary:hover::before { left: 100%; }
 .home-page-btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 20px 30px -10px rgba(230, 62, 78, 0.4);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -341,6 +438,7 @@
   box-shadow: 0 16px 24px -8px rgba(230, 62, 78, 0.15);
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .btn-large {
   padding: 1.2rem 2.5rem;
@@ -365,6 +463,16 @@
 /* Stat Pills — horizontal scroll on mobile */
 .home-page-hero-stats {
   display: flex;
+=======
+.home-page-btn-large {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* Stat Pills — horizontal scroll on mobile */
+.home-page-hero-stats {
+  display: flex;
+>>>>>>> Stashed changes
   gap: 0.75rem;
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -406,8 +514,13 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-hero-stat:hover {
   transform: translateY(-4px) scale(1.02);
+=======
+.home-page-hero-stat:hover {
+  transform: translateY(-3px) scale(1.02);
+>>>>>>> Stashed changes
 =======
 .home-page-hero-stat:hover {
   transform: translateY(-3px) scale(1.02);
@@ -418,12 +531,19 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-hero-stat:hover::before {
   opacity: 1;
 }
 
 .home-stat-icon {
   font-size: 1.4rem;
+=======
+.home-page-hero-stat:hover::before { opacity: 1; }
+
+.home-page-stat-icon {
+  font-size: 1.1rem;
+>>>>>>> Stashed changes
 =======
 .home-page-hero-stat:hover::before { opacity: 1; }
 
@@ -448,9 +568,12 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-stat-value {
   font-size: 1.3rem;
 =======
+=======
+>>>>>>> Stashed changes
 .home-page-stat-info {
   display: flex;
   flex-direction: column;
@@ -458,6 +581,9 @@
 
 .home-page-stat-value {
   font-size: 1.1rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   font-weight: 800;
   color: var(--gray-900);
@@ -466,8 +592,13 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-stat-label {
   font-size: 0.7rem;
+=======
+.home-page-stat-label {
+  font-size: 0.62rem;
+>>>>>>> Stashed changes
 =======
 .home-page-stat-label {
   font-size: 0.62rem;
@@ -479,6 +610,7 @@
   margin-top: 2px;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 /* Hero Visual - 3D Morphing Shape */
 .hero-placeholder {
@@ -635,6 +767,81 @@
 .section-header h2::after {
   content: '';
 =======
+=======
+/* ========== HERO IMAGE — Premium Phone Mockup ========== */
+.home-page-hero-image {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  position: relative;
+  perspective: 2000px; 
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.home-page-phone-shell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.5;
+  background: #080808; /* Deep black for the screen bezel */
+  border-radius: 50px;
+  padding: 10px; 
+  
+  /* THE 3D ANGLE */
+  transform: rotateY(-22deg) rotateX(6deg) rotateZ(1deg);
+  transform-style: preserve-3d;
+  
+  /* THE "REALISTIC THICKNESS" STACK 
+     We use a long string of shadows to build a 12px metal wall */
+  box-shadow: 
+    1px 0px 0px #d1d1d6,
+    2px 0px 0px #c7c7cc,
+    3px 0px 0px #b0b0b5,
+    4px 0px 0px #a1a1a6,
+    5px 0px 0px #919196,
+    6px 0px 0px #8e8e93,
+    7px 0px 0.5px #848489,
+    8px 0px 1px #7a7a7f,
+    9px 0px 1.5px #6b6b70,
+    10px 0px 2px #5a5a5f,
+    11px 0px 2.5px #4a4a4f,
+    12px 0px 3px #3a3a3f,
+    /* Soft environmental shadows */
+    25px 35px 70px rgba(0,0,0,0.35),
+    10px 15px 30px rgba(230, 62, 78, 0.1); 
+    
+  transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: homePageFloatImg 6s ease-in-out infinite;
+}
+
+@keyframes homePageFloatImg {
+  0%, 100% { transform: rotateY(-22deg) rotateX(6deg) translateY(0px); }
+  50%       { transform: rotateY(-20deg) rotateX(5deg) translateY(-20px); }
+}
+
+/* Inner Screen Container */
+.home-page-hero-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fdf0f2; 
+  border-radius: 40px; /* Matching the outer shell curve */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* This adds a slight "recessed" look to the glass */
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+}
+
+.home-page-hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+>>>>>>> Stashed changes
 /* The Dynamic Island */
 .home-page-hero-placeholder::before {
   content: "";
@@ -650,6 +857,7 @@
   z-index: 20;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .section-header p {
   font-size: 1.1rem;
@@ -675,6 +883,22 @@
   transform: translateZ(5px); /* Keeps buttons on top of the 3D stack */
 }
 
+=======
+/* Realistic Brushed Metal Side Buttons */
+.home-page-phone-shell::after {
+  content: "";
+  position: absolute;
+  right: -13px; /* Moved further out because the phone is thicker now */
+  top: 25%;
+  width: 5px;
+  height: 14%;
+  background: linear-gradient(to bottom, #e5e5e7, #8e8e93);
+  border-radius: 0 5px 5px 0;
+  box-shadow: 0 70px 0 -1px #a1a1a6; /* Volume/Action Button */
+  transform: translateZ(5px); /* Keeps buttons on top of the 3D stack */
+}
+
+>>>>>>> Stashed changes
 /* Floor Shadow (Matches the weight of the phone) */
 .home-page-hero-image::before {
   content: "";
@@ -698,6 +922,9 @@
 /* ========== FEATURES SECTION ========== */
 .home-page-features {
   padding: 4rem 1.25rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
   position: relative;
@@ -752,8 +979,13 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .feature-card:hover {
   transform: translateY(-10px) scale(1.02);
+=======
+.home-page-feature-card:hover {
+  transform: translateY(-8px) scale(1.01);
+>>>>>>> Stashed changes
 =======
 .home-page-feature-card:hover {
   transform: translateY(-8px) scale(1.01);
@@ -762,6 +994,7 @@
   box-shadow: var(--shadow-2xl), var(--shadow-primary);
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .feature-card:hover::before {
   transform: scaleX(1);
@@ -808,6 +1041,33 @@
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--gray-900);
+=======
+.home-page-feature-card:hover::before { transform: scaleX(1); }
+
+.home-page-feature-icon {
+  font-size: 1.8rem;
+  color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 0.85rem;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  width: fit-content;
+  box-shadow: 0 8px 16px -4px rgba(230, 62, 78, 0.3);
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.home-page-feature-card:hover .home-page-feature-icon {
+  transform: scale(1.1) rotate(5deg);
+  border-radius: 12px;
+}
+
+.home-page-feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+>>>>>>> Stashed changes
   margin-bottom: 0.6rem;
   font-family: "Cal Sans", sans-serif;
 >>>>>>> Stashed changes
@@ -841,8 +1101,14 @@
   font-weight: bold;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   width: 20px;
   height: 20px;
+=======
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+>>>>>>> Stashed changes
 =======
   width: 18px;
   height: 18px;
@@ -871,6 +1137,7 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .feature-link:hover {
   gap: 1rem;
   border-bottom-color: var(--primary);
@@ -879,6 +1146,16 @@
 /* ========== RISK ASSESSMENT - GLASS CARDS ========== */
 .risk-assessment-section {
   padding: 6rem 2rem;
+=======
+.home-page-feature-link:hover {
+  gap: 0.85rem;
+  border-bottom-color: var(--primary);
+}
+
+/* ========== RISK ASSESSMENT ========== */
+.home-page-risk-section {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
 =======
 .home-page-feature-link:hover {
   gap: 0.85rem;
@@ -915,10 +1192,13 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .risk-node {
   flex: 1;
   min-width: 280px;
 =======
+=======
+>>>>>>> Stashed changes
 /* ========== SECTION HEADERS (shared) ========== */
 .home-page-section-header {
   text-align: center;
@@ -1019,6 +1299,9 @@
 /* ========== RISK NODE ========== */
 .home-page-risk-node {
   width: 100%;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   background: white;
   padding: 1.75rem 1.5rem;
@@ -1032,6 +1315,7 @@
   overflow: hidden;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .risk-node:hover {
   transform: translateY(-8px) scale(1.02);
@@ -1055,6 +1339,20 @@
   transform-origin: left;
 }
 
+=======
+.home-page-risk-node::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+
+>>>>>>> Stashed changes
 .home-page-risk-node:hover {
   transform: translateY(-8px) scale(1.01);
 }
@@ -1096,6 +1394,9 @@
   display: inline-block;
   margin-bottom: 1.25rem;
   width: fit-content;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   transition: all 0.3s ease;
   line-height: 1;
@@ -1106,6 +1407,7 @@
   border-radius: 12px;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .risk-node h4 {
   font-size: 1.3rem;
@@ -1118,6 +1420,12 @@
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--gray-900);
+=======
+.home-page-risk-node h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+>>>>>>> Stashed changes
   margin-bottom: 0.75rem;
   font-family: "Cal Sans", sans-serif;
 >>>>>>> Stashed changes
@@ -1138,6 +1446,7 @@
   color: var(--gray-700);
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .risk-actions li:hover {
   background: white;
@@ -1185,6 +1494,29 @@
   color: var(--gray-300);
   display: flex;
   align-items: center;
+=======
+.home-page-risk-actions li::before {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* Flow arrow — hidden between cards on mobile, shown as divider */
+.home-page-flow-arrow {
+  font-size: 1.4rem;
+  color: var(--gray-300);
+  display: flex;
+  align-items: center;
+>>>>>>> Stashed changes
   justify-content: center;
   transform: rotate(90deg);
   animation: homePagePulseArrow 2s ease-in-out infinite;
@@ -1198,6 +1530,9 @@
 /* ========== FAMILY PREVIEW ========== */
 .home-page-family-section {
   padding: 4rem 1.25rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
   position: relative;
@@ -1228,6 +1563,7 @@
   top: -50%;
   right: -20%;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   width: 300px;
   height: 300px;
   background: radial-gradient(circle, rgba(230, 62, 78, 0.1) 0%, transparent 70%);
@@ -1247,6 +1583,8 @@
   padding: 1.5rem;
   border-radius: 30px;
 =======
+=======
+>>>>>>> Stashed changes
   width: 200px;
   height: 200px;
   background: radial-gradient(circle, rgba(230, 62, 78, 0.08) 0%, transparent 70%);
@@ -1265,6 +1603,9 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   padding: 1.25rem;
   border-radius: 24px;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   display: inline-flex;
   align-items: center;
@@ -1279,6 +1620,7 @@
   border-radius: 18px;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .family-preview-content {
   flex: 1;
@@ -1299,6 +1641,14 @@
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--gray-900);
+=======
+.home-page-family-preview-content { width: 100%; }
+
+.home-page-family-preview-content h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gray-900);
+>>>>>>> Stashed changes
   margin-bottom: 0.75rem;
   font-family: "Cal Sans", sans-serif;
 >>>>>>> Stashed changes
@@ -1328,6 +1678,7 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .family-link:hover {
   gap: 1.25rem;
   background: var(--primary);
@@ -1339,6 +1690,19 @@
 /* ========== CTA SECTION - CINEMATIC ========== */
 .home-cta {
   padding: 6rem 2rem;
+=======
+.home-page-family-link:hover {
+  gap: 1rem;
+  color: var(--primary);
+  background: var(--gray-50);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== CTA SECTION ========== */
+.home-page-cta {
+  padding: 4rem 1.25rem;
+>>>>>>> Stashed changes
 =======
 .home-page-family-link:hover {
   gap: 1rem;
@@ -1367,17 +1731,23 @@
   width: 140%;
   height: 200%;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
   animation: rotate 30s linear infinite;
 }
 
 @keyframes rotate {
 =======
+=======
+>>>>>>> Stashed changes
   background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
   animation: homePageRotate 30s linear infinite;
 }
 
 @keyframes homePageRotate {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -1398,6 +1768,9 @@
 .home-page-cta-content h2 {
   font-family: "Cal Sans", sans-serif;
   font-size: clamp(1.7rem, 6vw, 2.8rem);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   font-weight: 700;
   color: white;
@@ -1406,15 +1779,21 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-cta-content p {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 2.5rem;
 =======
+=======
+>>>>>>> Stashed changes
 .home-page-cta-content p {
   font-size: clamp(0.9rem, 3vw, 1.1rem);
   color: rgba(255,255,255,0.88);
   margin-bottom: 2rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   line-height: 1.7;
 }
@@ -1438,8 +1817,13 @@
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .home-cta-buttons .btn-secondary {
   background: rgba(255, 255, 255, 0.15);
+=======
+.home-page-cta-buttons .home-page-btn-secondary {
+  background: rgba(255,255,255,0.15);
+>>>>>>> Stashed changes
 =======
 .home-page-cta-buttons .home-page-btn-secondary {
   background: rgba(255,255,255,0.15);
@@ -1449,6 +1833,7 @@
   backdrop-filter: blur(10px);
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 .home-cta-buttons .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.25);
@@ -1486,6 +1871,22 @@
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+=======
+.home-page-cta-buttons .home-page-btn-secondary:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ========== TABLET — 640px+ ========== */
+@media (min-width: 640px) {
+  .home-page-hero {
+    padding: 7.5rem 2rem 3.5rem;
+  }
+
+  .home-page-hero-image {
+    max-width: 380px;
+>>>>>>> Stashed changes
   }
 
   .home-hero-buttons {
@@ -1519,6 +1920,9 @@
   .home-page-btn-primary,
   .home-page-btn-secondary {
     width: auto;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 
@@ -1527,6 +1931,7 @@
     gap: 1.5rem;
   }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   .risk-flow {
     flex-direction: column;
@@ -1821,6 +2226,157 @@
   }
 }
 
+=======
+  .home-page-risk-flow {
+    gap: 1.25rem;
+  }
+
+  .home-page-family-preview {
+    flex-direction: row;
+    text-align: left;
+    padding: 2.5rem;
+    gap: 2rem;
+  }
+
+  .home-page-cta-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .home-page-cta-buttons .home-page-btn-primary,
+  .home-page-cta-buttons .home-page-btn-secondary {
+    width: auto;
+  }
+}
+
+/* ========== DESKTOP — 1024px+ ========== */
+@media (min-width: 1024px) {
+  .home-page-hero {
+    flex-direction: row;
+    min-height: 100vh;
+    padding: 5rem 4rem 4rem;
+    text-align: left;
+    gap: 4rem;
+  }
+
+  .home-page-hero-content h1::after {
+    left: 0;
+    transform: none;
+  }
+
+  .home-page-hero-subtitle {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .home-page-hero-buttons {
+    justify-content: flex-start;
+  }
+
+  .home-page-hero-stats {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .home-page-hero-image {
+    max-width: 280px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .home-page-features {
+    padding: 6rem 2rem;
+  }
+
+  .home-page-features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .home-page-feature-card {
+    padding: 2.5rem 2rem;
+    border-radius: 32px;
+  }
+
+  .home-page-feature-icon {
+    font-size: 2.2rem;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-page-feature-card h3 { font-size: 1.4rem; }
+  .home-page-feature-card p { font-size: 0.95rem; }
+
+  .home-page-risk-section {
+    padding: 6rem 2rem;
+  }
+
+  .home-page-risk-flow {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2rem;
+  }
+
+  .home-page-flow-arrow {
+    transform: rotate(0deg);
+    flex-shrink: 0;
+  }
+
+  @keyframes homePagePulseArrow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); color: var(--primary-light); }
+  }
+
+  .home-page-risk-node {
+    flex: 1;
+    min-width: 260px;
+    padding: 2.5rem 2rem;
+    border-radius: 32px;
+  }
+
+  .home-page-risk-node-icon {
+    font-size: 2.2rem;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-page-risk-node h4 { font-size: 1.4rem; }
+  .home-page-risk-actions li { font-size: 0.95rem; }
+
+  .home-page-family-section { padding: 6rem 2rem; }
+
+  .home-page-family-preview {
+    padding: 3rem;
+    gap: 4rem;
+    border-radius: 40px;
+  }
+
+  .home-page-family-preview-icon {
+    font-size: 3rem;
+    padding: 1.5rem;
+    border-radius: 30px;
+  }
+
+  .home-page-family-preview-content h4 { font-size: 1.8rem; }
+  .home-page-family-preview-content p { font-size: 1rem; }
+
+  .home-page-cta { padding: 6rem 2rem; }
+
+  .home-page-section-header { margin-bottom: 4rem; }
+  .home-page-section-header h2::after { width: 60px; height: 4px; }
+}
+
+/* ========== WIDE DESKTOP — 1280px+ ========== */
+@media (min-width: 1280px) {
+  .home-page-hero {
+    padding: 5rem 5rem 4rem;
+  }
+}
+
+>>>>>>> Stashed changes
 /* ========== Print ========== */
 @media print {
   .home-hero,

@@ -128,6 +128,7 @@ const About = () => {
   return (
     <div className="about-page">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Hero Section */}
       <section className="about-hero">
         <div className="hero-content">
@@ -136,6 +137,8 @@ const About = () => {
             We're on a mission to reduce stroke-related deaths and disabilities in Cambodia 
             and Southeast Asia through AI-powered early detection and rapid response.
 =======
+=======
+>>>>>>> Stashed changes
 
       {/* ── HERO ── */}
       <section className="about-hero-section">
@@ -170,9 +173,16 @@ const About = () => {
               Explore More <FaArrowRight />
             </Link>
           </div>
+
+          <div className="about-hero-cta">
+            <Link to="/symptom-detector" className="about-hero-explore-btn">
+              Explore More <FaArrowRight />
+            </Link>
+          </div>
         </div>
       </section>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       {/* Mission & Vision Cards */}
       <section className="mission-vision-section">
@@ -292,6 +302,59 @@ const About = () => {
               <div className="about-card-icon"><FaChartLine /></div>
               <h2>Our Traction</h2>
               <p className="about-card-description">
+=======
+      {/* ── MISSION / VISION / GOALS ── */}
+      <section className="about-mission-vision-section">
+        <div className="about-container">
+          {/* Unified section header */}
+          <div className="about-section-header">
+            <h2>What Drives Us Forward</h2>
+            <p className="about-section-subtitle">
+              Three pillars that define who we are and what we're building
+            </p>
+          </div>
+
+          <div className="about-cards-grid">
+            {/* Mission */}
+            <div className="about-mission-card">
+              <div className="about-card-icon"><FaRocket /></div>
+              <h2>Our Mission</h2>
+              <p className="about-card-description">
+                To put life-saving stroke detection directly into the hands of every
+                Cambodian family — enabling early recognition, instant care access,
+                and confident home recovery support.
+              </p>
+              <ul className="about-mission-list">
+                <li>Real-time AI symptom detection</li>
+                <li>24/7 specialist connection</li>
+                <li>Nationwide accessibility</li>
+                <li>Family-centered recovery tools</li>
+              </ul>
+            </div>
+
+            {/* Vision */}
+            <div className="about-vision-card">
+              <div className="about-card-icon"><FaGlobeAsia /></div>
+              <h2>Our Vision</h2>
+              <p className="about-card-description">
+                A Southeast Asia where no family loses a loved one to stroke
+                due to delayed recognition or limited access to care — with
+                AI bridging the gap between symptoms and survival.
+              </p>
+              <ul className="about-vision-list">
+                <li>Regional stroke response network</li>
+                <li>Under 15-min emergency dispatch</li>
+                <li>AI-powered care in every pocket</li>
+                <li>Zero preventable stroke deaths</li>
+              </ul>
+            </div>
+
+            {/* Goals */}
+            <div className="about-goal-card">
+              <div className="about-card-icon"><FaChartLine /></div>
+              <h2>Our Traction</h2>
+              <p className="about-card-description">
+>>>>>>> Stashed changes
                 Real numbers, real impact — here's where Strokify stands
                 today as we grow across Cambodia.
               </p>
@@ -307,6 +370,9 @@ const About = () => {
                 <div className="about-goal-item">
                   <span className="about-goal-percent">50+</span>
                   <span className="about-goal-text">Partner nurses</span>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 </div>
               </div>
@@ -315,6 +381,7 @@ const About = () => {
         </div>
       </section>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       {/* Why We Started */}
       <section className="why-section">
@@ -331,6 +398,8 @@ const About = () => {
             <div className="why-authors">
               <span>— Hieng Dara, Van Meysorng, Chhea Muoyheang</span>
 =======
+=======
+>>>>>>> Stashed changes
       {/* ── WHY WE STARTED ── */}
       <section className="about-why-section">
         <div className="about-container">
@@ -347,6 +416,9 @@ const About = () => {
             </p>
             <div className="about-why-authors">
               — Hieng Dara, Van Meysorng, Chhea Muoyheang
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </div>
             <FaQuoteRight className="quote-icon right" />
@@ -355,12 +427,15 @@ const About = () => {
       </section>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Founders Section */}
       <section className="founders-section">
         <div className="container">
           <h2 className="section-title">Meet the Founders</h2>
           <p className="section-subtitle">Three passionate individuals united by a mission to save lives</p>
 =======
+=======
+>>>>>>> Stashed changes
       {/* ── FOUNDERS ── */}
       <section className="about-founders-section">
         <div className="about-container">
@@ -370,6 +445,9 @@ const About = () => {
               Three passionate individuals united by a mission to save lives
             </p>
           </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
           <div className="founders-grid">
@@ -453,6 +531,7 @@ const About = () => {
       </section>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Core Values */}
       <section className="values-section">
         <div className="container">
@@ -516,6 +595,36 @@ const About = () => {
             <div className="about-value-card">
               <div className="about-value-icon"><FaHandsHelping /></div>
 >>>>>>> Stashed changes
+=======
+      {/* ── CORE VALUES ── */}
+      <section className="about-values-section">
+        <div className="about-container">
+          <div className="about-section-header">
+            <h2>Our Core Values</h2>
+            <p className="about-section-subtitle">
+              The beliefs that guide every decision we make
+            </p>
+          </div>
+
+          <div className="about-values-grid">
+            <div className="about-value-card">
+              <div className="about-value-icon"><FaClock /></div>
+              <h3>Speed Saves Lives</h3>
+              <p>Every second counts in stroke response. We optimize every interaction for urgency.</p>
+            </div>
+            <div className="about-value-card">
+              <div className="about-value-icon"><FaHeart /></div>
+              <h3>Family First</h3>
+              <p>We build for families caring for loved ones, not just individual patients.</p>
+            </div>
+            <div className="about-value-card">
+              <div className="about-value-icon"><FaShieldAlt /></div>
+              <h3>Trust & Privacy</h3>
+              <p>Your health data is sacred. We protect it with the highest standards.</p>
+            </div>
+            <div className="about-value-card">
+              <div className="about-value-icon"><FaHandsHelping /></div>
+>>>>>>> Stashed changes
               <h3>Accessible to All</h3>
               <p>Premium technology should be available to every Cambodian, regardless of location or income.</p>
             </div>
@@ -524,10 +633,13 @@ const About = () => {
       </section>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       {/* Call to Action */}
       <section className="about-cta">
         <div className="cta-content">
 =======
+=======
+>>>>>>> Stashed changes
       {/* ── CTA ── */}
       <section className="about-cta-section">
         <div className="about-cta-content">
