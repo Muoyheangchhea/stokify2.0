@@ -19,11 +19,10 @@ import {
   FaHeartbeat,
   FaClock,
   FaAward,
-  FaGraduationCap, // Add this import
+  FaGraduationCap,
 } from "react-icons/fa";
 import "../styles/About.css";
 
-// Import images (assuming they're in src/assets/founders/)
 import daraImage from "../assets/img/dara.png";
 import meysorngImage from "../assets/img/ms.png";
 import muoyheangImage from "../assets/img/mh.png";
@@ -37,15 +36,8 @@ const founders = [
     linkedin: "https://linkedin.com/in/hieng-dara",
     twitter: "https://twitter.com/hiengdara",
     email: "dara@strokify.com",
-    quote:
-      "Bridging technical expertise with business strategy to drive innovation.",
+    quote: "Bridging technical expertise with business strategy to drive innovation.",
     education: "Computer Science, American University of Phnom Penh",
-    // expertise: [
-    //   "Business Strategy",
-    //   "Financial Leadership",
-    //   "Project Management",
-    //   "Business Intelligence"
-    // ],
     expertise: [
       "CFO, Real Business Simulations (SmartEdu USD P5)",
       "1st Place Winner - Sokheap Project, BUPT China",
@@ -65,12 +57,6 @@ const founders = [
     email: "meysorng@strokify.com",
     quote: "Great products blend design thinking with technical excellence.",
     education: "ICT, American University of Phnom Penh",
-    // expertise: [
-    //   "Product Design",
-    //   "UI/UX Design",
-    //   "Frontend Development",
-    //   "Gamification"
-    // ],
     expertise: [
       "2nd Place - Best AI & UI/UX Design (BUPT China)",
       "UI Designer, BusMate (NUS Singapore)",
@@ -90,13 +76,6 @@ const founders = [
     email: "muoyheang@strokify.com",
     quote: "Building robust technical foundations for innovative solutions.",
     education: "Software Development, American University of Phnom Penh",
-    // expertise: [
-    //   "Full Stack Development",
-    //   "Technical Leadership",
-    //   "Data Analytics",
-    //   "Prompt Engineering",
-    //   "UI/UX"
-    // ],
     expertise: [
       "Full Stack & Technical Lead, SkinApsor",
       "Frontend Developer, EZ Found",
@@ -111,7 +90,8 @@ const founders = [
 const About = () => {
   return (
     <div className="about-page">
-      {/* Hero Section */}
+
+      {/* ── HERO ── */}
       <section className="about-hero-section">
         <div className="about-hero-content">
           <h1>
@@ -123,93 +103,94 @@ const About = () => {
             and rapid response.
           </p>
 
-          <div className="about-stats-container">
-            <div className="about-stat-item">
-              <span className="about-stat-number">10K+</span>
-              <span className="about-stat-label">Lives Impacted</span>
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-number">10K+</span>
+              <span className="stat-label">Lives Impacted</span>
             </div>
-            <div className="about-stat-item">
-              <span className="about-stat-number">95%</span>
-              <span className="about-stat-label">Detection Rate</span>
+            <div className="stat-item">
+              <span className="stat-number">95%</span>
+              <span className="stat-label">Detection Rate</span>
             </div>
-            <div className="about-stat-item">
-              <span className="about-stat-number">24/7</span>
-              <span className="about-stat-label">Emergency Support</span>
+            <div className="stat-item">
+              <span className="stat-number">24/7</span>
+              <span className="stat-label">Emergency Support</span>
             </div>
+          </div>
+
+          <div className="about-hero-cta">
+            <Link to="/symptom-detector" className="about-hero-explore-btn">
+              Explore More <FaArrowRight />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision Cards */}
+      {/* ── MISSION / VISION / GOALS ── */}
       <section className="about-mission-vision-section">
         <div className="about-container">
+          <div className="about-section-header">
+            <h2>What Drives Us Forward</h2>
+            <p className="about-section-subtitle">
+              Three pillars that define who we are and what we're building
+            </p>
+          </div>
+
           <div className="about-cards-grid">
-            {/* Mission Card */}
+            {/* Mission */}
             <div className="about-mission-card">
-              <div className="about-card-icon">
-                <FaRocket />
-              </div>
+              <div className="about-card-icon"><FaRocket /></div>
               <h2>Our Mission</h2>
               <p className="about-card-description">
-                To empower every Cambodian family with the tools and knowledge
-                to detect stroke symptoms early, connect with specialized care
-                immediately, and support recovery at home.
+                To put life-saving stroke detection directly into the hands of every
+                Cambodian family — enabling early recognition, instant care access,
+                and confident home recovery support.
               </p>
               <ul className="about-mission-list">
-                <li> Accessible to all Cambodians</li>
-                <li> Real-time symptom detection</li>
-                <li> 24/7 caregiver connection</li>
-                <li> Support for families</li>
+                <li>Real-time AI symptom detection</li>
+                <li>24/7 specialist connection</li>
+                <li>Nationwide accessibility</li>
+                <li>Family-centered recovery tools</li>
               </ul>
             </div>
 
-            {/* Vision Card */}
+            {/* Vision */}
             <div className="about-vision-card">
-              <div className="about-card-icon">
-                <FaGlobeAsia />
-              </div>
+              <div className="about-card-icon"><FaGlobeAsia /></div>
               <h2>Our Vision</h2>
               <p className="about-card-description">
                 A Southeast Asia where no family loses a loved one to stroke
-                because they didn't recognize the signs in time or couldn't
-                access care quickly enough.
+                due to delayed recognition or limited access to care — with
+                AI bridging the gap between symptoms and survival.
               </p>
               <ul className="about-vision-list">
-                <li> Regional stroke network</li>
-                <li> AI in every pocket</li>
-                <li> less than 15 min emergency response</li>
-                <li> Zero preventable deaths</li>
+                <li>Regional stroke response network</li>
+                <li>Under 15-min emergency dispatch</li>
+                <li>AI-powered care in every pocket</li>
+                <li>Zero preventable stroke deaths</li>
               </ul>
             </div>
 
-            {/* Goal Card */}
+            {/* Traction */}
             <div className="about-goal-card">
-              <div className="about-card-icon">
-                <FaChartLine />
-              </div>
-              <h2>2026 Goals</h2>
+              <div className="about-card-icon"><FaChartLine /></div>
+              <h2>Our Traction</h2>
               <p className="about-card-description">
-                By the end of 2026, we're committed to achieving these
-                milestones:
+                Real numbers, real impact — here's where Strokify stands
+                today as we grow across Cambodia.
               </p>
               <div className="about-goal-list">
                 <div className="about-goal-item">
-                  <span className="about-goal-percent">100%</span>
-                  <span className="about-goal-text">Province coverage</span>
-                </div>
-                <div className="about-goal-item">
-                  <span className="about-goal-percent">1M+</span>
+                  <span className="about-goal-percent">250+</span>
                   <span className="about-goal-text">Active users</span>
                 </div>
                 <div className="about-goal-item">
-                  <span className="about-goal-percent">500+</span>
-                  <span className="about-goal-text">Partner nurses</span>
+                  <span className="about-goal-percent">15</span>
+                  <span className="about-goal-text">Hospital partnerships</span>
                 </div>
                 <div className="about-goal-item">
-                  <span className="about-goal-percent">50%</span>
-                  <span className="about-goal-text">
-                    Stroke response time reduction
-                  </span>
+                  <span className="about-goal-percent">50+</span>
+                  <span className="about-goal-text">Partner nurses</span>
                 </div>
               </div>
             </div>
@@ -217,7 +198,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Why We Started */}
+      {/* ── WHY WE STARTED ── */}
       <section className="about-why-section">
         <div className="about-container">
           <div className="about-why-content">
@@ -227,25 +208,27 @@ const About = () => {
               "In Cambodia, stroke is the leading cause of death. Every year,
               thousands of families lose loved ones because they didn't
               recognize the symptoms in time or couldn't reach a hospital within
-              the golden hour. We built Strokify to change that - to put
+              the golden hour. We built Strokify to change that — to put
               life-saving technology directly into the hands of every Cambodian
               family."
             </p>
             <div className="about-why-authors">
-              <span>— Hieng Dara, Van Meysorng, Chhea Muoyheang</span>
+              — Hieng Dara, Van Meysorng, Chhea Muoyheang
             </div>
             <FaQuoteRight className="about-quote-icon right" />
           </div>
         </div>
       </section>
 
-      {/* Founders Section */}
+      {/* ── FOUNDERS ── */}
       <section className="about-founders-section">
         <div className="about-container">
-          <h2 className="about-section-title">Meet the Founders</h2>
-          <p className="about-section-subtitle">
-            Three passionate individuals united by a mission to save lives
-          </p>
+          <div className="about-section-header">
+            <h2>Meet the Founders</h2>
+            <p className="about-section-subtitle">
+              Three passionate individuals united by a mission to save lives
+            </p>
+          </div>
 
           <div className="about-founders-grid">
             {founders.map((founder, index) => (
@@ -285,10 +268,8 @@ const About = () => {
                 <div className="about-founder-info">
                   <h3 className="about-founder-name">{founder.name}</h3>
                   <div className="about-founder-role">
-                    {founder.role.map((line, index) => (
-                      <p key={index} style={{ margin: 0 }}>
-                        {line}
-                      </p>
+                    {founder.role.map((line, i) => (
+                      <p key={i} style={{ margin: 0 }}>{line}</p>
                     ))}
                   </div>
 
@@ -321,59 +302,42 @@ const About = () => {
         </div>
       </section>
 
-      {/* Core Values */}
+      {/* ── CORE VALUES ── */}
       <section className="about-values-section">
         <div className="about-container">
-          <h2 className="about-section-title">Our Core Values</h2>
+          <div className="about-section-header">
+            <h2>Our Core Values</h2>
+            <p className="about-section-subtitle">
+              The beliefs that guide every decision we make
+            </p>
+          </div>
+
           <div className="about-values-grid">
             <div className="about-value-card">
-              <div className="about-value-icon">
-                <FaClock />
-              </div>
+              <div className="about-value-icon"><FaClock /></div>
               <h3>Speed Saves Lives</h3>
-              <p>
-                Every second counts in stroke response. We optimize every
-                interaction for urgency.
-              </p>
+              <p>Every second counts in stroke response. We optimize every interaction for urgency.</p>
             </div>
-
             <div className="about-value-card">
-              <div className="about-value-icon">
-                <FaHeart />
-              </div>
+              <div className="about-value-icon"><FaHeart /></div>
               <h3>Family First</h3>
-              <p>
-                We build for families caring for loved ones, not just individual
-                patients.
-              </p>
+              <p>We build for families caring for loved ones, not just individual patients.</p>
             </div>
-
             <div className="about-value-card">
-              <div className="about-value-icon">
-                <FaShieldAlt />
-              </div>
+              <div className="about-value-icon"><FaShieldAlt /></div>
               <h3>Trust & Privacy</h3>
-              <p>
-                Your health data is sacred. We protect it with the highest
-                standards.
-              </p>
+              <p>Your health data is sacred. We protect it with the highest standards.</p>
             </div>
-
             <div className="about-value-card">
-              <div className="about-value-icon">
-                <FaHandsHelping />
-              </div>
+              <div className="about-value-icon"><FaHandsHelping /></div>
               <h3>Accessible to All</h3>
-              <p>
-                Premium technology should be available to every Cambodian,
-                regardless of location or income.
-              </p>
+              <p>Premium technology should be available to every Cambodian, regardless of location or income.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
+      {/* ── CTA ── */}
       <section className="about-cta-section">
         <div className="about-cta-content">
           <h2>Join Our Mission</h2>
@@ -388,6 +352,7 @@ const About = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
