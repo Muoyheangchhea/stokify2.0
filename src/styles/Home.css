@@ -28,7 +28,6 @@
   isolation: isolate;
   text-align: center;
 }
-
 .home-page-hero::before {
   content: "";
   position: absolute;
@@ -69,14 +68,11 @@
 
 .home-page-hero-subtitle {
   font-size: clamp(0.95rem, 3.5vw, 1.2rem);
-  color: #4b5563;
-  margin-bottom: 2rem;
-  line-height: 1.7;
-  max-width: 90%;
-  margin-left: auto; margin-right: auto;
+  color: #4b5563; margin-bottom: 2rem; line-height: 1.7;
+  max-width: 90%; margin-left: auto; margin-right: auto;
   animation: hpFadeIn 1s ease-out 0.3s both;
 }
-@keyframes hpFadeIn { from{opacity:0}to{opacity:1} }
+@keyframes hpFadeIn { from { opacity: 0 } to { opacity: 1 } }
 
 .home-page-hero-buttons {
   display: flex; flex-direction: column; gap: 0.75rem;
@@ -85,8 +81,8 @@
   width: 100%;
 }
 @keyframes hpSlideUp {
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
+  from { opacity: 0; transform: translateY(30px) }
+  to   { opacity: 1; transform: translateY(0) }
 }
 
 .home-page-btn-primary,
@@ -118,8 +114,7 @@
 }
 .home-page-hero-stats::-webkit-scrollbar { display: none; }
 .home-page-hero-stat {
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.6rem 1rem;
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem;
   background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
   border: 1px solid rgba(230,62,78,0.15); border-radius: 100px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
@@ -133,61 +128,54 @@
 .home-page-stat-value { font-size: 1.1rem; font-weight: 800; color: #111827; line-height: 1; }
 .home-page-stat-label { font-size: 0.62rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
 
-/* =====================================================
-   DUAL iPHONE 17 PRO MAX
-   =====================================================
-
-   The 3D look is baked INTO the SVG geometry itself —
-   each phone SVG contains:
-     • A visible side WALL (WALL_W px wide titanium strip)
-     • The phone face (screen + bezel + Dynamic Island)
-
-   LEFT  phone: wall on RIGHT  side → inner edge visible
-   RIGHT phone: wall on LEFT   side → inner edge visible
-
-   CSS only adds:
-     • Side-by-side layout, bottoms aligned
-     • Gentle independent float animations (translateY only)
-     • Directional drop shadows
-     • No rotateY needed — 3D is in the SVG
-   ===================================================== */
+/* ═══════════════════════════════════════════════
+   DUAL iPHONE MOCKUP
+   ─────────────────────────────────────────────
+   APPROVED LAYOUT (matches Image 1 / app screenshot):
+   • Left phone:  lower-left,  rotate(-14deg),  z-index 1  (behind)
+   • Right phone: upper-right, rotate(+10deg),  z-index 2  (in front)
+   • Both screens face fully forward
+   • Each phone floats independently (translateY only, no rotation change)
+   ═══════════════════════════════════════════════ */
 
 .hp-duo {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  /* Negative gap pulls the inner edges together so the wall strips nearly touch */
-  gap: -4px;
+  position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
+  height: 490px;
   margin: 0 auto;
   flex-shrink: 0;
 }
 
 .hp-slot {
-  width: 50%;
-  max-width: 234px;
-  flex-shrink: 0;
-  position: relative;
+  position: absolute;
+  width: 52%;
 }
 
-/* LEFT phone floats up independently */
+/* Left: lower-left, clockwise tilt, behind */
 .hp-slot--left {
+  left: 0%;
+  top: 14%;
+  z-index: 1;
+  transform-origin: center center;
   animation: hpFloatL 6s ease-in-out infinite;
 }
 @keyframes hpFloatL {
-  0%,100% { transform: translateY(0px); }
-  50%     { transform: translateY(-20px); }
+  0%, 100% { transform: rotate(-14deg) translateY(0px); }
+  50%       { transform: rotate(-14deg) translateY(-18px); }
 }
 
-/* RIGHT phone floats with slight offset phase */
+/* Right: upper-right, counter-clockwise tilt, in front */
 .hp-slot--right {
-  animation: hpFloatR 6.8s ease-in-out infinite;
+  right: 0%;
+  top: 0%;
+  z-index: 2;
+  transform-origin: center center;
+  animation: hpFloatR 7s ease-in-out infinite;
 }
 @keyframes hpFloatR {
-  0%,100% { transform: translateY(0px); }
-  50%     { transform: translateY(-13px); }
+  0%, 100% { transform: rotate(10deg) translateY(-10px); }
+  50%       { transform: rotate(10deg) translateY(10px); }
 }
 
 .hp-phone-svg {
@@ -197,34 +185,22 @@
   overflow: visible;
 }
 
-/* Floor shadow */
-.hp-slot::after {
-  content: "";
-  position: absolute;
-  bottom: -14px; left: 50%;
-  transform: translateX(-50%);
-  width: 70%; height: 12px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 0%, transparent 72%);
-  filter: blur(6px);
-  z-index: -1;
-}
-
-/* Responsive */
+/* ── Responsive ── */
 @media (max-width: 479px) {
-  .hp-duo { max-width: 310px; }
-  .hp-slot { max-width: 152px; }
+  .hp-duo  { max-width: 300px; height: 350px; }
+  .hp-slot { width: 54%; }
 }
 @media (min-width: 480px) and (max-width: 767px) {
-  .hp-duo { max-width: 390px; }
-  .hp-slot { max-width: 192px; }
+  .hp-duo  { max-width: 360px; height: 425px; }
+  .hp-slot { width: 53%; }
 }
 @media (min-width: 768px) {
-  .hp-duo { max-width: 480px; }
-  .hp-slot { max-width: 234px; }
+  .hp-duo  { max-width: 420px; height: 490px; }
+  .hp-slot { width: 52%; }
 }
 @media (min-width: 1024px) {
-  .hp-duo { max-width: 460px; margin: 0; }
-  .hp-slot { max-width: 224px; }
+  .hp-duo  { max-width: 400px; height: 470px; margin: 0; }
+  .hp-slot { width: 52%; }
 }
 
 /* =========================================
@@ -246,7 +222,7 @@
 .home-page-feature-card:hover { transform: translateY(-8px) scale(1.01); border-color: var(--primary,#e63e4e); box-shadow: 0 20px 48px rgba(230,62,78,0.12); }
 .home-page-feature-card:hover::before { transform: scaleX(1); }
 .home-page-feature-icon { font-size: 1.8rem; color: white; background: linear-gradient(135deg,var(--primary,#e63e4e) 0%,var(--primary-light,#ff6b7a) 100%); padding: 0.85rem; border-radius: 16px; display: inline-block; margin-bottom: 1.25rem; width: fit-content; box-shadow: 0 8px 16px -4px rgba(230,62,78,0.3); transition: all 0.3s ease; line-height: 1; }
-.home-page-feature-card:hover .home-page-feature-icon { transform: scale(1.1) rotate(5deg); border-radius: 12px; }
+.home-page-feature-card:hover .home-page-feature-icon { transform: scale(1.1) rotate(5deg); }
 .home-page-feature-card h3 { font-size: 1.2rem; font-weight: 700; color: #111827; margin-bottom: 0.6rem; }
 .home-page-feature-card p { color: #6b7280; line-height: 1.65; margin-bottom: 1.25rem; flex-grow: 1; font-size: 0.9rem; }
 .home-page-feature-benefits { list-style: none; margin-bottom: 1.5rem; }
@@ -264,20 +240,20 @@
 .home-page-risk-node::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px; transform: scaleX(0); transition: transform 0.4s ease; transform-origin: left; }
 .home-page-risk-node:hover { transform: translateY(-8px) scale(1.01); }
 .home-page-risk-node:hover::before { transform: scaleX(1); }
-.home-page-risk-node--low .home-page-risk-node-icon { background: linear-gradient(135deg,#22c55e,#4ade80); box-shadow: 0 8px 16px -4px rgba(34,197,94,0.3); }
+.home-page-risk-node--low .home-page-risk-node-icon  { background: linear-gradient(135deg,#22c55e,#4ade80); box-shadow: 0 8px 16px -4px rgba(34,197,94,0.3); }
 .home-page-risk-node--low::before { background: linear-gradient(90deg,#22c55e,#4ade80); }
 .home-page-risk-node--low:hover { border-color: #22c55e; }
 .home-page-risk-node--low .home-page-risk-actions li::before { background: linear-gradient(135deg,#22c55e,#4ade80); }
-.home-page-risk-node--moderate .home-page-risk-node-icon { background: linear-gradient(135deg,#f97316,#fb923c); box-shadow: 0 8px 16px -4px rgba(249,115,22,0.3); }
+.home-page-risk-node--moderate .home-page-risk-node-icon  { background: linear-gradient(135deg,#f97316,#fb923c); box-shadow: 0 8px 16px -4px rgba(249,115,22,0.3); }
 .home-page-risk-node--moderate::before { background: linear-gradient(90deg,#f97316,#fb923c); }
 .home-page-risk-node--moderate:hover { border-color: #f97316; }
 .home-page-risk-node--moderate .home-page-risk-actions li::before { background: linear-gradient(135deg,#f97316,#fb923c); }
-.home-page-risk-node--high .home-page-risk-node-icon { background: linear-gradient(135deg,#dc2626,#ef4444); box-shadow: 0 8px 16px -4px rgba(220,38,38,0.3); }
+.home-page-risk-node--high .home-page-risk-node-icon  { background: linear-gradient(135deg,#dc2626,#ef4444); box-shadow: 0 8px 16px -4px rgba(220,38,38,0.3); }
 .home-page-risk-node--high::before { background: linear-gradient(90deg,#dc2626,#ef4444); }
 .home-page-risk-node--high:hover { border-color: #dc2626; }
 .home-page-risk-node--high .home-page-risk-actions li::before { background: linear-gradient(135deg,#dc2626,#ef4444); }
 .home-page-risk-node-icon { font-size: 1.8rem; color: white; padding: 0.85rem; border-radius: 16px; display: inline-block; margin-bottom: 1.25rem; width: fit-content; transition: all 0.3s ease; line-height: 1; }
-.home-page-risk-node:hover .home-page-risk-node-icon { transform: scale(1.1) rotate(5deg); border-radius: 12px; }
+.home-page-risk-node:hover .home-page-risk-node-icon { transform: scale(1.1) rotate(5deg); }
 .home-page-risk-node h4 { font-size: 1.2rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; }
 .home-page-risk-actions { list-style: none; margin-top: 0.5rem; margin-bottom: 0.5rem; }
 .home-page-risk-actions li { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.9rem; color: #374151; }
@@ -292,7 +268,7 @@
 .home-page-family-preview { background: white; padding: 2rem 1.5rem; border-radius: 28px; border: 1px solid #e5e7eb; box-shadow: 0 8px 32px rgba(0,0,0,0.08); max-width: 1200px; margin: 0 auto; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
 .home-page-family-preview:hover { transform: translateY(-6px) scale(1.01); border-color: var(--primary,#e63e4e); box-shadow: 0 24px 48px rgba(230,62,78,0.12); }
 .home-page-family-preview-icon { font-size: 2rem; color: white; background: linear-gradient(135deg,var(--primary,#e63e4e) 0%,var(--primary-light,#ff6b7a) 100%); padding: 1.25rem; border-radius: 24px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.4s ease; box-shadow: 0 10px 20px -6px rgba(230,62,78,0.3); }
-.home-page-family-preview:hover .home-page-family-preview-icon { transform: scale(1.1) rotate(5deg); border-radius: 18px; }
+.home-page-family-preview:hover .home-page-family-preview-icon { transform: scale(1.1) rotate(5deg); }
 .home-page-family-preview-content { width: 100%; }
 .home-page-family-preview-content h4 { font-size: 1.4rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; }
 .home-page-family-preview-content p { color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.9rem; }
@@ -336,25 +312,15 @@
   .home-page-features { padding: 6rem 2rem; }
   .home-page-features-grid { grid-template-columns: repeat(3,1fr); gap: 2rem; }
   .home-page-feature-card { padding: 2.5rem 2rem; border-radius: 32px; }
-  .home-page-feature-icon { font-size: 2.2rem; padding: 1rem; border-radius: 20px; margin-bottom: 1.5rem; }
-  .home-page-feature-card h3 { font-size: 1.4rem; }
-  .home-page-feature-card p { font-size: 0.95rem; }
   .home-page-risk-section { padding: 6rem 2rem; }
   .home-page-risk-flow { flex-direction: row; align-items: stretch; gap: 2rem; }
   .home-page-flow-arrow { transform: rotate(0deg); flex-shrink: 0; }
   @keyframes hpPulseArrow { 0%,100%{opacity:0.4;transform:scale(1);}50%{opacity:1;transform:scale(1.2);} }
   .home-page-risk-node { flex: 1; min-width: 260px; padding: 2.5rem 2rem; border-radius: 32px; }
-  .home-page-risk-node-icon { font-size: 2.2rem; padding: 1rem; border-radius: 20px; margin-bottom: 1.5rem; }
-  .home-page-risk-node h4 { font-size: 1.4rem; }
-  .home-page-risk-actions li { font-size: 0.95rem; }
   .home-page-family-section { padding: 6rem 2rem; }
   .home-page-family-preview { padding: 3rem; gap: 4rem; border-radius: 40px; }
-  .home-page-family-preview-icon { font-size: 3rem; padding: 1.5rem; border-radius: 30px; }
-  .home-page-family-preview-content h4 { font-size: 1.8rem; }
-  .home-page-family-preview-content p { font-size: 1rem; }
   .home-page-cta { padding: 6rem 2rem; }
   .home-page-section-header { margin-bottom: 4rem; }
-  .home-page-section-header h2::after { width: 60px; height: 4px; }
 }
 
 @media (min-width: 1280px) {

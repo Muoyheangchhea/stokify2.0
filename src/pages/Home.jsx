@@ -6,152 +6,126 @@ import {
   FaCheckCircle, FaExclamation, FaExclamationTriangle,
 } from "react-icons/fa";
 import "../styles/Home.css";
-import logo  from "../assets/img/phone_home.png";
+
+// Assets
+import logo from "../assets/img/phone_home.png";
 import logo2 from "../assets/img/phone_home1.png";
 
-/* ─────────────────────────────────────────────
-   iPhone 17 Pro Max — SVG frame mockup
-   Viewport: 393 × 852 (logical points)
-   Corner radius: 55px
-   Bezel: ~10px slim matte black
-   Dynamic Island: pill 126×37 centred at y=17
-───────────────────────────────────────────── */
-const IPhone17Frame = ({ src, alt, flip = false }) => {
-  const W = 393, H = 852, R = 55;
-  const B = 10, SR = 48;
+/**
+ * ── THE FINAL 3D iPHONE MOCKUP ──
+ * Refined to sit higher and float with more presence.
+ */
+const IPhoneRealistic = ({ src, alt, rotation = 25, scale = 1, delay = "0s" }) => {
+  const isLeft = rotation > 0;
+  
+  const floatingStyle = {
+    animation: `phoneFloat 5s ease-in-out infinite`,
+    animationDelay: delay,
+    perspective: "2000px",
+    transformStyle: "preserve-3d",
+  };
+
+  const phoneStyle = {
+    position: "relative",
+    width: "265px", 
+    height: "550px",
+    borderRadius: "46px",
+    background: "#000",
+    transformStyle: "preserve-3d",
+    transform: `rotateY(${rotation}deg) rotateX(2deg) scale(${scale})`,
+    boxShadow: `
+      ${isLeft ? "-1px" : "1px"} 0px 0px #adb5bd,
+      ${isLeft ? "-2px" : "2px"} 0px 0px #f8f9fa,
+      ${isLeft ? "-4px" : "4px"} 0px 0.5px 0px #ced4da,
+      ${isLeft ? "-8px" : "8px"} 0px 2px 0px #6c757d,
+      ${isLeft ? "-10px" : "10px"} 0px 3px 0px #343a40,
+      ${isLeft ? "-30px" : "30px"} 40px 60px rgba(0,0,0,0.4)
+    `,
+    border: "0.5px solid rgba(255,255,255,0.2)",
+  };
 
   return (
-    <div className="hp-frame-wrap">
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        className="hp-frame-svg"
-      >
-        <defs>
-          {/* Simple clip path - no flip condition */}
-          <clipPath id="screenClip">
-            <rect
-              x={B} y={B}
-              width={W - B * 2} height={H - B * 2}
-              rx={SR} ry={SR}
-            />
-          </clipPath>
-        </defs>
+    <div style={floatingStyle}>
+      <style>
+        {`
+          @keyframes phoneFloat {
+            0%, 100% { transform: translateY(-10px); }
+            50% { transform: translateY(-35px); }
+          }
+        `}
+      </style>
+      <div style={phoneStyle}>
+        {/* SCREEN */}
+        <div style={{
+          position: "absolute",
+          inset: "11px",
+          background: "#000",
+          borderRadius: "36px",
+          overflow: "hidden",
+          boxShadow: "inset 0 0 12px rgba(0,0,0,0.9)"
+        }}>
+          <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, width: "100%", height: "100%",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
+            pointerEvents: "none"
+          }} />
+        </div>
 
-        {/* Outer frame - simple dark gray */}
-        <rect
-          x="0" y="0" width={W} height={H} rx={R} ry={R}
-          fill="#222222"
-        />
-        
-        {/* Inner bezel - slightly lighter */}
-        <rect
-          x="2" y="2" width={W-4} height={H-4} rx={R-2} ry={R-2}
-          fill="none"
-          stroke="#333333"
-          strokeWidth="4"
-        />
+        {/* DYNAMIC ISLAND */}
+        <div style={{
+          position: "absolute",
+          top: "22px",
+          left: "50%",
+          transform: "translateX(-50%) translateZ(1px)",
+          width: "85px",
+          height: "26px",
+          background: "#000",
+          borderRadius: "14px",
+          zIndex: 10
+        }} />
 
-        {/* Screen area - black background */}
-        <rect
-          x={B} y={B}
-          width={W - B * 2} height={H - B * 2}
-          rx={SR} ry={SR}
-          fill="#000000"
-        />
-
-        {/* Screenshot - with flip transform applied here */}
-        <image
-          href={src}
-          x={B} y={B}
-          width={W - B * 2} height={H - B * 2}
-          clipPath="url(#screenClip)"
-          preserveAspectRatio="xMidYMid slice"
-          style={{ transform: flip ? "scaleX(-1)" : "none", transformOrigin: "center" }}
-        />
-
-        {/* Dynamic Island */}
-        <rect
-          x={(W - 126) / 2} y="17"
-          width="126" height="37"
-          rx="18.5" ry="18.5"
-          fill="#0a0a0a"
-        />
-
-        {/* Camera and sensors in Dynamic Island */}
-        <circle
-          cx={(W - 126) / 2 + 35}
-          cy="35.5"
-          r="6"
-          fill="#1a1a1a"
-        />
-        <circle
-          cx={(W - 126) / 2 + 55}
-          cy="35.5"
-          r="4"
-          fill="#333333"
-        />
-
-        {/* Side buttons - subtle */}
-        <rect x="0" y="170" width="3" height="35" fill="#555555" />
-        <rect x="0" y="235" width="3" height="65" fill="#555555" />
-        <rect x="0" y="320" width="3" height="65" fill="#555555" />
-        <rect x={W - 3} y="250" width="3" height="90" fill="#555555" />
-        <rect x={W - 3} y="560" width="3" height="65" fill="#555555" />
-
-        {/* Bottom bar (home indicator) */}
-        <rect
-          x={(W - 140) / 2} y={H - 22}
-          width="140" height="5"
-          rx="2.5"
-          fill="rgba(255,255,255,0.3)"
-        />
-      </svg>
+        {/* SIDE BUTTONS */}
+        <div style={{
+          position: "absolute",
+          top: "135px",
+          [isLeft ? "left" : "right"]: "-11px",
+          width: "4px",
+          height: "45px",
+          background: "linear-gradient(to bottom, #ced4da, #adb5bd)",
+          borderRadius: "2px"
+        }} />
+      </div>
     </div>
   );
 };
 
 const Home = () => {
   const stats = [
-    { value: "200+", label: "Users Testing", icon: <FaUsers /> },
-    { value: "5", label: "Hospitals Engaged", icon: <FaShieldAlt /> },
+    { value: "200+", label: "Users Testing",    icon: <FaUsers /> },
+    { value: "5",    label: "Hospitals Engaged", icon: <FaShieldAlt /> },
   ];
 
   const riskLevels = [
-    {
-      level: "Low Risk", icon: <FaCheckCircle />, modifier: "home-page-risk-node--low",
-      actions: ["Health Advisor recommendations", "LifeSync daily tasks", "Wellness tracking"],
-    },
-    {
-      level: "Moderate Risk", icon: <FaExclamation />, modifier: "home-page-risk-node--moderate",
-      actions: ["Share report with caregiver", "Schedule check-up", "Enhanced monitoring"],
-    },
-    {
-      level: "High Risk", icon: <FaExclamationTriangle />, modifier: "home-page-risk-node--high",
-      actions: ["F.A.S.T. stroke test", "Emergency guidance", "Call 911 immediately"],
-    },
+    { level: "Low Risk",      icon: <FaCheckCircle />,        modifier: "home-page-risk-node--low",
+      actions: ["Health Advisor recommendations", "LifeSync daily tasks", "Wellness tracking"] },
+    { level: "Moderate Risk", icon: <FaExclamation />,        modifier: "home-page-risk-node--moderate",
+      actions: ["Share report with caregiver", "Schedule check-up", "Enhanced monitoring"] },
+    { level: "High Risk",     icon: <FaExclamationTriangle />, modifier: "home-page-risk-node--high",
+      actions: ["F.A.S.T. stroke test", "Emergency guidance", "Call 911 immediately"] },
   ];
 
   const features = [
-    {
-      icon: <FaStethoscope />, title: "Symptom Detector",
+    { icon: <FaStethoscope />, title: "Symptom Detector",
       description: "AI-powered symptom analysis with 95% accuracy - get results in seconds",
-      benefits: ["5-minute assessment", "3 risk categories", "Instant results"],
-      link: "/symptom-detector",
-    },
-    {
-      icon: <FaHeartbeat />, title: "Health Advisor",
+      benefits: ["5-minute assessment", "3 risk categories", "Instant results"], link: "/symptom-detector" },
+    { icon: <FaHeartbeat />, title: "Health Advisor",
       description: "Personalized wellness plans tailored to your unique health profile",
-      benefits: ["Custom recommendations", "Progress tracking", "Expert guidelines"],
-      link: "/health-advisor",
-    },
-    {
-      icon: <FaSync />, title: "LifeSync",
+      benefits: ["Custom recommendations", "Progress tracking", "Expert guidelines"], link: "/health-advisor" },
+    { icon: <FaSync />, title: "LifeSync",
       description: "Synchronize your health tasks, medications, and daily progress",
-      benefits: ["Smart reminders", "Medication tracking", "Health metrics"],
-      link: "/lifesync",
-    },
+      benefits: ["Smart reminders", "Medication tracking", "Health metrics"], link: "/lifesync" },
   ];
 
   return (
@@ -163,7 +137,6 @@ const Home = () => {
             Experience the future of healthcare with AI-powered symptom analysis
             and personalized wellness guidance.
           </p>
-
           <div className="home-page-hero-buttons">
             <Link to="/about" className="home-page-btn-secondary">
               <FaQuestionCircle /> About Us
@@ -172,27 +145,35 @@ const Home = () => {
               Start Free Trial <FaArrowRight />
             </Link>
           </div>
-
           <div className="home-page-hero-stats">
-            {stats.map((stat, i) => (
+            {stats.map((s, i) => (
               <div key={i} className="home-page-hero-stat">
-                <span className="home-page-stat-icon">{stat.icon}</span>
+                <span className="home-page-stat-icon">{s.icon}</span>
                 <div className="home-page-stat-info">
-                  <span className="home-page-stat-value">{stat.value}</span>
-                  <span className="home-page-stat-label">{stat.label}</span>
+                  <span className="home-page-stat-value">{s.value}</span>
+                  <span className="home-page-stat-label">{s.label}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Simple side-by-side phones */}
-        <div className="hp-duo">
-          <div className="hp-slot hp-slot--left">
-            <IPhone17Frame src={logo} alt="Strokify Home" flip={false} />
+        {/* DUAL DISPLAY - 3D iPHONES WITH FLOATING ANIMATION */}
+        <div className="hp-duo" style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10px",
+            height: "600px",
+            perspective: "2000px"
+        }}>
+          {/* Back Phone */}
+          <div style={{ marginRight: "-55px", zIndex: 8 }}>
+            <IPhoneRealistic src={logo} alt="Home" rotation={30} scale={0.95} delay="0s" />
           </div>
-          <div className="hp-slot hp-slot--right">
-            <IPhone17Frame src={logo2} alt="Strokify Health Dashboard" flip={true} />
+          {/* Front Phone */}
+          <div style={{ zIndex: 20, marginTop: "40px", marginRight: "100px" }}>
+            <IPhoneRealistic src={logo2} alt="Dashboard" rotation={-22} scale={1} delay="0.6s" />
           </div>
         </div>
       </section>
@@ -232,9 +213,8 @@ const Home = () => {
                   {risk.actions.map((a, j) => <li key={j}>{a}</li>)}
                 </ul>
               </div>
-              {i < riskLevels.length - 1 && (
-                <div className="home-page-flow-arrow"><FaArrowRight /></div>
-              )}
+              {i < riskLevels.length - 1 &&
+                <div className="home-page-flow-arrow"><FaArrowRight /></div>}
             </React.Fragment>
           ))}
         </div>
@@ -245,11 +225,9 @@ const Home = () => {
           <div className="home-page-family-preview-icon"><FaUsers /></div>
           <div className="home-page-family-preview-content">
             <h4>Care for Your Whole Family</h4>
-            <p>
-              Children can create family accounts to monitor their elderly parents' health
+            <p>Children can create family accounts to monitor their elderly parents' health
               from anywhere in the world. Stay connected and catch potential health issues
-              before they become emergencies.
-            </p>
+              before they become emergencies.</p>
             <Link to="/family-accounts" className="home-page-family-link">
               Learn about family accounts <FaArrowRight />
             </Link>
