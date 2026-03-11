@@ -1,1070 +1,436 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  FaUser, FaHeart, FaLungs, FaWineBottle, FaApple, 
-  FaBed, FaArrowRight, FaArrowLeft, FaCheck, FaClock,
-  FaBrain, FaHeartbeat, FaTint, FaLungsVirus, FaSmoking,
-  FaWeight, FaRuler, FaUsers, FaMapMarkerAlt, FaInfoCircle,
-  FaExclamationTriangle, FaShieldAlt, FaLeaf, FaChartLine,
-  FaFileAlt, FaDownload, FaPrint, FaShare, FaTimes
+import {
+  FaUser, FaHeart, FaLungs, FaWineBottle, FaApple,
+  FaBed, FaArrowRight, FaArrowLeft, FaCheck, FaBrain,
+  FaHeartbeat, FaTint, FaSmoking, FaWeight, FaRuler,
+  FaUsers, FaMapMarkerAlt, FaInfoCircle, FaShieldAlt,
+  FaFileAlt, FaDownload, FaExclamationTriangle
 } from 'react-icons/fa';
 import '../styles/SymptomDetector.css';
 
 const SymptomDetector = () => {
-  // ---------- Current Step State ----------
-  const [currentStep, setCurrentStep] = useState(1);
-  const [currentSection, setCurrentSection] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [showFullReport, setShowFullReport] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [reportData, setReportData] = useState(null);
+  const [currentStep, setCurrentStep]         = useState(1);
+  const [currentSection, setCurrentSection]   = useState(1);
+  const [isSubmitting, setIsSubmitting]       = useState(false);
+  const [showResults, setShowResults]         = useState(false);
+  const [showFullReport, setShowFullReport]   = useState(false);
+  const [progress, setProgress]               = useState(0);
+  const [reportData, setReportData]           = useState(null);
 
-  // ---------- Form Data State ----------
   const [formData, setFormData] = useState({
-    // Section 1: Demographics
-    age: 35,
-    sex: '',
-    ethnicity: '',
-    maritalStatus: '',
-    height: 170,
-    weight: 70,
-    residenceType: '',
-    
-    // Section 2: Medical History
-    familyStroke: '',
-    familyHeart: '',
-    familyDiabetes: '',
-    hasHighBP: '',
-    bpMedication: '',
-    hasHeartDisease: '',
-    hasDiabetes: '',
-    diabetesMedication: '',
-    knowsBP: 'unknown',
-    systolic: '',
-    diastolic: '',
-    knowsGlucose: 'unknown',
-    glucose: '',
-    
-    // Section 3: Lifestyle
-    smokingStatus: '',
-    cigarettesPerDay: '',
-    alcoholConsumption: '',
-    diet: '',
-    physicalActivity: '',
-    sleepStress: ''
+    age: 35, sex: '', ethnicity: '', maritalStatus: '',
+    height: 170, weight: 70, residenceType: '',
+    familyStroke: '', familyHeart: '', familyDiabetes: '',
+    hasHighBP: '', bpMedication: '', hasHeartDisease: '',
+    hasDiabetes: '', diabetesMedication: '',
+    knowsBP: 'unknown', systolic: '', diastolic: '',
+    knowsGlucose: 'unknown', glucose: '',
+    smokingStatus: '', cigarettesPerDay: '',
+    alcoholConsumption: '', diet: '', physicalActivity: '', sleepStress: ''
   });
 
-  // ---------- Fix any corrupted age values on mount ----------
+  const [showBpMedication, setShowBpMedication]             = useState(false);
+  const [showDiabetesMedication, setShowDiabetesMedication] = useState(false);
+  const [showCigarettes, setShowCigarettes]                 = useState(false);
+  const [showBpInputs, setShowBpInputs]                     = useState(false);
+  const [showGlucoseInput, setShowGlucoseInput]             = useState(false);
+
   useEffect(() => {
-    if (formData.age < 20 || formData.age > 100 || isNaN(formData.age)) {
+    if (!formData.age || formData.age < 20 || formData.age > 100 || isNaN(formData.age)) {
       setFormData(prev => ({ ...prev, age: 35 }));
     }
   }, []);
 
-  // ---------- UI State for Conditional Fields ----------
-  const [showBpMedication, setShowBpMedication] = useState(false);
-  const [showDiabetesMedication, setShowDiabetesMedication] = useState(false);
-  const [showCigarettes, setShowCigarettes] = useState(false);
-  const [showBpInputs, setShowBpInputs] = useState(false);
-  const [showGlucoseInput, setShowGlucoseInput] = useState(false);
-
-  // ---------- Question Configuration ----------
+  // ─── Sections / Questions ────────────────────────────────────────────────────
   const sections = [
     {
-      id: 1,
-      title: 'Personal Profile',
-      subtitle: 'Tell us about yourself',
-      icon: <FaUser />,
-      color: '#E63E4E',
+      id: 1, title: 'Personal Profile', icon: <FaUser />, color: '#E63E4E',
       questions: [
-        {
-          id: 'age',
-          type: 'slider',
-          label: 'What is your age?',
-          icon: <FaUser />,
-          min: 20,
-          max: 100,
-          unit: 'years'
-        },
-        {
-          id: 'sex',
-          type: 'options',
-          label: 'What is your gender?',
-          icon: <FaUser />,
-          options: ['Male', 'Female', 'Prefer not to say']
-        },
-        {
-          id: 'ethnicity',
-          type: 'options',
-          label: 'What is your ethnicity?',
-          icon: <FaUsers />,
-          options: ['Khmer', 'Vietnamese', 'Chinese', 'Other']
-        },
-        {
-          id: 'maritalStatus',
-          type: 'options',
-          label: 'What is your marital status?',
-          icon: <FaHeart />,
-          options: ['Single', 'Married', 'Divorced', 'Widowed']
-        },
-        {
-          id: 'heightWeight',
-          type: 'dual-slider',
-          label: 'What is your height and weight?',
-          icon: <FaRuler />,
-          heightMin: 140,
-          heightMax: 220,
-          weightMin: 40,
-          weightMax: 150
-        },
-        {
-          id: 'residenceType',
-          type: 'options',
-          label: 'Where do you live?',
-          icon: <FaMapMarkerAlt />,
-          options: ['Urban', 'Suburban', 'Rural']
-        }
+        { id: 'age',          type: 'slider',      label: 'What is your age?',                    icon: <FaUser />,         min: 20, max: 100, unit: 'years' },
+        { id: 'sex',          type: 'options',     label: 'What is your gender?',                 icon: <FaUser />,         options: ['Male', 'Female', 'Prefer not to say'] },
+        { id: 'ethnicity',    type: 'options',     label: 'What is your ethnicity?',              icon: <FaUsers />,        options: ['Khmer', 'Vietnamese', 'Chinese', 'Other'] },
+        { id: 'maritalStatus',type: 'options',     label: 'What is your marital status?',         icon: <FaHeart />,        options: ['Single', 'Married', 'Divorced', 'Widowed'] },
+        { id: 'heightWeight', type: 'dual-slider', label: 'What is your height and weight?',      icon: <FaRuler />,        heightMin: 140, heightMax: 220, weightMin: 40, weightMax: 150 },
+        { id: 'residenceType',type: 'options',     label: 'Where do you live?',                   icon: <FaMapMarkerAlt />, options: ['Urban', 'Suburban', 'Rural'] }
       ]
     },
     {
-      id: 2,
-      title: 'Medical History',
-      subtitle: 'Your health background',
-      icon: <FaHeartbeat />,
-      color: '#10B981',
+      id: 2, title: 'Medical History', icon: <FaHeartbeat />, color: '#10B981',
       questions: [
-        {
-          id: 'familyStroke',
-          type: 'yes-no',
-          label: 'Has anyone in your immediate family ever had a stroke?',
-          icon: <FaBrain />
-        },
-        {
-          id: 'familyHeart',
-          type: 'yes-no',
-          label: 'Has anyone in your immediate family ever had heart disease?',
-          icon: <FaHeartbeat />
-        },
-        {
-          id: 'familyDiabetes',
-          type: 'yes-no',
-          label: 'Has anyone in your immediate family ever been diagnosed with diabetes?',
-          icon: <FaTint />
-        },
-        {
-          id: 'hasHighBP',
-          type: 'yes-no',
-          label: 'Have you ever been diagnosed with high blood pressure?',
-          icon: <FaHeartbeat />,
-          conditional: true,
-          conditionField: 'bpMedication',
-          conditionLabel: 'Do you take medication for it regularly?'
-        },
-        {
-          id: 'hasHeartDisease',
-          type: 'yes-no',
-          label: 'Have you ever been diagnosed with any heart condition?',
-          icon: <FaHeart />
-        },
-        {
-          id: 'hasDiabetes',
-          type: 'yes-no',
-          label: 'Have you ever been diagnosed with diabetes or high blood sugar?',
-          icon: <FaTint />,
-          conditional: true,
-          conditionField: 'diabetesMedication',
-          conditionLabel: 'Do you take medication for it (pills or insulin)?'
-        },
-        {
-          id: 'knowsBP',
-          type: 'bp-input',
-          label: 'Recent Blood Pressure',
-          icon: <FaHeartbeat />
-        },
-        {
-          id: 'knowsGlucose',
-          type: 'glucose-input',
-          label: 'Recent Blood Glucose Level',
-          icon: <FaTint />
-        }
+        { id: 'familyStroke',    type: 'yes-no', label: 'Has anyone in your immediate family ever had a stroke?',              icon: <FaBrain /> },
+        { id: 'familyHeart',     type: 'yes-no', label: 'Has anyone in your immediate family ever had heart disease?',         icon: <FaHeartbeat /> },
+        { id: 'familyDiabetes',  type: 'yes-no', label: 'Has anyone in your immediate family ever been diagnosed with diabetes?', icon: <FaTint /> },
+        { id: 'hasHighBP',       type: 'yes-no', label: 'Have you ever been diagnosed with high blood pressure?',              icon: <FaHeartbeat />, conditional: true, conditionField: 'bpMedication',       conditionLabel: 'Do you take medication for it regularly?' },
+        { id: 'hasHeartDisease', type: 'yes-no', label: 'Have you ever been diagnosed with any heart condition?',              icon: <FaHeart /> },
+        { id: 'hasDiabetes',     type: 'yes-no', label: 'Have you ever been diagnosed with diabetes or high blood sugar?',     icon: <FaTint />,      conditional: true, conditionField: 'diabetesMedication', conditionLabel: 'Do you take medication for it (pills or insulin)?' },
+        { id: 'knowsBP',         type: 'bp-input',      label: 'Do you know your recent blood pressure reading?',             icon: <FaHeartbeat /> },
+        { id: 'knowsGlucose',    type: 'glucose-input', label: 'Do you know your recent blood glucose level?',               icon: <FaTint /> }
       ]
     },
     {
-      id: 3,
-      title: 'Lifestyle & Habits',
-      subtitle: 'Your daily routines',
-      icon: <FaLungs />,
-      color: '#F59E0B',
+      id: 3, title: 'Lifestyle & Habits', icon: <FaLungs />, color: '#F59E0B',
       questions: [
-        {
-          id: 'smokingStatus',
-          type: 'smoking',
-          label: 'Smoking Habit',
-          icon: <FaSmoking />,
-          options: ['Never smoked', 'Former smoker', 'Current smoker']
-        },
-        {
-          id: 'alcoholConsumption',
-          type: 'options',
-          label: 'Alcohol Consumption',
-          icon: <FaWineBottle />,
-          options: ['Never', 'Occasionally (social events)', 'Regularly (1–2 times/week)', 'Frequently (3+ times/week)']
-        },
-        {
-          id: 'diet',
-          type: 'options',
-          label: 'Which best describes your usual diet?',
-          icon: <FaApple />,
-          options: [
-            'Balanced (fruits, vegetables, lean protein)',
-            'High in salty foods (prahok, processed foods)',
-            'High in fatty foods (fried foods, fatty meats)',
-            'High in sugary foods & drinks'
-          ]
-        },
-        {
-          id: 'physicalActivity',
-          type: 'options',
-          label: 'How often do you do moderate exercise?',
-          icon: <FaHeartbeat />,
-          options: [
-            'Sedentary (little to no exercise)',
-            'Light (1–2 times/week)',
-            'Moderate (3–4 times/week)',
-            'Active (5+ times/week)'
-          ]
-        },
-        {
-          id: 'sleepStress',
-          type: 'options',
-          label: 'How often do you feel well-rested and manage stress effectively?',
-          icon: <FaBed />,
-          options: ['Rarely', 'Sometimes', 'Often', 'Almost always']
-        }
+        { id: 'smokingStatus',     type: 'smoking', label: 'What is your smoking habit?',                                     icon: <FaSmoking />,   options: ['Never smoked', 'Former smoker', 'Current smoker'] },
+        { id: 'alcoholConsumption',type: 'options', label: 'How often do you consume alcohol?',                               icon: <FaWineBottle />,options: ['Never', 'Occasionally (social events)', 'Regularly (1-2 times/week)', 'Frequently (3+ times/week)'] },
+        { id: 'diet',              type: 'options', label: 'Which best describes your usual diet?',                           icon: <FaApple />,     options: ['Balanced (fruits, vegetables, lean protein)', 'High in salty foods (prahok, processed foods)', 'High in fatty foods (fried foods, fatty meats)', 'High in sugary foods and drinks'] },
+        { id: 'physicalActivity',  type: 'options', label: 'How often do you do moderate exercise?',                         icon: <FaHeartbeat />, options: ['Sedentary (little to no exercise)', 'Light (1-2 times/week)', 'Moderate (3-4 times/week)', 'Active (5+ times/week)'] },
+        { id: 'sleepStress',       type: 'options', label: 'How often do you feel well-rested and manage stress effectively?',icon: <FaBed />,       options: ['Rarely', 'Sometimes', 'Often', 'Almost always'] }
       ]
     }
   ];
 
-  // ---------- Calculate BMI ----------
+  // ─── Derived progress counters ───────────────────────────────────────────────
+  const totalQuestions = sections.reduce((sum, sec) => sum + sec.questions.length, 0);
+  const currentQuestion =
+    sections.slice(0, currentSection - 1).reduce((sum, sec) => sum + sec.questions.length, 0) +
+    currentStep;
+  const cardProgressPct = Math.round(((currentQuestion - 1) / totalQuestions) * 100);
+
+  // ─── Helpers ─────────────────────────────────────────────────────────────────
   const calculateBMI = () => {
     if (formData.height && formData.weight) {
-      const heightInM = formData.height / 100;
-      const bmi = (formData.weight / (heightInM * heightInM)).toFixed(1);
-      return bmi;
+      const h = formData.height / 100;
+      return (formData.weight / (h * h)).toFixed(1);
     }
     return '—';
   };
 
-  // ---------- Calculate Risk Score ----------
   const calculateRiskScore = () => {
-    let score = 0;
-    let maxScore = 0;
-    let factors = [];
-
-    // Age risk
+    let score = 0; let maxScore = 0; let factors = [];
     if (formData.age) {
       maxScore += 15;
-      if (formData.age > 60) {
-        score += 15;
-        factors.push({ factor: 'Age > 60', impact: 'high', points: 15 });
-      } else if (formData.age > 45) {
-        score += 8;
-        factors.push({ factor: 'Age 45-60', impact: 'moderate', points: 8 });
-      } else {
-        factors.push({ factor: 'Age < 45', impact: 'low', points: 0 });
-      }
+      if (formData.age > 60)      { score += 15; factors.push({ factor: 'Age > 60',         impact: 'high',     points: 15 }); }
+      else if (formData.age > 45) { score += 8;  factors.push({ factor: 'Age 45-60',        impact: 'moderate', points: 8  }); }
+      else                        {               factors.push({ factor: 'Age < 45',         impact: 'low',      points: 0  }); }
     }
-
-    // Sex risk (men slightly higher)
-    if (formData.sex) {
-      maxScore += 5;
-      if (formData.sex === 'Male') {
-        score += 5;
-        factors.push({ factor: 'Male gender', impact: 'moderate', points: 5 });
-      }
-    }
-
-    // Family history
-    if (formData.familyStroke === 'Yes') {
-      maxScore += 15;
-      score += 15;
-      factors.push({ factor: 'Family history of stroke', impact: 'high', points: 15 });
-    }
-    if (formData.familyHeart === 'Yes') {
-      maxScore += 10;
-      score += 10;
-      factors.push({ factor: 'Family history of heart disease', impact: 'moderate', points: 10 });
-    }
-    if (formData.familyDiabetes === 'Yes') {
-      maxScore += 10;
-      score += 10;
-      factors.push({ factor: 'Family history of diabetes', impact: 'moderate', points: 10 });
-    }
-
-    // High blood pressure
+    if (formData.sex === 'Male')           { maxScore += 5;  score += 5;  factors.push({ factor: 'Male gender',                    impact: 'moderate', points: 5  }); }
+    if (formData.familyStroke === 'Yes')   { maxScore += 15; score += 15; factors.push({ factor: 'Family history of stroke',       impact: 'high',     points: 15 }); }
+    if (formData.familyHeart === 'Yes')    { maxScore += 10; score += 10; factors.push({ factor: 'Family history of heart disease', impact: 'moderate', points: 10 }); }
+    if (formData.familyDiabetes === 'Yes') { maxScore += 10; score += 10; factors.push({ factor: 'Family history of diabetes',     impact: 'moderate', points: 10 }); }
     if (formData.hasHighBP === 'Yes') {
-      maxScore += 20;
-      score += 20;
-      factors.push({ factor: 'Diagnosed hypertension', impact: 'high', points: 20 });
-      
-      if (formData.bpMedication === 'No') {
-        maxScore += 10;
-        score += 10;
-        factors.push({ factor: 'Untreated hypertension', impact: 'high', points: 10 });
-      }
+      maxScore += 20; score += 20; factors.push({ factor: 'Diagnosed hypertension', impact: 'high', points: 20 });
+      if (formData.bpMedication === 'No') { maxScore += 10; score += 10; factors.push({ factor: 'Untreated hypertension', impact: 'high', points: 10 }); }
     }
-
-    // Blood pressure readings
     if (formData.systolic && formData.diastolic) {
-      const sys = parseInt(formData.systolic);
-      const dia = parseInt(formData.diastolic);
-      
-      if (sys >= 140 || dia >= 90) {
-        maxScore += 15;
-        score += 15;
-        factors.push({ factor: 'Elevated blood pressure', impact: 'high', points: 15 });
-      } else if (sys >= 130 || dia >= 80) {
-        maxScore += 8;
-        score += 8;
-        factors.push({ factor: 'Borderline hypertension', impact: 'moderate', points: 8 });
-      }
+      const sys = parseInt(formData.systolic), dia = parseInt(formData.diastolic);
+      if (sys >= 140 || dia >= 90)      { maxScore += 15; score += 15; factors.push({ factor: 'Elevated blood pressure',  impact: 'high',     points: 15 }); }
+      else if (sys >= 130 || dia >= 80) { maxScore += 8;  score += 8;  factors.push({ factor: 'Borderline hypertension', impact: 'moderate', points: 8  }); }
     }
-
-    // Heart disease
-    if (formData.hasHeartDisease === 'Yes') {
-      maxScore += 15;
-      score += 15;
-      factors.push({ factor: 'Existing heart condition', impact: 'high', points: 15 });
-    }
-
-    // Diabetes
+    if (formData.hasHeartDisease === 'Yes') { maxScore += 15; score += 15; factors.push({ factor: 'Existing heart condition', impact: 'high', points: 15 }); }
     if (formData.hasDiabetes === 'Yes') {
-      maxScore += 20;
-      score += 20;
-      factors.push({ factor: 'Diabetes', impact: 'high', points: 20 });
-      
-      if (formData.diabetesMedication === 'No') {
-        maxScore += 5;
-        score += 5;
-        factors.push({ factor: 'Unmanaged diabetes', impact: 'moderate', points: 5 });
-      }
+      maxScore += 20; score += 20; factors.push({ factor: 'Diabetes', impact: 'high', points: 20 });
+      if (formData.diabetesMedication === 'No') { maxScore += 5; score += 5; factors.push({ factor: 'Unmanaged diabetes', impact: 'moderate', points: 5 }); }
     }
-
-    // Glucose levels
     if (formData.glucose) {
-      const glucose = parseInt(formData.glucose);
-      if (glucose > 125) {
-        maxScore += 10;
-        score += 10;
-        factors.push({ factor: 'Elevated blood glucose', impact: 'high', points: 10 });
-      } else if (glucose > 100) {
-        maxScore += 5;
-        score += 5;
-        factors.push({ factor: 'Pre-diabetic range', impact: 'moderate', points: 5 });
-      }
+      const g = parseInt(formData.glucose);
+      if (g > 125)      { maxScore += 10; score += 10; factors.push({ factor: 'Elevated blood glucose', impact: 'high',     points: 10 }); }
+      else if (g > 100) { maxScore += 5;  score += 5;  factors.push({ factor: 'Pre-diabetic range',     impact: 'moderate', points: 5  }); }
     }
-
-    // Smoking
     if (formData.smokingStatus === 'Current smoker') {
-      maxScore += 25;
-      score += 25;
-      factors.push({ factor: 'Current smoker', impact: 'high', points: 25 });
-      
-      if (formData.cigarettesPerDay > 20) {
-        score += 5;
-        factors.push({ factor: 'Heavy smoker', impact: 'high', points: 5 });
-      }
+      maxScore += 25; score += 25; factors.push({ factor: 'Current smoker', impact: 'high', points: 25 });
+      if (formData.cigarettesPerDay > 20) { score += 5; factors.push({ factor: 'Heavy smoker', impact: 'high', points: 5 }); }
     } else if (formData.smokingStatus === 'Former smoker') {
-      maxScore += 10;
-      score += 10;
-      factors.push({ factor: 'Former smoker', impact: 'moderate', points: 10 });
+      maxScore += 10; score += 10; factors.push({ factor: 'Former smoker', impact: 'moderate', points: 10 });
     }
-
-    // Alcohol
-    if (formData.alcoholConsumption?.includes('Frequently')) {
-      maxScore += 15;
-      score += 15;
-      factors.push({ factor: 'Heavy alcohol use', impact: 'high', points: 15 });
-    } else if (formData.alcoholConsumption?.includes('Regularly')) {
-      maxScore += 8;
-      score += 8;
-      factors.push({ factor: 'Regular alcohol use', impact: 'moderate', points: 8 });
-    }
-
-    // Diet
+    if (formData.alcoholConsumption?.includes('Frequently'))  { maxScore += 15; score += 15; factors.push({ factor: 'Heavy alcohol use',   impact: 'high',     points: 15 }); }
+    else if (formData.alcoholConsumption?.includes('Regularly')) { maxScore += 8; score += 8; factors.push({ factor: 'Regular alcohol use', impact: 'moderate', points: 8  }); }
     if (formData.diet?.includes('salty') || formData.diet?.includes('fatty') || formData.diet?.includes('sugary')) {
-      maxScore += 15;
-      score += 15;
-      factors.push({ factor: 'Poor dietary habits', impact: 'moderate', points: 15 });
+      maxScore += 15; score += 15; factors.push({ factor: 'Poor dietary habits', impact: 'moderate', points: 15 });
     }
-
-    // Physical activity
-    if (formData.physicalActivity?.includes('Sedentary')) {
-      maxScore += 15;
-      score += 15;
-      factors.push({ factor: 'Sedentary lifestyle', impact: 'moderate', points: 15 });
-    } else if (formData.physicalActivity?.includes('Light')) {
-      maxScore += 5;
-      score += 5;
-      factors.push({ factor: 'Low physical activity', impact: 'low', points: 5 });
-    }
-
-    // Sleep & stress
-    if (formData.sleepStress === 'Rarely') {
-      maxScore += 10;
-      score += 10;
-      factors.push({ factor: 'Poor sleep & high stress', impact: 'moderate', points: 10 });
-    } else if (formData.sleepStress === 'Sometimes') {
-      maxScore += 5;
-      score += 5;
-      factors.push({ factor: 'Occasional sleep/stress issues', impact: 'low', points: 5 });
-    }
-
-    // Calculate percentage
-    const riskPercentage = Math.min(Math.round((score / (maxScore || 100)) * 100), 100);
-    
-    return {
-      score: riskPercentage,
-      factors: factors.sort((a, b) => b.points - a.points),
-      rawScore: score,
-      maxScore: maxScore || 100
-    };
+    if (formData.physicalActivity?.includes('Sedentary')) { maxScore += 15; score += 15; factors.push({ factor: 'Sedentary lifestyle',   impact: 'moderate', points: 15 }); }
+    else if (formData.physicalActivity?.includes('Light')) { maxScore += 5;  score += 5;  factors.push({ factor: 'Low physical activity', impact: 'low',      points: 5  }); }
+    if (formData.sleepStress === 'Rarely')         { maxScore += 10; score += 10; factors.push({ factor: 'Poor sleep and high stress',       impact: 'moderate', points: 10 }); }
+    else if (formData.sleepStress === 'Sometimes') { maxScore += 5;  score += 5;  factors.push({ factor: 'Occasional sleep/stress issues', impact: 'low',      points: 5  }); }
+    return { score: Math.min(Math.round((score / (maxScore || 100)) * 100), 100), factors: factors.sort((a, b) => b.points - a.points), rawScore: score, maxScore: maxScore || 100 };
   };
 
-  // ---------- Generate Full Report ----------
+  const getRiskMeta = (score) => {
+    if (score < 20) return { level: 'Low',      color: '#10B981', description: 'Your risk of stroke is low based on the information provided. Continue maintaining healthy habits.', tenYearRisk: 5  };
+    if (score < 60) return { level: 'Moderate', color: '#F59E0B', description: 'You have some risk factors for stroke. Consider lifestyle modifications to reduce your risk.',       tenYearRisk: 20 };
+    return              { level: 'High',     color: '#EF4444', description: 'Your risk of stroke is high. Please consult a healthcare provider as soon as possible.',              tenYearRisk: 40 };
+  };
+
+  const generateRecommendations = (factors, data) => {
+    const recs = [];
+    const bmi = parseFloat(calculateBMI());
+    if (data.hasHighBP === 'Yes' || (data.systolic && parseInt(data.systolic) >= 130))
+      recs.push({ category: 'Blood Pressure',   icon: <FaHeartbeat />, color: '#E63E4E', items: ['Monitor blood pressure regularly at home', 'Reduce sodium intake', 'Take medications exactly as prescribed', 'Consider the DASH diet'] });
+    if (data.hasDiabetes === 'Yes' || (data.glucose && parseInt(data.glucose) > 100))
+      recs.push({ category: 'Blood Sugar',      icon: <FaTint />,      color: '#10B981', items: ['Monitor blood glucose levels regularly', 'Limit sugary drinks and desserts', 'Choose complex carbohydrates', 'Eat meals at consistent times'] });
+    if (data.smokingStatus === 'Current smoker')
+      recs.push({ category: 'Quit Smoking',     icon: <FaSmoking />,   color: '#F59E0B', items: ['Consider nicotine replacement therapy', 'Join a cessation program', 'Identify and avoid triggers', 'Talk to your doctor about options'] });
+    if (data.diet?.includes('salty') || data.diet?.includes('fatty') || data.diet?.includes('sugary'))
+      recs.push({ category: 'Diet',             icon: <FaApple />,     color: '#8B5CF6', items: ['Limit processed and fast food', 'Reduce salty condiments and snacks', 'Choose lean proteins', 'Aim for 5 servings of fruit and vegetables daily'] });
+    if (data.physicalActivity?.includes('Sedentary') || data.physicalActivity?.includes('Light'))
+      recs.push({ category: 'Physical Activity',icon: <FaHeartbeat />, color: '#EC4899', items: ['Start with 10-15 minute walks daily', 'Build up to 30 minutes, 5 days per week', 'Add strength training 2 days per week', 'Try activities you enjoy'] });
+    if (data.sleepStress === 'Rarely' || data.sleepStress === 'Sometimes')
+      recs.push({ category: 'Sleep and Stress', icon: <FaBed />,       color: '#6366F1', items: ['Maintain a consistent sleep schedule', 'Practice 5-10 min daily deep breathing', 'Limit screens before bed', 'Talk to someone about stressors'] });
+    if (bmi > 25)
+      recs.push({ category: 'Weight Management',icon: <FaWeight />,    color: '#14B8A6', items: ['Aim for gradual weight loss (0.5-1 kg/week)', 'Combine healthy eating with exercise', 'Keep a food diary', 'Consider consulting a nutritionist'] });
+    if (data.familyStroke === 'Yes' || data.familyHeart === 'Yes')
+      recs.push({ category: 'Family History',   icon: <FaUsers />,     color: '#A855F7', items: ['Share your family history with your doctor', 'Get regular health screenings', 'Control all modifiable risk factors', 'Consider genetic counseling'] });
+    if (recs.length < 2)
+      recs.push({ category: 'General Prevention',icon: <FaShieldAlt />,color: '#64748B', items: ['Schedule regular check-ups', 'Know the FAST stroke warning signs', 'Maintain a healthy lifestyle', 'Stay informed about your health metrics'] });
+    return recs;
+  };
+
   const generateReport = () => {
     const risk = calculateRiskScore();
+    const meta = getRiskMeta(risk.score);
     const bmi = calculateBMI();
     const bmiNum = parseFloat(bmi);
-    let bmiCategory = '';
-    let bmiColor = '';
-    
-    if (bmiNum < 18.5) {
-      bmiCategory = 'Underweight';
-      bmiColor = '#F59E0B';
-    } else if (bmiNum < 25) {
-      bmiCategory = 'Healthy weight';
-      bmiColor = '#10B981';
-    } else if (bmiNum < 30) {
-      bmiCategory = 'Overweight';
-      bmiColor = '#F59E0B';
-    } else {
-      bmiCategory = 'Obese';
-      bmiColor = '#EF4444';
-    }
-
-    let riskLevel = '';
-    let riskColor = '';
-    let riskDescription = '';
-
-    if (risk.score < 20) {
-      riskLevel = 'Low';
-      riskColor = '#10B981';
-      riskDescription = 'Your risk of stroke is low based on the information provided. Continue maintaining healthy habits.';
-    } else if (risk.score < 60) {
-      riskLevel = 'Moderate';
-      riskColor = '#F59E0B';
-      riskDescription = 'You have some risk factors for stroke. Consider lifestyle modifications to reduce your risk.';
-    } else {
-      riskLevel = 'High';
-      riskColor = '#EF4444';
-      riskDescription = 'Your risk of stroke is high. Please consult a healthcare provider immediately.';
-    }
-
-    // Calculate 10-year risk using modified Framingham
-    let tenYearRisk = 0;
-    if (risk.score < 20) tenYearRisk = 5;
-    else if (risk.score < 40) tenYearRisk = 12;
-    else if (risk.score < 60) tenYearRisk = 25;
-    else tenYearRisk = 40;
-
+    const bmiCategory = bmiNum < 18.5 ? 'Underweight' : bmiNum < 25 ? 'Healthy weight' : bmiNum < 30 ? 'Overweight' : 'Obese';
+    const bmiColor    = bmiNum < 18.5 ? '#F59E0B'      : bmiNum < 25 ? '#10B981'       : bmiNum < 30 ? '#F59E0B'      : '#EF4444';
+    const bpStatus = formData.systolic && formData.diastolic
+      ? (parseInt(formData.systolic) >= 140 || parseInt(formData.diastolic) >= 90 ? 'Elevated'
+        : parseInt(formData.systolic) >= 130 || parseInt(formData.diastolic) >= 80 ? 'Borderline' : 'Normal')
+      : 'Unknown';
     const report = {
-      generated: new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-      patientInfo: {
-        age: formData.age,
-        sex: formData.sex || 'Not specified',
-        ethnicity: formData.ethnicity || 'Not specified',
-        maritalStatus: formData.maritalStatus || 'Not specified',
-        bmi: bmi,
-        bmiCategory: bmiCategory,
-        bmiColor: bmiColor,
-        height: formData.height,
-        weight: formData.weight
-      },
-      vitalSigns: {
-        bloodPressure: formData.systolic && formData.diastolic 
-          ? `${formData.systolic}/${formData.diastolic}`
-          : 'Not provided',
-        glucose: formData.glucose || 'Not provided',
-        bpStatus: formData.systolic && formData.diastolic 
-          ? (parseInt(formData.systolic) >= 140 || parseInt(formData.diastolic) >= 90 
-            ? 'Elevated' 
-            : parseInt(formData.systolic) >= 130 || parseInt(formData.diastolic) >= 80
-              ? 'Borderline'
-              : 'Normal')
-          : 'Unknown'
-      },
-      risk: {
-        score: risk.score,
-        level: riskLevel,
-        color: riskColor,
-        description: riskDescription,
-        tenYearRisk: tenYearRisk,
-        factors: risk.factors
-      },
+      generated: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      patientInfo: { age: formData.age, sex: formData.sex || 'Not specified', ethnicity: formData.ethnicity || 'Not specified', maritalStatus: formData.maritalStatus || 'Not specified', bmi, bmiCategory, bmiColor, height: formData.height, weight: formData.weight },
+      vitalSigns: { bloodPressure: formData.systolic && formData.diastolic ? `${formData.systolic}/${formData.diastolic}` : 'Not provided', glucose: formData.glucose || 'Not provided', bpStatus },
+      risk: { ...risk, ...meta },
       recommendations: generateRecommendations(risk.factors, formData),
-      disclaimer: "This assessment is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition."
+      disclaimer: 'This assessment is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.'
     };
-
     setReportData(report);
     return report;
   };
 
-  // ---------- Generate Recommendations ----------
-  const generateRecommendations = (factors, data) => {
-    const recommendations = [];
-    const added = new Set();
-
-    // Blood pressure recommendations
-    if (data.hasHighBP === 'Yes' || (data.systolic && parseInt(data.systolic) >= 130)) {
-      recommendations.push({
-        category: 'Blood Pressure',
-        icon: <FaHeartbeat />,
-        color: '#E63E4E',
-        items: [
-          'Monitor blood pressure regularly at home',
-          'Reduce sodium intake (avoid adding salt to meals)',
-          'Take medications exactly as prescribed',
-          'Consider the DASH diet (rich in fruits, vegetables, low-fat dairy)'
-        ]
-      });
-      added.add('bp');
-    }
-
-    // Diabetes recommendations
-    if (data.hasDiabetes === 'Yes' || (data.glucose && parseInt(data.glucose) > 100)) {
-      recommendations.push({
-        category: 'Blood Sugar Management',
-        icon: <FaTint />,
-        color: '#10B981',
-        items: [
-          'Monitor blood glucose levels regularly',
-          'Limit sugary drinks and desserts',
-          'Choose complex carbohydrates (brown rice, whole grains)',
-          'Eat meals at consistent times each day'
-        ]
-      });
-      added.add('diabetes');
-    }
-
-    // Smoking recommendations
-    if (data.smokingStatus === 'Current smoker') {
-      recommendations.push({
-        category: 'Smoking Cessation',
-        icon: <FaSmoking />,
-        color: '#F59E0B',
-        items: [
-          'Consider nicotine replacement therapy (patches, gum)',
-          'Join a smoking cessation program',
-          'Identify triggers and avoid them',
-          'Talk to your doctor about prescription options'
-        ]
-      });
-      added.add('smoking');
-    }
-
-    // Diet recommendations
-    if (data.diet?.includes('salty') || data.diet?.includes('fatty') || data.diet?.includes('sugary')) {
-      recommendations.push({
-        category: 'Dietary Improvements',
-        icon: <FaApple />,
-        color: '#8B5CF6',
-        items: [
-          'Limit processed foods and fast food',
-          data.diet?.includes('salty') ? 'Reduce prahok, soy sauce, and salty snacks' : '',
-          data.diet?.includes('fatty') ? 'Choose lean proteins and limit fried foods' : '',
-          data.diet?.includes('sugary') ? 'Replace sugary drinks with water or unsweetened tea' : '',
-          'Aim for at least 5 servings of fruits and vegetables daily'
-        ].filter(item => item !== '')
-      });
-    }
-
-    // Physical activity recommendations
-    if (data.physicalActivity?.includes('Sedentary') || data.physicalActivity?.includes('Light')) {
-      recommendations.push({
-        category: 'Physical Activity',
-        icon: <FaHeartbeat />,
-        color: '#EC4899',
-        items: [
-          'Start with 10-15 minute walks daily',
-          'Gradually increase to 30 minutes, 5 days per week',
-          'Incorporate strength training 2 days per week',
-          'Try activities you enjoy (walking, swimming, cycling)'
-        ]
-      });
-    }
-
-    // Sleep & stress recommendations
-    if (data.sleepStress === 'Rarely' || data.sleepStress === 'Sometimes') {
-      recommendations.push({
-        category: 'Sleep & Stress Management',
-        icon: <FaBed />,
-        color: '#6366F1',
-        items: [
-          'Maintain a consistent sleep schedule',
-          'Practice deep breathing or meditation for 5-10 minutes daily',
-          'Limit screen time before bed',
-          'Consider talking to someone about stressors'
-        ]
-      });
-    }
-
-    // Weight management
-    const bmi = parseFloat(calculateBMI());
-    if (bmi > 25) {
-      recommendations.push({
-        category: 'Weight Management',
-        icon: <FaWeight />,
-        color: '#14B8A6',
-        items: [
-          'Aim for gradual weight loss (0.5-1 kg per week)',
-          'Combine healthy eating with regular physical activity',
-          'Keep a food diary to track intake',
-          'Consider consulting a nutritionist'
-        ]
-      });
-    }
-
-    // Family history
-    if (data.familyStroke === 'Yes' || data.familyHeart === 'Yes') {
-      recommendations.push({
-        category: 'Family History Awareness',
-        icon: <FaUsers />,
-        color: '#A855F7',
-        items: [
-          'Share your family history with your doctor',
-          'Get regular health screenings',
-          'Be vigilant about controlling modifiable risk factors',
-          'Consider genetic counseling if appropriate'
-        ]
-      });
-    }
-
-    // Always include general prevention
-    if (recommendations.length < 3) {
-      recommendations.push({
-        category: 'General Prevention',
-        icon: <FaShieldAlt />,
-        color: '#64748B',
-        items: [
-          'Schedule regular check-ups with your healthcare provider',
-          'Know the FAST signs of stroke (Face drooping, Arm weakness, Speech difficulty, Time to call emergency)',
-          'Maintain a healthy lifestyle',
-          'Stay informed about your health metrics'
-        ]
-      });
-    }
-
-    return recommendations;
-  };
-
-  // ---------- Handle Input Changes ----------
+  // ─── Input Handler ────────────────────────────────────────────────────────────
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-
-    // Handle conditional fields
-    if (field === 'hasHighBP') {
-      setShowBpMedication(value === 'Yes');
-      if (value !== 'Yes') setFormData(prev => ({ ...prev, bpMedication: '' }));
-    }
-    
-    if (field === 'hasDiabetes') {
-      setShowDiabetesMedication(value === 'Yes');
-      if (value !== 'Yes') setFormData(prev => ({ ...prev, diabetesMedication: '' }));
-    }
-    
-    if (field === 'smokingStatus') {
-      setShowCigarettes(value === 'Current smoker');
-      if (value !== 'Current smoker') setFormData(prev => ({ ...prev, cigarettesPerDay: '' }));
-    }
-    
-    if (field === 'knowsBP') {
-      setShowBpInputs(value === 'I know it');
-      if (value !== 'I know it') setFormData(prev => ({ ...prev, systolic: '', diastolic: '' }));
-    }
-    
-    if (field === 'knowsGlucose') {
-      setShowGlucoseInput(value === 'I know it');
-      if (value !== 'I know it') setFormData(prev => ({ ...prev, glucose: '' }));
-    }
-
-    // Calculate progress
+    if (field === 'hasHighBP')     { setShowBpMedication(value === 'Yes');          if (value !== 'Yes')             setFormData(p => ({ ...p, bpMedication: '' })); }
+    if (field === 'hasDiabetes')   { setShowDiabetesMedication(value === 'Yes');    if (value !== 'Yes')             setFormData(p => ({ ...p, diabetesMedication: '' })); }
+    if (field === 'smokingStatus') { setShowCigarettes(value === 'Current smoker'); if (value !== 'Current smoker') setFormData(p => ({ ...p, cigarettesPerDay: '' })); }
+    if (field === 'knowsBP')       { setShowBpInputs(value === 'I know it');        if (value !== 'I know it')       setFormData(p => ({ ...p, systolic: '', diastolic: '' })); }
+    if (field === 'knowsGlucose')  { setShowGlucoseInput(value === 'I know it');    if (value !== 'I know it')       setFormData(p => ({ ...p, glucose: '' })); }
     calculateProgress();
   };
 
-  // ---------- Calculate Form Progress ----------
   const calculateProgress = () => {
-    let completed = 0;
-    let total = 0;
-    
-    // Count total fields and completed fields
-    sections.forEach(section => {
-      section.questions.forEach(q => {
-        if (q.type === 'dual-slider') {
-          total += 2;
-          if (formData.height) completed++;
-          if (formData.weight) completed++;
-        } else if (q.type === 'bp-input') {
-          total += 1;
-          if (formData.knowsBP) completed++;
-          if (formData.knowsBP === 'I know it' && formData.systolic && formData.diastolic) completed += 2;
-        } else if (q.type === 'glucose-input') {
-          total += 1;
-          if (formData.knowsGlucose) completed++;
-          if (formData.knowsGlucose === 'I know it' && formData.glucose) completed++;
-        } else if (q.type === 'smoking') {
-          total += 1;
-          if (formData.smokingStatus) completed++;
-          if (formData.smokingStatus === 'Current smoker' && formData.cigarettesPerDay) completed++;
-        } else {
-          total += 1;
-          if (formData[q.id]) completed++;
-        }
-      });
-    });
-    
+    let completed = 0, total = 0;
+    sections.forEach(sec => sec.questions.forEach(q => {
+      if (q.type === 'dual-slider') { total += 2; if (formData.height) completed++; if (formData.weight) completed++; }
+      else { total++; if (formData[q.id]) completed++; }
+    }));
     setProgress(Math.min(Math.round((completed / total) * 100), 100));
   };
 
-  // ---------- Navigation ----------
+  // ─── Navigation ───────────────────────────────────────────────────────────────
   const goToNext = () => {
-    if (currentStep < sections[currentSection - 1].questions.length) {
-      setCurrentStep(currentStep + 1);
-    } else if (currentSection < sections.length) {
-      setCurrentSection(currentSection + 1);
-      setCurrentStep(1);
-    } else {
-      // Submit form
-      handleSubmit();
-    }
+    if (currentStep < sections[currentSection - 1].questions.length) { setCurrentStep(s => s + 1); }
+    else if (currentSection < sections.length)                        { setCurrentSection(s => s + 1); setCurrentStep(1); }
+    else                                                               { handleSubmit(); }
   };
 
   const goToPrevious = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    } else if (currentSection > 1) {
-      setCurrentSection(currentSection - 1);
-      setCurrentStep(sections[currentSection - 2].questions.length);
-    }
+    if (currentStep > 1)         { setCurrentStep(s => s - 1); }
+    else if (currentSection > 1) { setCurrentSection(s => s - 1); setCurrentStep(sections[currentSection - 2].questions.length); }
   };
 
-  // ---------- Submit Form ----------
   const handleSubmit = () => {
     setIsSubmitting(true);
-    
-    // Simulate API call to backend
-    setTimeout(() => {
-      const report = generateReport();
-      setReportData(report);
-      setIsSubmitting(false);
-      setShowResults(true);
-    }, 3000);
+    setTimeout(() => { const r = generateReport(); setReportData(r); setIsSubmitting(false); setShowResults(true); }, 3000);
   };
 
-  // ---------- Reset Form ----------
   const handleReset = () => {
-    setCurrentSection(1);
-    setCurrentStep(1);
-    setShowResults(false);
-    setShowFullReport(false);
-    setProgress(0);
-    setFormData({
-      age: 35,
-      sex: '',
-      ethnicity: '',
-      maritalStatus: '',
-      height: 170,
-      weight: 70,
-      residenceType: '',
-      familyStroke: '',
-      familyHeart: '',
-      familyDiabetes: '',
-      hasHighBP: '',
-      bpMedication: '',
-      hasHeartDisease: '',
-      hasDiabetes: '',
-      diabetesMedication: '',
-      knowsBP: 'unknown',
-      systolic: '',
-      diastolic: '',
-      knowsGlucose: 'unknown',
-      glucose: '',
-      smokingStatus: '',
-      cigarettesPerDay: '',
-      alcoholConsumption: '',
-      diet: '',
-      physicalActivity: '',
-      sleepStress: ''
-    });
+    setCurrentSection(1); setCurrentStep(1); setShowResults(false); setShowFullReport(false); setProgress(0);
+    setFormData({ age:35, sex:'', ethnicity:'', maritalStatus:'', height:170, weight:70, residenceType:'', familyStroke:'', familyHeart:'', familyDiabetes:'', hasHighBP:'', bpMedication:'', hasHeartDisease:'', hasDiabetes:'', diabetesMedication:'', knowsBP:'unknown', systolic:'', diastolic:'', knowsGlucose:'unknown', glucose:'', smokingStatus:'', cigarettesPerDay:'', alcoholConsumption:'', diet:'', physicalActivity:'', sleepStress:'' });
   };
 
-  // ---------- Handle View Full Report ----------
-  const handleViewFullReport = () => {
-    if (!reportData) {
-      generateReport();
-    }
-    setShowFullReport(true);
-  };
-
-  // ---------- Handle Print Report ----------
-  const handlePrintReport = () => {
-    window.print();
-  };
-
-  // ---------- Handle Download Report ----------
+  const handleViewFullReport = () => { if (!reportData) generateReport(); setShowFullReport(true); };
+  
   const handleDownloadReport = () => {
-    const reportText = `
-STROKIFY HEALTH ASSESSMENT REPORT
-Generated: ${reportData?.generated}
-
-PATIENT INFORMATION
-Age: ${reportData?.patientInfo.age}
-Sex: ${reportData?.patientInfo.sex}
-BMI: ${reportData?.patientInfo.bmi} (${reportData?.patientInfo.bmiCategory})
-
-VITAL SIGNS
-Blood Pressure: ${reportData?.vitalSigns.bloodPressure}
-Blood Glucose: ${reportData?.vitalSigns.glucose}
-
-RISK ASSESSMENT
-Overall Risk: ${reportData?.risk.level} (${reportData?.risk.score}%)
-10-Year Stroke Risk: ${reportData?.risk.tenYearRisk}%
-
-RISK FACTORS
-${reportData?.risk.factors.map(f => `- ${f.factor} (${f.impact} impact)`).join('\n')}
-
-RECOMMENDATIONS
-${reportData?.recommendations.map(r => `${r.category}:\n${r.items.map(i => `  - ${i}`).join('\n')}`).join('\n\n')}
-
-DISCLAIMER
-${reportData?.disclaimer}
-    `;
-    
-    const blob = new Blob([reportText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `strokify-report-${new Date().toISOString().split('T')[0]}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    if (!reportData) return;
+    const txt = `STROKE RISK ASSESSMENT REPORT\nGenerated: ${reportData.generated}\n\nRisk Level: ${reportData.risk.level} (${reportData.risk.score}%)\n\n${reportData.disclaimer}`;
+    const a = Object.assign(document.createElement('a'), { 
+      href: URL.createObjectURL(new Blob([txt], { type: 'text/plain' })), 
+      download: `stroke-report-${new Date().toISOString().split('T')[0]}.txt` 
+    });
+    a.click(); 
+    URL.revokeObjectURL(a.href);
   };
 
-  // ---------- Get Current Question ----------
-  const currentSectionData = sections[currentSection - 1];
+  // ─── Render helpers ───────────────────────────────────────────────────────────
+  const currentSectionData  = sections[currentSection - 1];
   const currentQuestionData = currentSectionData?.questions[currentStep - 1];
 
-  // ---------- Render Question by Type ----------
   const renderQuestion = (question) => {
+    if (!question) return null;
     switch (question.type) {
-      case 'slider':
-        // SAFE VALUE EXTRACTION - prevents 20100 from showing
-        let sliderValue = formData[question.id];
-        
-        // Check if value is valid (between min and max)
-        if (sliderValue === undefined || 
-            sliderValue === null || 
-            isNaN(sliderValue) || 
-            sliderValue < question.min || 
-            sliderValue > question.max) {
-          // Reset to default value (35 for age, or min for others)
-          sliderValue = question.id === 'age' ? 35 : question.min;
-          // Update form data to fix it permanently
-          setTimeout(() => {
-            handleInputChange(question.id, sliderValue);
-          }, 0);
-        }
-        
-        // FORCE min and max to be numbers
-        const minValue = Number(question.min);
-        const maxValue = Number(question.max);
-        
+      case 'slider': {
+        let val = formData[question.id];
+        if (!val || isNaN(val) || val < question.min || val > question.max) val = question.id === 'age' ? 35 : question.min;
+        const pct = ((val - question.min) / (question.max - question.min)) * 100;
         return (
           <div className="sd-slider-container">
             <div className="sd-slider-value">
-              <span className="sd-slider-number">{sliderValue}</span>
+              <span className="sd-slider-number">{val}</span>
               <span className="sd-slider-unit">{question.unit}</span>
             </div>
-            <input
-              type="range"
-              min={minValue}
-              max={maxValue}
-              value={sliderValue}
-              onChange={(e) => handleInputChange(question.id, parseInt(e.target.value))}
-              className="sd-slider"
+            <input 
+              type="range" 
+              min={question.min} 
+              max={question.max} 
+              value={val}
+              style={{ background: `linear-gradient(90deg, var(--primary) ${pct}%, var(--gray-200) ${pct}%)` }}
+              onChange={e => handleInputChange(question.id, parseInt(e.target.value))}
+              className="sd-slider" 
             />
-            <div className="sd-slider-labels">
-              <span>{minValue}</span>
-              <span>{maxValue}</span>
-            </div>
+            <div className="sd-slider-labels"><span>{question.min}</span><span>{question.max}</span></div>
           </div>
         );
-
-      case 'dual-slider':
+      }
+      case 'dual-slider': {
+        const h = formData.height || 170;
+        const w = formData.weight || 70;
+        const hPct = ((h - question.heightMin) / (question.heightMax - question.heightMin)) * 100;
+        const wPct = ((w - question.weightMin) / (question.weightMax - question.weightMin)) * 100;
+        const bmi = calculateBMI();
+        
         return (
-          <div className="sd-dual-slider">
-            <div className="sd-bmi-indicator">
-              <span className="sd-bmi-label">Your BMI</span>
-              <span className="sd-bmi-value">{calculateBMI()}</span>
+          <div className="sd-dual-slider-compact">
+            <div className="sd-bmi-indicator-compact">
+              <span className="sd-bmi-label-compact">Your BMI</span>
+              <span className="sd-bmi-value-compact">{bmi}</span>
             </div>
             
-            <div className="sd-slider-group">
-              <label>Height (cm)</label>
-              <div className="sd-slider-value-mini">
-                <span>{formData.height || 170} cm</span>
+            <div className="sd-sliders-row">
+              <div className="sd-slider-group-compact">
+                <label>Height</label>
+                <div className="sd-slider-value-compact">{h} cm</div>
+                <input 
+                  type="range" 
+                  min={question.heightMin} 
+                  max={question.heightMax} 
+                  value={h}
+                  style={{ background: `linear-gradient(90deg, var(--primary) ${hPct}%, var(--gray-200) ${hPct}%)` }}
+                  onChange={e => handleInputChange('height', parseInt(e.target.value))} 
+                  className="sd-slider-compact" 
+                />
+                <div className="sd-slider-labels-compact">
+                  <span>{question.heightMin}</span>
+                  <span>{question.heightMax}</span>
+                </div>
               </div>
-              <input
-                type="range"
-                min={question.heightMin}
-                max={question.heightMax}
-                value={formData.height || 170}
-                onChange={(e) => handleInputChange('height', parseInt(e.target.value))}
-                className="sd-slider"
-              />
-            </div>
-            
-            <div className="sd-slider-group">
-              <label>Weight (kg)</label>
-              <div className="sd-slider-value-mini">
-                <span>{formData.weight || 70} kg</span>
+              
+              <div className="sd-slider-group-compact">
+                <label>Weight</label>
+                <div className="sd-slider-value-compact">{w} kg</div>
+                <input 
+                  type="range" 
+                  min={question.weightMin} 
+                  max={question.weightMax} 
+                  value={w}
+                  style={{ background: `linear-gradient(90deg, var(--primary) ${wPct}%, var(--gray-200) ${wPct}%)` }}
+                  onChange={e => handleInputChange('weight', parseInt(e.target.value))} 
+                  className="sd-slider-compact" 
+                />
+                <div className="sd-slider-labels-compact">
+                  <span>{question.weightMin}</span>
+                  <span>{question.weightMax}</span>
+                </div>
               </div>
-              <input
-                type="range"
-                min={question.weightMin}
-                max={question.weightMax}
-                value={formData.weight || 70}
-                onChange={(e) => handleInputChange('weight', parseInt(e.target.value))}
-                className="sd-slider"
-              />
             </div>
           </div>
         );
-
-      case 'options':
+      }
       case 'yes-no':
         return (
-          <div className="sd-options-grid">
-            {question.options ? (
-              question.options.map((option) => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData[question.id] === option ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange(question.id, option)}
-                >
-                  {option}
-                  {formData[question.id] === option && <FaCheck className="sd-check-icon" />}
-                </button>
-              ))
-            ) : (
-              <>
-                <button
-                  className={`sd-option-btn ${formData[question.id] === 'Yes' ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange(question.id, 'Yes')}
-                >
-                  Yes
-                  {formData[question.id] === 'Yes' && <FaCheck className="sd-check-icon" />}
-                </button>
-                <button
-                  className={`sd-option-btn ${formData[question.id] === 'No' ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange(question.id, 'No')}
-                >
-                  No
-                  {formData[question.id] === 'No' && <FaCheck className="sd-check-icon" />}
-                </button>
-              </>
-            )}
+          <div className="sd-options-grid sd-options-two">
+            {['Yes', 'No'].map(opt => (
+              <button 
+                key={opt} 
+                className={`sd-option-btn ${formData[question.id] === opt ? 'sd-selected' : ''}`}
+                onClick={() => handleInputChange(question.id, opt)}
+              >
+                {opt} {formData[question.id] === opt && <FaCheck />}
+              </button>
+            ))}
           </div>
         );
-
+      case 'options':
+        return (
+          <div className="sd-options-grid">
+            {question.options.map(opt => (
+              <button 
+                key={opt} 
+                className={`sd-option-btn ${formData[question.id] === opt ? 'sd-selected' : ''}`}
+                onClick={() => handleInputChange(question.id, opt)}
+              >
+                {opt} {formData[question.id] === opt && <FaCheck />}
+              </button>
+            ))}
+          </div>
+        );
       case 'smoking':
         return (
           <>
             <div className="sd-options-grid">
-              {question.options.map((option) => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData.smokingStatus === option ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange('smokingStatus', option)}
+              {question.options.map(opt => (
+                <button 
+                  key={opt} 
+                  className={`sd-option-btn ${formData.smokingStatus === opt ? 'sd-selected' : ''}`}
+                  onClick={() => handleInputChange('smokingStatus', opt)}
                 >
-                  {option}
-                  {formData.smokingStatus === option && <FaCheck className="sd-check-icon" />}
+                  {opt} {formData.smokingStatus === opt && <FaCheck />}
                 </button>
               ))}
             </div>
-            
             {showCigarettes && (
               <div className="sd-conditional-section">
                 <label className="sd-conditional-label">How many cigarettes per day?</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  value={formData.cigarettesPerDay}
-                  onChange={(e) => handleInputChange('cigarettesPerDay', e.target.value)}
-                  placeholder="e.g., 10"
-                  className="sd-number-input"
-                />
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <input 
+                    type="number" 
+                    min="1" 
+                    max="100" 
+                    value={formData.cigarettesPerDay}
+                    onChange={e => handleInputChange('cigarettesPerDay', e.target.value)}
+                    placeholder="e.g. 10" 
+                    className="sd-number-input" 
+                  />
+                </div>
               </div>
             )}
           </>
         );
-
       case 'bp-input':
         return (
           <>
-            <div className="sd-options-grid">
-              <button
-                className={`sd-option-btn ${formData.knowsBP === 'I don’t know' ? 'sd-selected' : ''}`}
-                onClick={() => handleInputChange('knowsBP', 'I don’t know')}
-              >
-                I don’t know
-                {formData.knowsBP === 'I don’t know' && <FaCheck className="sd-check-icon" />}
-              </button>
-              <button
-                className={`sd-option-btn ${formData.knowsBP === 'I know it' ? 'sd-selected' : ''}`}
-                onClick={() => handleInputChange('knowsBP', 'I know it')}
-              >
-                I know it
-                {formData.knowsBP === 'I know it' && <FaCheck className="sd-check-icon" />}
-              </button>
+            <div className="sd-options-grid sd-options-two">
+              {["I don't know", "I know it"].map(opt => (
+                <button 
+                  key={opt} 
+                  className={`sd-option-btn ${formData.knowsBP === opt ? 'sd-selected' : ''}`}
+                  onClick={() => handleInputChange('knowsBP', opt)}
+                >
+                  {opt} {formData.knowsBP === opt && <FaCheck />}
+                </button>
+              ))}
             </div>
-            
             {showBpInputs && (
               <div className="sd-bp-inputs">
                 <div className="sd-bp-field">
                   <label>Systolic</label>
-                  <input
-                    type="number"
-                    placeholder="120"
+                  <input 
+                    type="number" 
+                    placeholder="120" 
                     value={formData.systolic}
-                    onChange={(e) => handleInputChange('systolic', e.target.value)}
-                    className="sd-number-input"
+                    onChange={e => handleInputChange('systolic', e.target.value)} 
+                    className="sd-number-input" 
                   />
                   <span className="sd-bp-unit">mmHg</span>
                 </div>
                 <div className="sd-bp-field">
                   <label>Diastolic</label>
-                  <input
-                    type="number"
-                    placeholder="80"
+                  <input 
+                    type="number" 
+                    placeholder="80" 
                     value={formData.diastolic}
-                    onChange={(e) => handleInputChange('diastolic', e.target.value)}
-                    className="sd-number-input"
+                    onChange={e => handleInputChange('diastolic', e.target.value)} 
+                    className="sd-number-input" 
                   />
                   <span className="sd-bp-unit">mmHg</span>
                 </div>
@@ -1072,272 +438,202 @@ ${reportData?.disclaimer}
             )}
           </>
         );
-
       case 'glucose-input':
         return (
           <>
-            <div className="sd-options-grid">
-              <button
-                className={`sd-option-btn ${formData.knowsGlucose === 'I don’t know' ? 'sd-selected' : ''}`}
-                onClick={() => handleInputChange('knowsGlucose', 'I don’t know')}
-              >
-                I don’t know
-                {formData.knowsGlucose === 'I don’t know' && <FaCheck className="sd-check-icon" />}
-              </button>
-              <button
-                className={`sd-option-btn ${formData.knowsGlucose === 'I know it' ? 'sd-selected' : ''}`}
-                onClick={() => handleInputChange('knowsGlucose', 'I know it')}
-              >
-                I know it
-                {formData.knowsGlucose === 'I know it' && <FaCheck className="sd-check-icon" />}
-              </button>
+            <div className="sd-options-grid sd-options-two">
+              {["I don't know", "I know it"].map(opt => (
+                <button 
+                  key={opt} 
+                  className={`sd-option-btn ${formData.knowsGlucose === opt ? 'sd-selected' : ''}`}
+                  onClick={() => handleInputChange('knowsGlucose', opt)}
+                >
+                  {opt} {formData.knowsGlucose === opt && <FaCheck />}
+                </button>
+              ))}
             </div>
-            
             {showGlucoseInput && (
               <div className="sd-glucose-input">
-                <input
-                  type="number"
-                  placeholder="e.g., 100"
+                <input 
+                  type="number" 
+                  placeholder="e.g. 100" 
                   value={formData.glucose}
-                  onChange={(e) => handleInputChange('glucose', e.target.value)}
-                  className="sd-number-input"
+                  onChange={e => handleInputChange('glucose', e.target.value)} 
+                  className="sd-number-input" 
                 />
                 <span className="sd-glucose-unit">mg/dL</span>
               </div>
             )}
           </>
         );
-
-      default:
-        return null;
+      default: return null;
     }
   };
 
-  // ---------- Conditional Field Render ----------
   const renderConditionalField = () => {
     if (!currentQuestionData?.conditional) return null;
-    
-    const conditionField = currentQuestionData.conditionField;
-    const conditionLabel = currentQuestionData.conditionLabel;
-    
-    if ((currentQuestionData.id === 'hasHighBP' && !showBpMedication) ||
-        (currentQuestionData.id === 'hasDiabetes' && !showDiabetesMedication)) {
-      return null;
-    }
-    
+    const isVisible = (currentQuestionData.id === 'hasHighBP' && showBpMedication) ||
+                      (currentQuestionData.id === 'hasDiabetes' && showDiabetesMedication);
+    if (!isVisible) return null;
+    const { conditionField, conditionLabel } = currentQuestionData;
     return (
       <div className="sd-conditional-section">
         <label className="sd-conditional-label">{conditionLabel}</label>
-        <div className="sd-options-grid">
-          <button
-            className={`sd-option-btn ${formData[conditionField] === 'Yes' ? 'sd-selected' : ''}`}
-            onClick={() => handleInputChange(conditionField, 'Yes')}
-          >
-            Yes
-            {formData[conditionField] === 'Yes' && <FaCheck className="sd-check-icon" />}
-          </button>
-          <button
-            className={`sd-option-btn ${formData[conditionField] === 'No' ? 'sd-selected' : ''}`}
-            onClick={() => handleInputChange(conditionField, 'No')}
-          >
-            No
-            {formData[conditionField] === 'No' && <FaCheck className="sd-check-icon" />}
-          </button>
+        <div className="sd-options-grid sd-options-two">
+          {['Yes', 'No'].map(opt => (
+            <button 
+              key={opt} 
+              className={`sd-option-btn ${formData[conditionField] === opt ? 'sd-selected' : ''}`}
+              onClick={() => handleInputChange(conditionField, opt)}
+            >
+              {opt} {formData[conditionField] === opt && <FaCheck />}
+            </button>
+          ))}
         </div>
       </div>
     );
   };
 
-  // ---------- Full Report View ----------
-  if (showFullReport && reportData) {
-    return (
-      <div className="sd-container">
-        <div className="sd-bg-blob sd-blob-1"></div>
-        <div className="sd-bg-blob sd-blob-2"></div>
-        
-        <div className="sd-report-container">
-          <div className="sd-report-header">
-            <button className="sd-report-back" onClick={() => setShowFullReport(false)}>
-              <FaArrowLeft /> Back to Summary
-            </button>
-            <div className="sd-report-actions">
-              <button className="sd-report-action" onClick={handlePrintReport}>
-                <FaPrint /> Print
-              </button>
-              <button className="sd-report-action" onClick={handleDownloadReport}>
-                <FaDownload /> Download
-              </button>
-              <button className="sd-report-action">
-                <FaShare /> Share
-              </button>
-            </div>
-          </div>
-
+// ═══════════════════════════════════════════════════════════════════════════
+//  FULL REPORT VIEW - Updated with Stroke Risk Assessment title
+// ═══════════════════════════════════════════════════════════════════════════
+if (showFullReport && reportData) {
+  const { risk, patientInfo, vitalSigns, recommendations, disclaimer, generated } = reportData;
+  const glucoseNum = parseInt(vitalSigns.glucose);
+  const glucoseStatus = vitalSigns.glucose !== 'Not provided'
+    ? (glucoseNum > 125 ? { label: 'High', color: '#EF4444' } : glucoseNum > 100 ? { label: 'Borderline', color: '#F59E0B' } : { label: 'Normal', color: '#10B981' })
+    : { label: 'Not measured', color: '#9CA3AF' };
+  const bpStatusColor = vitalSigns.bpStatus === 'Normal' ? '#10B981' : vitalSigns.bpStatus === 'Borderline' ? '#F59E0B' : '#EF4444';
+  
+  return (
+    <div className="sd-container">
+      <div className="sd-bg-blob sd-blob-1" /><div className="sd-bg-blob sd-blob-2" />
+      <div className="sd-report-page">
+        <div className="sd-report-page-inner">
           <div className="sd-report-card">
             <div className="sd-report-brand">
-              <div className="sd-report-logo">STROKIFY</div>
-              <div className="sd-report-date">Generated: {reportData.generated}</div>
+              <div className="sd-report-brand-left">
+                {/* Small Stroke Risk Assessment text above the date */}
+                <div className="sd-report-small-title">Stroke Risk Assessment</div>
+                <div className="sd-report-date-badge">Generated: {generated}</div>
+              </div>
+              {/* Download button inside card where date used to be */}
+              <button className="sd-report-download-box" onClick={handleDownloadReport}>
+                <FaDownload /> Download Report
+              </button>
             </div>
-
-            <div className="sd-report-title-section">
-              <FaFileAlt className="sd-report-icon" />
+            <div className="sd-report-hero">
+              <div className="sd-report-hero-icon"><FaFileAlt /></div>
               <h1 className="sd-report-title">Comprehensive Health Assessment Report</h1>
-              <p className="sd-report-subtitle">Stroke Risk Evaluation & Personalized Recommendations</p>
+              <p className="sd-report-subtitle">Stroke Risk Evaluation and Personalized Recommendations</p>
             </div>
-
-            {/* Risk Summary */}
             <div className="sd-report-section">
               <h2 className="sd-section-heading">Risk Summary</h2>
-              <div className="sd-risk-summary-card" style={{ borderLeftColor: reportData.risk.color }}>
+              <div className="sd-risk-summary-card" style={{ borderLeftColor: risk.color }}>
                 <div className="sd-risk-summary-header">
                   <div>
                     <span className="sd-risk-level-label">Overall Stroke Risk</span>
-                    <span className="sd-risk-level-value" style={{ color: reportData.risk.color }}>
-                      {reportData.risk.level}
-                    </span>
+                    <span className="sd-risk-level-value" style={{ color: risk.color }}>{risk.level}</span>
                   </div>
-                  <span className="sd-risk-score">{reportData.risk.score}%</span>
+                  <span className="sd-risk-score" style={{ color: risk.color }}>{risk.score}%</span>
                 </div>
                 <div className="sd-risk-meter-large">
-                  <div className="sd-risk-bar-large">
-                    <div 
-                      className="sd-risk-progress-large" 
-                      style={{ width: `${reportData.risk.score}%`, backgroundColor: reportData.risk.color }}
-                    ></div>
-                  </div>
-                  <div className="sd-risk-scale">
-                    <span>0%</span>
-                    <span>25%</span>
-                    <span>50%</span>
-                    <span>75%</span>
-                    <span>100%</span>
-                  </div>
+                  <div className="sd-risk-bar-large"><div className="sd-risk-progress-large" style={{ width: `${risk.score}%`, background: risk.color }} /></div>
+                  <div className="sd-risk-scale">{['0%','25%','50%','75%','100%'].map(l => <span key={l}>{l}</span>)}</div>
                 </div>
-                <p className="sd-risk-description">{reportData.risk.description}</p>
+                <p className="sd-risk-description">{risk.description}</p>
                 <div className="sd-ten-year-risk">
-                  <span className="sd-ten-year-label">10-Year Stroke Risk:</span>
-                  <span className="sd-ten-year-value" style={{ color: reportData.risk.color }}>
-                    {reportData.risk.tenYearRisk}%
-                  </span>
+                  <span className="sd-ten-year-label">Estimated 10-Year Stroke Risk</span>
+                  <span className="sd-ten-year-value" style={{ color: risk.color }}>{risk.tenYearRisk}%</span>
                 </div>
               </div>
             </div>
-
-            {/* Patient Information */}
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Patient Information</h2>
-              <div className="sd-info-grid">
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Age</span>
-                  <span className="sd-info-value">{reportData.patientInfo.age} years</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Sex</span>
-                  <span className="sd-info-value">{reportData.patientInfo.sex}</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Ethnicity</span>
-                  <span className="sd-info-value">{reportData.patientInfo.ethnicity}</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Marital Status</span>
-                  <span className="sd-info-value">{reportData.patientInfo.maritalStatus}</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Height</span>
-                  <span className="sd-info-value">{reportData.patientInfo.height} cm</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">Weight</span>
-                  <span className="sd-info-value">{reportData.patientInfo.weight} kg</span>
-                </div>
-                <div className="sd-info-item">
-                  <span className="sd-info-label">BMI</span>
-                  <span className="sd-info-value" style={{ color: reportData.patientInfo.bmiColor }}>
-                    {reportData.patientInfo.bmi} ({reportData.patientInfo.bmiCategory})
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Vital Signs */}
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Vital Signs</h2>
-              <div className="sd-vitals-grid">
-                <div className="sd-vital-card">
-                  <FaHeartbeat className="sd-vital-icon" style={{ color: '#E63E4E' }} />
-                  <div>
-                    <div className="sd-vital-label">Blood Pressure</div>
-                    <div className="sd-vital-value">{reportData.vitalSigns.bloodPressure}</div>
-                    <div className="sd-vital-status" style={{ 
-                      color: reportData.vitalSigns.bpStatus === 'Normal' ? '#10B981' : 
-                             reportData.vitalSigns.bpStatus === 'Borderline' ? '#F59E0B' : '#EF4444'
-                    }}>
-                      {reportData.vitalSigns.bpStatus}
+            <div className="sd-report-grid">
+              <div>
+                <h2 className="sd-section-heading">Patient Information</h2>
+                <div className="sd-info-grid">
+                  {[
+                    {label:'Age', value:`${patientInfo.age} years`},
+                    {label:'Sex', value:patientInfo.sex},
+                    {label:'Ethnicity', value:patientInfo.ethnicity},
+                    {label:'Marital Status', value:patientInfo.maritalStatus},
+                    {label:'Height', value:`${patientInfo.height} cm`},
+                    {label:'Weight', value:`${patientInfo.weight} kg`}
+                  ].map(({label,value}) => (
+                    <div key={label} className="sd-info-item">
+                      <span className="sd-info-label">{label}</span>
+                      <span className="sd-info-value">{value}</span>
                     </div>
+                  ))}
+                  <div className="sd-info-item">
+                    <span className="sd-info-label">BMI</span>
+                    <span className="sd-info-value" style={{ color: patientInfo.bmiColor }}>
+                      {patientInfo.bmi} — {patientInfo.bmiCategory}
+                    </span>
                   </div>
                 </div>
-                <div className="sd-vital-card">
-                  <FaTint className="sd-vital-icon" style={{ color: '#10B981' }} />
-                  <div>
-                    <div className="sd-vital-label">Blood Glucose</div>
-                    <div className="sd-vital-value">{reportData.vitalSigns.glucose}</div>
-                    <div className="sd-vital-status" style={{ 
-                      color: reportData.vitalSigns.glucose !== 'Not provided' && 
-                             parseInt(reportData.vitalSigns.glucose) > 125 ? '#EF4444' : 
-                             parseInt(reportData.vitalSigns.glucose) > 100 ? '#F59E0B' : '#10B981'
-                    }}>
-                      {reportData.vitalSigns.glucose !== 'Not provided' ? 
-                       (parseInt(reportData.vitalSigns.glucose) > 125 ? 'High' : 
-                        parseInt(reportData.vitalSigns.glucose) > 100 ? 'Borderline' : 'Normal') 
-                       : 'Not measured'}
+              </div>
+              <div>
+                <h2 className="sd-section-heading">Vital Signs</h2>
+                <div className="sd-vitals-grid" style={{ gridTemplateColumns: '1fr' }}>
+                  <div className="sd-vital-card">
+                    <div className="sd-vital-icon-wrap" style={{ color: '#E63E4E' }}><FaHeartbeat /></div>
+                    <div>
+                      <div className="sd-vital-label">Blood Pressure</div>
+                      <div className="sd-vital-value">{vitalSigns.bloodPressure}</div>
+                      <span className="sd-vital-status" style={{ color: bpStatusColor, background: `${bpStatusColor}18` }}>
+                        {vitalSigns.bpStatus}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="sd-vital-card">
+                    <div className="sd-vital-icon-wrap" style={{ color: '#10B981' }}><FaTint /></div>
+                    <div>
+                      <div className="sd-vital-label">Blood Glucose</div>
+                      <div className="sd-vital-value">
+                        {vitalSigns.glucose}{vitalSigns.glucose !== 'Not provided' ? ' mg/dL' : ''}
+                      </div>
+                      <span className="sd-vital-status" style={{ color: glucoseStatus.color, background: `${glucoseStatus.color}18` }}>
+                        {glucoseStatus.label}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Risk Factors */}
             <div className="sd-report-section">
               <h2 className="sd-section-heading">Identified Risk Factors</h2>
               <div className="sd-risk-factors-list">
-                {reportData.risk.factors.map((factor, index) => (
-                  <div key={index} className="sd-risk-factor-item">
-                    <div className="sd-risk-factor-header">
-                      <span className="sd-risk-factor-name">{factor.factor}</span>
-                      <span className={`sd-risk-factor-impact ${factor.impact === 'high' ? 'sd-high' : factor.impact === 'moderate' ? 'sd-moderate' : 'sd-low'}`}>
-                        {factor.impact} • +{factor.points} points
-                      </span>
+                {risk.factors.map((f, i) => {
+                  const fc = f.impact === 'high' ? '#EF4444' : f.impact === 'moderate' ? '#F59E0B' : '#10B981';
+                  return (
+                    <div key={i} className="sd-risk-factor-item">
+                      <div className="sd-risk-factor-header">
+                        <span className="sd-risk-factor-name">{f.factor}</span>
+                        <span className={`sd-risk-factor-impact sd-${f.impact}`}>
+                          {f.impact} +{f.points} pts
+                        </span>
+                      </div>
+                      <div className="sd-risk-factor-bar">
+                        <div className="sd-risk-factor-progress" style={{ width: `${Math.min((f.points/25)*100,100)}%`, background: fc }} />
+                      </div>
                     </div>
-                    <div className="sd-risk-factor-bar">
-                      <div 
-                        className="sd-risk-factor-progress"
-                        style={{ 
-                          width: `${(factor.points / 25) * 100}%`,
-                          backgroundColor: factor.impact === 'high' ? '#EF4444' : 
-                                         factor.impact === 'moderate' ? '#F59E0B' : '#10B981'
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
-
-            {/* Recommendations */}
             <div className="sd-report-section">
               <h2 className="sd-section-heading">Personalized Recommendations</h2>
               <div className="sd-recommendations-grid">
-                {reportData.recommendations.map((rec, index) => (
-                  <div key={index} className="sd-recommendation-card">
+                {recommendations.map((rec, i) => (
+                  <div key={i} className="sd-recommendation-card">
                     <div className="sd-recommendation-header" style={{ color: rec.color }}>
-                      {rec.icon}
-                      <h3>{rec.category}</h3>
+                      {rec.icon} <h3 style={{ margin:0, fontSize:'1rem' }}>{rec.category}</h3>
                     </div>
                     <ul className="sd-recommendation-list">
-                      {rec.items.map((item, i) => (
-                        <li key={i}>
-                          <FaCheck className="sd-recommendation-check" style={{ color: rec.color }} />
+                      {rec.items.map((item,j) => (
+                        <li key={j}>
+                          <FaCheck className="sd-recommendation-check" style={{ color: rec.color, flexShrink:0 }} />
                           {item}
                         </li>
                       ))}
@@ -1346,121 +642,135 @@ ${reportData?.disclaimer}
                 ))}
               </div>
             </div>
-
-            {/* FAST Signs */}
             <div className="sd-report-section">
-              <h2 className="sd-section-heading">Stroke Warning Signs (FAST)</h2>
+              <h2 className="sd-section-heading">Stroke Warning Signs — FAST</h2>
               <div className="sd-fast-grid">
-                <div className="sd-fast-card">
-                  <div className="sd-fast-letter">F</div>
-                  <div className="sd-fast-content">
-                    <strong>Face Drooping</strong>
-                    <p>Does one side of the face droop or is it numb? Ask the person to smile.</p>
+                {[
+                  {l:'F', title:'Face Drooping', desc:'Does one side of the face droop or feel numb? Ask the person to smile.'},
+                  {l:'A', title:'Arm Weakness', desc:'Is one arm weak or numb? Ask the person to raise both arms.'},
+                  {l:'S', title:'Speech Difficulty', desc:'Is speech slurred or strange? Ask them to repeat a simple sentence.'},
+                  {l:'T', title:'Time to Call Emergency', desc:'If any of these symptoms appear, call emergency services immediately.'}
+                ].map(({l,title,desc}) => (
+                  <div key={l} className="sd-fast-card">
+                    <div className="sd-fast-letter">{l}</div>
+                    <div className="sd-fast-content">
+                      <strong>{title}</strong>
+                      <p>{desc}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="sd-fast-card">
-                  <div className="sd-fast-letter">A</div>
-                  <div className="sd-fast-content">
-                    <strong>Arm Weakness</strong>
-                    <p>Is one arm weak or numb? Ask the person to raise both arms.</p>
-                  </div>
-                </div>
-                <div className="sd-fast-card">
-                  <div className="sd-fast-letter">S</div>
-                  <div className="sd-fast-content">
-                    <strong>Speech Difficulty</strong>
-                    <p>Is speech slurred? Ask the person to repeat a simple sentence.</p>
-                  </div>
-                </div>
-                <div className="sd-fast-card">
-                  <div className="sd-fast-letter">T</div>
-                  <div className="sd-fast-content">
-                    <strong>Time to Call Emergency</strong>
-                    <p>If someone shows any of these symptoms, call 911 immediately.</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-
-            {/* Disclaimer */}
             <div className="sd-report-disclaimer">
-              <FaInfoCircle />
-              <p>{reportData.disclaimer}</p>
+              <FaExclamationTriangle className="sd-report-disclaimer-icon" />
+              <p>{disclaimer}</p>
             </div>
-
             <div className="sd-report-footer">
               <button className="sd-btn-primary" onClick={() => setShowFullReport(false)}>
-                Back to Summary
+                <FaArrowLeft /> Back to Summary
               </button>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  // ---------- Results View ----------
+  // ═══════════════════════════════════════════════════════════════════════════
+  //  RESULTS VIEW
+  // ═══════════════════════════════════════════════════════════════════════════
   if (showResults) {
-    const risk = reportData || generateReport();
+    const rd = reportData || generateReport();
+    const { risk } = rd;
+    const topFactors = risk.factors.slice(0, 5);
+    const bmi = calculateBMI();
+    const bmiNum = parseFloat(bmi);
+    const bmiColor = bmiNum < 18.5 ? '#F59E0B' : bmiNum < 25 ? '#10B981' : bmiNum < 30 ? '#F59E0B' : '#EF4444';
     
     return (
       <div className="sd-container">
-        <div className="sd-bg-blob sd-blob-1"></div>
-        <div className="sd-bg-blob sd-blob-2"></div>
-        
-        <div className="sd-results-container">
-          <div className="sd-results-card">
-            <div className="sd-results-icon">
-              <FaHeartbeat />
-            </div>
-            <h1 className="sd-results-title">Analysis Complete</h1>
-            <p className="sd-results-subtitle">
-              Your symptom analysis has been processed by our AI
-            </p>
-            
-            <div className="sd-risk-meter">
-              <div className="sd-risk-label">
-                <span>Stroke Risk Level</span>
-                <span className="sd-risk-value" style={{ color: risk.risk.color }}>{risk.risk.level}</span>
+        <div className="sd-bg-blob sd-blob-1" /><div className="sd-bg-blob sd-blob-2" />
+        <div className="sd-results-wrapper">
+          <div className="sd-results-layout">
+            <div className="sd-results-hero">
+              <div className="sd-results-icon"><FaHeartbeat /></div>
+              <h1 className="sd-results-title">Analysis Complete</h1>
+              <p className="sd-results-subtitle">Your stroke risk profile has been assessed based on your responses.</p>
+              <div className="sd-risk-meter">
+                <div className="sd-risk-label">
+                  <span>Stroke Risk Level</span>
+                  <span className="sd-risk-value" style={{ color: risk.color, background: `${risk.color}15` }}>
+                    {risk.level}
+                  </span>
+                </div>
+                <div className="sd-risk-bar">
+                  <div className="sd-risk-progress" style={{ width: `${risk.score}%`, background: risk.color }} />
+                </div>
+                <div style={{ display:'flex', justifyContent:'space-between', fontSize:'0.78rem', color:'var(--gray-400)', marginTop:'0.4rem' }}>
+                  <span>Low</span><span>Moderate</span><span>High</span>
+                </div>
               </div>
-              <div className="sd-risk-bar">
-                <div 
-                  className="sd-risk-progress" 
-                  style={{ width: `${risk.risk.score}%`, backgroundColor: risk.risk.color }}
-                ></div>
+              <div className="sd-risk-summary-box">
+                <p style={{ margin:0 }}>{risk.description}</p>
               </div>
-            </div>
-            
-            <div className="sd-results-details">
-              <div className="sd-detail-item">
-                <span className="sd-detail-label">BMI</span>
-                <span className="sd-detail-value">{calculateBMI()}</span>
-              </div>
-              <div className="sd-detail-item">
-                <span className="sd-detail-label">Blood Pressure</span>
-                <span className="sd-detail-value">
-                  {formData.systolic && formData.diastolic 
-                    ? `${formData.systolic}/${formData.diastolic}`
-                    : 'Not provided'}
-                </span>
-              </div>
-              <div className="sd-detail-item">
-                <span className="sd-detail-label">Risk Factors</span>
-                <span className="sd-detail-value">{risk.risk.factors.length} identified</span>
+              <div className="sd-results-actions">
+                <button className="sd-btn-primary" onClick={handleReset}>New Assessment</button>
+                <button className="sd-btn-secondary" onClick={handleViewFullReport}>
+                  <FaFileAlt /> View Full Report
+                </button>
               </div>
             </div>
-            
-            <div className="sd-risk-summary">
-              <p>{risk.risk.description}</p>
-            </div>
-            
-            <div className="sd-results-actions">
-              <button className="sd-btn-primary" onClick={handleReset}>
-                New Assessment
-              </button>
-              <button className="sd-btn-secondary" onClick={handleViewFullReport}>
-                <FaFileAlt /> View Full Report
-              </button>
+            <div className="sd-results-stats">
+              <div className="sd-stat-card">
+                <div className="sd-stat-header">
+                  <div className="sd-stat-icon" style={{ background:`${risk.color}15`, color:risk.color }}><FaShieldAlt /></div>
+                  <span className="sd-stat-label">Risk Score</span>
+                </div>
+                <div className="sd-stat-value" style={{ color: risk.color }}>{risk.score}%</div>
+                <div className="sd-stat-sub">10-year stroke risk estimate: {risk.tenYearRisk}%</div>
+              </div>
+              <div className="sd-stat-card">
+                <div className="sd-stat-header">
+                  <div className="sd-stat-icon" style={{ background:`${bmiColor}15`, color:bmiColor }}><FaWeight /></div>
+                  <span className="sd-stat-label">Body Mass Index</span>
+                </div>
+                <div className="sd-stat-value" style={{ color: bmiColor }}>{bmi}</div>
+                <div className="sd-stat-sub">
+                  {bmiNum < 18.5 ? 'Underweight' : bmiNum < 25 ? 'Healthy weight' : bmiNum < 30 ? 'Overweight' : 'Obese'} — {formData.height} cm / {formData.weight} kg
+                </div>
+              </div>
+              <div className="sd-stat-card">
+                <div className="sd-stat-header">
+                  <div className="sd-stat-icon" style={{ background:'rgba(230,62,78,0.1)', color:'var(--primary)' }}><FaHeartbeat /></div>
+                  <span className="sd-stat-label">Blood Pressure</span>
+                </div>
+                <div className="sd-stat-value" style={{ fontSize: formData.systolic ? '1.8rem' : '1.1rem', color:'var(--gray-700)' }}>
+                  {formData.systolic && formData.diastolic ? `${formData.systolic}/${formData.diastolic}` : 'Not provided'}
+                </div>
+                {formData.systolic && <div className="sd-stat-sub">mmHg — {rd.vitalSigns.bpStatus}</div>}
+              </div>
+              {topFactors.length > 0 && (
+                <div className="sd-factors-preview">
+                  <div className="sd-factors-preview-title">Top Risk Factors Identified</div>
+                  {topFactors.map((f, i) => { 
+                    const fc = f.impact==='high'?'#EF4444':f.impact==='moderate'?'#F59E0B':'#10B981'; 
+                    return (
+                      <div key={i} className="sd-factor-mini-item">
+                        <span className="sd-factor-mini-name">{f.factor}</span>
+                        <span className="sd-factor-mini-badge" style={{ color:fc, background:`${fc}15` }}>
+                          {f.impact}
+                        </span>
+                      </div>
+                    );
+                  })}
+                  {risk.factors.length > 5 && (
+                    <div style={{ fontSize:'0.82rem', color:'var(--gray-400)', paddingTop:'0.6rem', textAlign:'center' }}>
+                      +{risk.factors.length-5} more in full report
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1468,107 +778,106 @@ ${reportData?.disclaimer}
     );
   }
 
-  // ---------- Main Form View ----------
+  // ═══════════════════════════════════════════════════════════════════════════
+  //  MAIN FORM VIEW
+  // ═══════════════════════════════════════════════════════════════════════════
+  const isFirstStep = currentSection === 1 && currentStep === 1;
+  const isLastStep  = currentSection === sections.length && currentStep === currentSectionData?.questions.length;
+
   return (
     <div className="sd-container">
-      <div className="sd-bg-blob sd-blob-1"></div>
-      <div className="sd-bg-blob sd-blob-2"></div>
-      
-      {/* COMPACT HEADER */}
+      <div className="sd-bg-blob sd-blob-1" />
+      <div className="sd-bg-blob sd-blob-2" />
+
+      {/* Fixed header — section pill + title */}
       <div className="sd-header">
         <div className="sd-header-content">
           <div className="sd-section-info">
             <span className="sd-section-pill">Section {currentSection}/3</span>
-            <span className="sd-section-title">{currentSectionData?.title || 'Loading...'}</span>
-          </div>
-          
-          <div className="sd-progress">
-            <div className="sd-progress-text">
-              <span className="sd-progress-number">{progress}%</span>
-            </div>
-            <div className="sd-progress-bar">
-              <div className="sd-progress-fill" style={{ width: `${progress}%` }}></div>
-            </div>
+            <span className="sd-section-title">{currentSectionData?.title}</span>
           </div>
         </div>
       </div>
 
-      {/* Question Card */}
-      <div className="sd-question-container">
-        <div className="sd-question-card">
-          <div 
-            className="sd-section-badge"
-            style={{ backgroundColor: `${currentSectionData?.color}15`, color: currentSectionData?.color }}
-          >
-            {currentSectionData?.icon}
-            <span>{currentSectionData?.title}</span>
-          </div>
-          
-          <div className="sd-question-content">
-            <div className="sd-icon-wrapper">
-              <div 
-                className="sd-question-icon"
-                style={{ backgroundColor: `${currentSectionData?.color}15`, color: currentSectionData?.color }}
-              >
-                {currentQuestionData?.icon}
+      {/* Question area */}
+      <div className="sd-question-wrapper">
+        <div className="sd-question-outer">
+          <div className="sd-question-card">
+
+            {/* Colour top stripe */}
+            <div className="sd-section-badge" style={{ background: currentSectionData?.color }} />
+
+            {/* Floating section pill with proper border */}
+            <div 
+              className="sd-section-badge-pill" 
+              style={{ 
+                color: currentSectionData?.color, 
+                borderColor: currentSectionData?.color 
+              }}
+            >
+              {currentSectionData?.icon}
+              <span>{currentSectionData?.title}</span>
+            </div>
+
+            {/* In-card progress bar - showing percentage */}
+            <div className="sd-card-progress">
+              <div className="sd-card-progress-header">
+                <span className="sd-card-progress-label">Question {currentQuestion} of {totalQuestions}</span>
+                <span className="sd-card-progress-pct">{cardProgressPct}% Complete</span>
+              </div>
+              <div className="sd-card-progress-track">
+                <div className="sd-card-progress-fill" style={{ width: `${cardProgressPct}%` }} />
               </div>
             </div>
-            
-            <h2 className="sd-question-text">
-              {currentQuestionData?.label}
-            </h2>
-            
-            <div className="sd-question-input">
-              {renderQuestion(currentQuestionData)}
-              {renderConditionalField()}
+
+            {/* Question body */}
+            <div className="sd-question-body">
+              <div className="sd-icon-wrapper">
+                <div className="sd-question-icon" style={{ background: `${currentSectionData?.color}12`, color: currentSectionData?.color }}>
+                  {currentQuestionData?.icon}
+                </div>
+              </div>
+              <h2 className="sd-question-text">{currentQuestionData?.label}</h2>
+              <div className="sd-question-input-area">
+                {renderQuestion(currentQuestionData)}
+                {renderConditionalField()}
+              </div>
             </div>
-          </div>
-          
-          {/* Navigation */}
-          <div className="sd-navigation">
-            <button 
-              className={`sd-nav-btn sd-back ${currentSection === 1 && currentStep === 1 ? 'sd-disabled' : ''}`}
-              onClick={goToPrevious}
-              disabled={currentSection === 1 && currentStep === 1}
-            >
-              <FaArrowLeft /> Back
-            </button>
-            
-            <div className="sd-step-indicator">
-              {currentSectionData?.questions.map((_, index) => (
-                <div 
-                  key={index}
-                  className={`sd-step-dot ${index + 1 === currentStep ? 'sd-active' : ''} ${index + 1 < currentStep ? 'sd-completed' : ''}`}
-                />
-              ))}
+
+            {/* Navigation */}
+            <div className="sd-navigation">
+              <button 
+                className={`sd-nav-btn sd-back ${isFirstStep ? 'sd-disabled' : ''}`} 
+                onClick={goToPrevious} 
+                disabled={isFirstStep}
+              >
+                <FaArrowLeft /> Back
+              </button>
+              <div className="sd-step-indicator">
+                {currentSectionData?.questions.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`sd-step-dot ${i+1===currentStep?'sd-active':''} ${i+1<currentStep?'sd-completed':''}`} 
+                  />
+                ))}
+              </div>
+              <button className="sd-nav-btn sd-next" onClick={goToNext} disabled={isSubmitting}>
+                {isSubmitting ? 'Processing...' : isLastStep ? 'Submit' : 'Next'}
+                {!isSubmitting && <FaArrowRight />}
+              </button>
             </div>
-            
-            <button 
-              className="sd-nav-btn sd-next"
-              onClick={goToNext}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Processing...' : currentSection === 3 && currentStep === currentSectionData?.questions.length ? 'Submit' : 'Next'}
-              {!isSubmitting && <FaArrowRight />}
-            </button>
           </div>
         </div>
       </div>
 
-      {/* Loading Overlay */}
+      {/* Loading overlay */}
       {isSubmitting && (
         <div className="sd-loading-overlay">
           <div className="sd-loading-card">
-            <div className="sd-spinner-large"></div>
+            <div className="sd-spinner-large" />
             <h3 className="sd-loading-title">Analyzing Your Health Profile</h3>
-            <p className="sd-loading-subtitle">
-              Our AI is processing your responses...
-            </p>
-            <div className="sd-loading-dots">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+            <p className="sd-loading-subtitle">Our AI is processing your responses...</p>
+            <div className="sd-loading-dots"><span /><span /><span /></div>
           </div>
         </div>
       )}

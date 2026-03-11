@@ -176,7 +176,7 @@ const About = () => {
                   <span className="about-goal-text">Active users</span>
                 </div>
                 <div className="about-goal-item">
-                  <span className="about-goal-percent">15</span>
+                  <span className="about-goal-percent">15+</span>
                   <span className="about-goal-text">Hospital partnerships</span>
                 </div>
                 <div className="about-goal-item">
@@ -190,7 +190,7 @@ const About = () => {
       </section>
 
       {/* ── WHY WE STARTED ── */}
-      <section className="about-why-section">
+      {/* <section className="about-why-section">
         <div className="about-container">
           <div className="about-why-content">
             <FaQuoteLeft className="about-quote-icon left" />
@@ -209,7 +209,7 @@ const About = () => {
             <FaQuoteRight className="about-quote-icon right" />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FOUNDERS ── */}
       <section className="about-founders-section">
