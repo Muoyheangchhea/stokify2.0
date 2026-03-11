@@ -19,6 +19,8 @@ import {
   FaBuilding,
   FaAmbulance,
   FaHeartbeat,
+  FaQuoteLeft,
+  FaQuoteRight,
 } from "react-icons/fa";
 import "../styles/Contact.css";
 
@@ -48,7 +50,6 @@ const Contact = () => {
       ...prev,
       [name]: value,
     }));
-    // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -88,23 +89,19 @@ const Contact = () => {
       return;
     }
 
-    // Show submitting state
     setFormStatus({
       submitted: true,
       success: false,
       message: "Sending...",
     });
 
-    // Simulate API call
     setTimeout(() => {
       setFormStatus({
         submitted: false,
         success: true,
-        message:
-          "Message sent successfully! We'll get back to you within 24 hours.",
+        message: "Message sent successfully! We'll get back to you within 24 hours.",
       });
 
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -114,7 +111,6 @@ const Contact = () => {
         inquiryType: "general",
       });
 
-      // Clear success message after 5 seconds
       setTimeout(() => {
         setFormStatus({
           submitted: false,
@@ -125,44 +121,56 @@ const Contact = () => {
     }, 1500);
   };
 
-  // ---------- Contact Info Cards ----------
+  // ---------- Contact Info Cards - Two rows ----------
   const contactInfo = [
     {
-      icon: <FaPhone />,
+      type: "emergency",
+      icon: <FaAmbulance />,
       title: "Emergency",
-      details: ["119 (24/7 Emergency)", "+855 (0)23 426 948"],
+      details: [
+        { type: "phone", value: "119 (24/7 Emergency)", emergency: true },
+        { type: "phone", value: "+855 92 404 966" }
+      ],
       description: "For stroke emergencies, always call 119 first",
-      color: "#DC2626",
       action: "tel:119",
       buttonText: "Call Emergency",
-      emergency: true,
     },
     {
+      type: "support",
       icon: <FaHeadset />,
       title: "Support Line",
-      details: ["+855 (0)77 847 664", "strokifyteam@gmail.com"],
+      details: [
+        { type: "phone", value: "+855 77 847 664" },
+        { type: "email", value: "strokifyteam@gmail.com" }
+      ],
       description: "24/7 support for app questions",
-      color: "#E63E4E",
       action: "tel:+85577847664",
       buttonText: "Call Support",
     },
     {
+      type: "office",
       icon: <FaBuilding />,
       title: "Head Office",
       details: [
-        "#278H, Street 201R, Kroalkor Village, Sangkat Kilometer 6, Khan Russey Keo , Phnom Penh, Cambodia",
+        { type: "address", lines: [
+          "#278H, Street 201R, Kroalkor Village",
+          "Sangkat Kilometer 6, Khan Russey Keo",
+          "Phnom Penh, Cambodia"
+        ]}
       ],
       description: "Visit us during business hours",
-      color: "#10B981",
       action: "https://maps.app.goo.gl/fnsM578rUJWWpPtf9",
       buttonText: "Get Directions",
     },
     {
+      type: "partner",
       icon: <FaHeartbeat />,
       title: "Partner With Us",
-      details: ["strokifyteam@gmail.com", "Hospitals & Nurses"],
+      details: [
+        { type: "email", value: "strokifyteam@gmail.com" },
+        { type: "text", value: "Hospitals & Nurses" }
+      ],
       description: "Become a stroke care partner",
-      color: "#F59E0B",
       action: "mailto:strokifyteam@gmail.com",
       buttonText: "Partner Inquiry",
     },
@@ -203,7 +211,7 @@ const Contact = () => {
     {
       icon: <FaWhatsapp />,
       name: "WhatsApp",
-      url: "https://wa.me/85523123456",
+      url: "https://wa.me/85592404966",
       color: "#25D366",
     },
   ];
@@ -213,102 +221,55 @@ const Contact = () => {
     { day: "Monday - Friday", hours: "8:00 AM - 6:00 PM" },
     { day: "Saturday", hours: "9:00 AM - 2:00 PM" },
     { day: "Sunday", hours: "Closed (Emergency only)" },
-    { day: "Emergency Hotline", hours: "24/7 - 365 days" },
+    { day: "Emergency Hotline", hours: "24/7" },
   ];
 
   return (
     <div className="contact-page">
-      {/* Hero Section */}
-      <section className="contact-hero">
-        <div className="hero-content">
+      {/* Hero Section - BG now goes to top */}
+      <section className="contact-hero-section">
+        <div className="contact-hero-content">
+          
           <h1>
-            Get in <span className="gradient-text">Touch</span>
+            Get in <span className="contact-gradient-text">Touch</span>
           </h1>
-          <p className="hero-subtitle">
-            We're here to help. Whether you have questions about stroke
-            symptoms, need support with the app, or want to partner with us.
+          
+          <p className="contact-hero-subtitle">
+            We're here to help with stroke symptoms, app support, or partnerships.
           </p>
+          
         </div>
       </section>
 
-      {/* Emergency Notice - Always visible */}
-      <div className="emergency-notice">
-        <FaAmbulance className="emergency-icon" />
-        <div className="emergency-text">
-          <strong>Stroke Emergency?</strong>
-          <span>Do not use this form. Call 119 immediately.</span>
-        </div>
-        <a href="tel:119" className="emergency-button">
-          <FaPhone /> CALL 119 NOW
-        </a>
-      </div>
-
-      {/* Contact Info Cards */}
-      <section className="contact-cards-section">
-        <div className="container">
-          <div className="cards-grid">
-            {contactInfo.map((info, index) => (
-              <div key={index} className="contact-card">
-                <div
-                  className="card-icon"
-                  style={{
-                    backgroundColor: `${info.color}15`,
-                    color: info.color,
-                  }}
-                >
-                  {info.icon}
-                </div>
-                <h3 className="card-title">{info.title}</h3>
-                {info.details.map((detail, i) => (
-                  <p key={i} className="card-detail">
-                    {detail}
-                  </p>
-                ))}
-                <p className="card-description">{info.description}</p>
-                <a
-                  href={info.action}
-                  className={`card-button ${info.emergency ? "emergency" : ""}`}
-                  style={{ backgroundColor: info.color }}
-                >
-                  {info.buttonText}
-                </a>
-              </div>
-            ))}
+      {/* Main Contact Section */}
+      <section className="contact-main-section">
+        <div className="contact-container">
+          <div className="contact-section-header">
+            <h2>Send Us a Message</h2>
+            <p className="contact-section-subtitle">
+              Fill out the form below and we'll get back to you within 24 hours.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* Main Contact Section - Form + Info */}
-      <section className="main-contact-section">
-        <div className="container">
-          <div className="contact-grid">
+          <div className="contact-main-grid">
             {/* Left Column - Contact Form */}
-            <div className="contact-form-container">
-              <h2 className="form-title">Send Us a Message</h2>
-              <p className="form-subtitle">
-                Fill out the form below and we'll get back to you within 24
-                hours.
-              </p>
-
-              {/* Success Message */}
+            <div className="contact-form-wrapper">
               {formStatus.success && (
-                <div className="success-message">
+                <div className="contact-success-message">
                   <FaCheck className="success-icon" />
                   <span>{formStatus.message}</span>
                 </div>
               )}
 
-              {/* Error Message */}
               {Object.keys(errors).length > 0 && (
-                <div className="error-message">
+                <div className="contact-error-message">
                   <FaExclamationCircle className="error-icon" />
                   <span>Please fix the errors below.</span>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="contact-form">
-                {/* Name Field */}
-                <div className="form-group">
+                <div className="contact-form-group">
                   <label htmlFor="name">
                     <FaUser className="field-icon" />
                     Full Name *
@@ -322,13 +283,10 @@ const Contact = () => {
                     className={errors.name ? "error" : ""}
                     placeholder="Enter your full name"
                   />
-                  {errors.name && (
-                    <span className="error-text">{errors.name}</span>
-                  )}
+                  {errors.name && <span className="error-text">{errors.name}</span>}
                 </div>
 
-                {/* Email Field */}
-                <div className="form-group">
+                <div className="contact-form-group">
                   <label htmlFor="email">
                     <FaEnvelope className="field-icon" />
                     Email Address *
@@ -342,13 +300,10 @@ const Contact = () => {
                     className={errors.email ? "error" : ""}
                     placeholder="Enter your email"
                   />
-                  {errors.email && (
-                    <span className="error-text">{errors.email}</span>
-                  )}
+                  {errors.email && <span className="error-text">{errors.email}</span>}
                 </div>
 
-                {/* Phone Field (Optional) */}
-                <div className="form-group">
+                <div className="contact-form-group">
                   <label htmlFor="phone">
                     <FaPhone className="field-icon" />
                     Phone Number (Optional)
@@ -363,8 +318,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Inquiry Type */}
-                <div className="form-group">
+                <div className="contact-form-group">
                   <label htmlFor="inquiryType">
                     <FaComment className="field-icon" />
                     Inquiry Type
@@ -384,8 +338,7 @@ const Contact = () => {
                   </select>
                 </div>
 
-                {/* Subject Field */}
-                <div className="form-group">
+                <div className="contact-form-group">
                   <label htmlFor="subject">Subject</label>
                   <input
                     type="text"
@@ -397,29 +350,21 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Message Field */}
-                <div className="form-group full-width">
+                <div className="contact-form-group full-width">
                   <label htmlFor="message">Message *</label>
                   <textarea
                     id="message"
                     name="message"
-                    rows="5"
+                    rows="4"
                     value={formData.message}
                     onChange={handleChange}
                     className={errors.message ? "error" : ""}
                     placeholder="Tell us how we can help..."
                   />
-                  {errors.message && (
-                    <span className="error-text">{errors.message}</span>
-                  )}
+                  {errors.message && <span className="error-text">{errors.message}</span>}
                 </div>
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="submit-button"
-                  disabled={formStatus.submitted}
-                >
+                <button type="submit" className="contact-submit-btn" disabled={formStatus.submitted}>
                   {formStatus.submitted ? (
                     <>Sending...</>
                   ) : (
@@ -429,103 +374,112 @@ const Contact = () => {
                   )}
                 </button>
 
-                <p className="form-note">
-                  By submitting this form, you agree to our privacy policy and
-                  terms of service.
+                <p className="contact-form-note">
+                  By submitting this form, you agree to our privacy policy and terms of service.
                 </p>
               </form>
             </div>
 
-            {/* Right Column - Additional Info */}
-            <div className="contact-info-container">
-              {/* Office Hours */}
-              <div className="info-card hours-card">
-                <h3>
-                  <FaClock className="info-icon" />
-                  Office Hours
-                </h3>
-                <div className="hours-list">
+            {/* Right Column - Info Cards */}
+            <div className="contact-info-sidebar">
+              {/* Office Hours Card */}
+              <div className="contact-info-card-modern">
+                <div className="contact-card-header">
+                  <FaClock className="contact-header-icon" />
+                  <h3>Office Hours</h3>
+                </div>
+                <div className="contact-hours-list">
                   {officeHours.map((item, index) => (
-                    <div key={index} className="hours-item">
-                      <span className="day">{item.day}</span>
-                      <span className="hours">{item.hours}</span>
+                    <div key={index} className="contact-hours-item">
+                      <span className="contact-day">{item.day}</span>
+                      <span className="contact-hours">{item.hours}</span>
                     </div>
                   ))}
                 </div>
-                <p className="timezone-note">
-                  * All times are in Indochina Time (ICT, GMT+7)
-                </p>
+                <p className="contact-timezone-note">* Indochina Time (ICT, GMT+7)</p>
               </div>
 
-              {/* Quick Response */}
-              <div className="info-card response-card">
-                <h3>
-                  <FaHeadset className="info-icon" />
-                  Quick Response
-                </h3>
-                <div className="response-times">
-                  <div className="response-item">
+              {/* Quick Response Card - With right-aligned emergency */}
+              <div className="contact-info-card-modern">
+                <div className="contact-card-header">
+                  <FaHeadset className="contact-header-icon" />
+                  <h3>Quick Response</h3>
+                </div>
+                <div className="contact-response-list">
+                  <div className="contact-response-item">
                     <span className="response-channel">Email</span>
-                    <span className="response-time">within 24 hours</span>
+                    <span className="response-time">within 24h</span>
                   </div>
-                  <div className="response-item">
+                  <div className="contact-response-item">
                     <span className="response-channel">Phone</span>
-                    <span className="response-time">during business hours</span>
+                    <span className="response-time">business hours</span>
                   </div>
-                  <div className="response-item">
+                  <div className="contact-response-item emergency">
                     <span className="response-channel">Emergency</span>
-                    <span className="response-time emergency">
-                      IMMEDIATE - CALL 119
+                    <span className="response-time emergency-text">
+                      CALL 119
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Social Media */}
-              <div className="info-card social-card">
-                <h3>Connect With Us</h3>
-                <div className="social-grid">
+              {/* Social Media Card */}
+              <div className="contact-info-card-modern">
+                <div className="contact-card-header">
+                  <h3>Connect With Us</h3>
+                </div>
+                <div className="contact-social-grid">
                   {socialLinks.map((social, index) => (
                     <a
                       key={index}
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="social-link"
-                      style={{ "--social-color": social.color }}
+                      className="contact-social-link"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${social.color}15 0%, ${social.color}05 100%)`,
+                        color: social.color,
+                        borderColor: `${social.color}25`
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = social.color;
+                        e.currentTarget.style.color = 'white';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = `linear-gradient(135deg, ${social.color}15 0%, ${social.color}05 100%)`;
+                        e.currentTarget.style.color = social.color;
+                      }}
                     >
                       {social.icon}
-                      <span className="social-name">{social.name}</span>
+                      <span>{social.name}</span>
                     </a>
                   ))}
                 </div>
               </div>
 
-              {/* Map Preview */}
-              <div className="info-card map-card">
-                <h3>
-                  <FaMapMarkerAlt className="info-icon" />
-                  Find Us
-                </h3>
-
-                <div className="map-preview">
+              {/* Map Card */}
+              <div className="contact-info-card-modern map-card">
+                <div className="contact-card-header">
+                  <FaMapMarkerAlt className="contact-header-icon" />
+                  <h3>Find Us</h3>
+                </div>
+                <div className="contact-map-wrapper">
                   <iframe
                     title="Strokify Location"
                     width="100%"
-                    height="250"
-                    style={{ border: 0, borderRadius: "12px" }}
+                    height="180"
+                    style={{ border: 0, borderRadius: "14px" }}
                     loading="lazy"
                     allowFullScreen
                     referrerPolicy="no-referrer-when-downgrade"
                     src="https://www.google.com/maps?q=278H+Street+201R+Kroalkor+Village+Sangkat+Kilometer+6+Russey+Keo+Phnom+Penh+Cambodia&output=embed"
                   ></iframe>
                 </div>
-
                 <a
                   href="https://maps.app.goo.gl/1oiGNFfzgCzNC3xV9"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="map-link"
+                  className="contact-map-link"
                 >
                   Open in Google Maps →
                 </a>
@@ -535,43 +489,91 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* FAQ Preview Section */}
-      <section className="faq-preview">
-        <div className="container">
-          <h2 className="faq-title">Frequently Asked Questions</h2>
-          <div className="faq-grid">
-            <div className="faq-item">
-              <h4>Is Strokify free to use?</h4>
-              <p>
-                Yes! Strokify is completely free for all users in Cambodia. Our
-                mission is to make stroke detection accessible to everyone.
-              </p>
+      {/* Contact Info Cards - Now in two rows */}
+      <section className="contact-cards-section">
+        <div className="contact-container">
+          <div className="contact-cards-grid">
+            {contactInfo.map((info, index) => (
+              <div key={index} className="contact-info-card" data-type={info.type}>
+                <div className="contact-card-icon-wrapper">
+                  {info.icon}
+                </div>
+                <h3 className="contact-card-title">{info.title}</h3>
+                <div className="contact-card-details">
+                  {info.details.map((detail, i) => {
+                    if (detail.type === "address") {
+                      return (
+                        <div key={i} className="contact-card-address">
+                          {detail.lines.map((line, j) => (
+                            <span key={j} className="contact-card-address-line">{line}</span>
+                          ))}
+                        </div>
+                      );
+                    } else if (detail.type === "email") {
+                      return (
+                        <div key={i} className="contact-card-detail">
+                          <FaEnvelope />
+                          <a href={`mailto:${detail.value}`} className="contact-card-email">
+                            {detail.value}
+                          </a>
+                        </div>
+                      );
+                    } else if (detail.type === "phone") {
+                      return (
+                        <div key={i} className="contact-card-detail">
+                          <FaPhone />
+                          <span className={`contact-card-phone ${detail.emergency ? 'emergency-phone' : ''}`}>
+                            {detail.value}
+                          </span>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div key={i} className="contact-card-detail">
+                          <span>{detail.value}</span>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+                <p className="contact-card-description">{info.description}</p>
+                <a href={info.action} className="contact-card-button">
+                  {info.buttonText} →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="contact-faq-section">
+        <div className="contact-container">
+          <div className="contact-section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p className="contact-section-subtitle">
+              Quick answers to common questions
+            </p>
+          </div>
+
+          <div className="contact-faq-grid">
+            <div className="contact-faq-card">
+              <h4>Is Strokify free?</h4>
+              <p>Yes! Completely free for all users in Cambodia.</p>
             </div>
-            <div className="faq-item">
-              <h4>How accurate is the symptom detector?</h4>
-              <p>
-                Our AI model has 95% accuracy in detecting potential stroke
-                symptoms based on clinical data and research.
-              </p>
+            <div className="contact-faq-card">
+              <h4>How accurate is it?</h4>
+              <p>95% accuracy in detecting potential stroke symptoms.</p>
             </div>
-            <div className="faq-item">
-              <h4>Can I use Strokify for my elderly parents?</h4>
-              <p>
-                Absolutely! You can create family accounts to monitor your
-                parents' health from anywhere.
-              </p>
+            <div className="contact-faq-card">
+              <h4>For elderly parents?</h4>
+              <p>Yes, create family accounts to monitor from anywhere.</p>
             </div>
-            <div className="faq-item">
-              <h4>How do I become a partner nurse?</h4>
-              <p>
-                Contact us through the partnership inquiry form above, and our
-                team will reach out with details.
-              </p>
+            <div className="contact-faq-card">
+              <h4>Become a partner?</h4>
+              <p>Use the partnership form above and we'll contact you.</p>
             </div>
           </div>
-          {/* <div className="faq-more">
-            <a href="/faq" className="faq-link">View all FAQs →</a>
-          </div> */}
         </div>
       </section>
     </div>

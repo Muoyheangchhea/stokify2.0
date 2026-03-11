@@ -306,7 +306,7 @@ const mapFormToBackend = (formData) => {
     work_Govt_job: formData.workType === 'Government job' ? 1 : 0,
     work_Never_worked: formData.workType === 'Never worked' ? 1 : 0,
     work_Private: formData.workType === 'Private' ? 1 : 0,
-    work_Self-employed: formData.workType === 'Self-employed' ? 1 : 0,
+    work_Self_employed: formData.workType === 'Self-employed' ? 1 : 0,
     work_children: formData.workType === 'Children' ? 1 : 0
   };
 };
@@ -337,7 +337,7 @@ export const predictStrokeRisk = async (formData) => {
       "sex", "age", "hypertension", "heart_disease", "ever_married",
       "Residence_type", "avg_glucose_level", "bmi", "smoking_status",
       "work_Govt_job", "work_Never_worked", "work_Private",
-      "work_Self-employed", "work_children"
+      "work_SelfEmployed", "work_children"
     ];
 
     const orderedData = {};
