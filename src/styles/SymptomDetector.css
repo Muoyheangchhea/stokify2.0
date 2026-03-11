@@ -280,7 +280,7 @@
    Shows percentage completion
 ─────────────────────────────────────────────── */
 .sd-card-progress {
-  padding: 1rem 2.5rem 0;
+  padding: 1rem 2.5rem 0; /* Left/right padding: 2.5rem */
   flex-shrink: 0;
 }
 
@@ -349,14 +349,14 @@
   flex-shrink: 0;
 }
 
-/* The floating pill with proper border */
+/* The floating pill with proper border - properly aligned with card content */
 .sd-section-badge-pill {
   position: absolute;
   top: -15px;
-  left: 40px;
+  left: 2.5rem; /* Match the card's content padding (2.5rem) */
   background: white;
   padding: 0.4rem 1.2rem;
-  border-radius: 100px;
+  border-radius: 100px; /* This gives it the fully rounded pill shape */
   font-size: 0.65rem;
   font-weight: 700;
   display: inline-flex;
@@ -367,14 +367,19 @@
   z-index: 20;
   letter-spacing: 0.3px;
   text-transform: uppercase;
+  /* Ensure the border is fully rounded */
+  line-height: 1;
+  /* Force hardware acceleration */
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
 }
-
 /* ─────────────────────────────────────────────
    QUESTION BODY
    ─────────────────────────────────────────────
    flex:1 fills remaining card height.
    justify-content: center to vertically center content
 ─────────────────────────────────────────────── */
+/* Question body - update padding to match badge position */
 .sd-question-body {
   flex: 1;
   min-height: 0;
@@ -382,7 +387,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem 2.5rem 1rem;
+  padding: 1.25rem 2.5rem 1rem; /* Left/right padding: 2.5rem */
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;

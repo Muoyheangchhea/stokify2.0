@@ -812,7 +812,7 @@ if (showFullReport && reportData) {
               className="sd-section-badge-pill" 
               style={{ 
                 color: currentSectionData?.color, 
-                borderColor: currentSectionData?.color 
+                borderColor: currentSectionData?.color + ' !important' 
               }}
             >
               {currentSectionData?.icon}
