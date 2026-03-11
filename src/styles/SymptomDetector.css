@@ -1075,3 +1075,113 @@
   .sd-report-card { box-shadow: none; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; }
   .sd-risk-summary-card, .sd-recommendation-card { break-inside: avoid; }
 }
+
+/* Glucose follow-up questions - Optimized for form */
+.sd-glucose-followup {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light) var(--gray-100);
+}
+
+.sd-glucose-followup::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sd-glucose-followup::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 10px;
+}
+
+.sd-glucose-followup::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 10px;
+}
+
+.sd-followup-question {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--gray-200);
+}
+
+.sd-followup-question:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.sd-followup-label {
+  display: block;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Compact options grid for follow-up questions */
+.sd-followup-question .sd-options-grid {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+
+.sd-followup-question .sd-option-btn {
+  padding: 0.65rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .sd-followup-question .sd-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .sd-followup-question .sd-option-btn {
+    white-space: normal;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .sd-glucose-followup {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sd-followup-question .sd-options-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sd-followup-label {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
+
+/* Animation for follow-up questions */
+.sd-followup-question {
+  animation: sdSlideInUp 0.3s ease-out;
+}
+
+/* Ensure the main glucose question doesn't overflow */
+.sd-question-input-area {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.25rem;
+}
+
+.sd-question-input-area::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sd-question-input-area::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 10px;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaEye } from 'react-icons/fa';
 import {
   FaUser, FaHeart, FaLungs, FaWineBottle, FaApple,
   FaBed, FaArrowRight, FaArrowLeft, FaCheck, FaBrain,
@@ -18,28 +19,47 @@ const SymptomDetector = () => {
   const [reportData, setReportData]           = useState(null);
 
   const [formData, setFormData] = useState({
-    age: 35, sex: '', ethnicity: '', maritalStatus: '',
-    height: 170, weight: 70, residenceType: '',
-    familyStroke: '', familyHeart: '', familyDiabetes: '',
-    hasHighBP: '', bpMedication: '', hasHeartDisease: '',
-    hasDiabetes: '', diabetesMedication: '',
-    knowsBP: 'unknown', systolic: '', diastolic: '',
-    knowsGlucose: 'unknown', glucose: '',
-    smokingStatus: '', cigarettesPerDay: '',
-    alcoholConsumption: '', diet: '', physicalActivity: '', sleepStress: ''
-  });
+  age: 35, sex: '', ethnicity: '', maritalStatus: '',
+  height: 170, weight: 70, residenceType: '',
+  familyStroke: '', familyHeart: '', familyDiabetes: '',
+  hasHighBP: '', bpMedication: '', hasHeartDisease: '',
+  hasDiabetes: '', diabetesMedication: '',
+  knowsBP: 'unknown', systolic: '', diastolic: '',
+  knowsGlucose: 'unknown', glucose: '',
+  excessiveThirst: '', frequentFatigue: '', blurredVision: '', sugarIntake: '',  // ADD THESE
+  smokingStatus: '', cigarettesPerDay: '',
+  workType: '', alcoholConsumption: '', diet: '', physicalActivity: '', sleepStress: ''
+});
 
   const [showBpMedication, setShowBpMedication]             = useState(false);
   const [showDiabetesMedication, setShowDiabetesMedication] = useState(false);
   const [showCigarettes, setShowCigarettes]                 = useState(false);
   const [showBpInputs, setShowBpInputs]                     = useState(false);
   const [showGlucoseInput, setShowGlucoseInput]             = useState(false);
+  const [showGlucoseFollowUp, setShowGlucoseFollowUp] = useState(false);
 
   useEffect(() => {
     if (!formData.age || formData.age < 20 || formData.age > 100 || isNaN(formData.age)) {
       setFormData(prev => ({ ...prev, age: 35 }));
     }
   }, []);
+
+  const handleGlucoseSelection = (value) => {
+  setFormData(prev => ({ ...prev, knowsGlucose: value }));
+  setShowGlucoseInput(value === 'I know it');
+  setShowGlucoseFollowUp(value === "I don't know");
+  
+  // Clear follow-up answers if user switches back to "I know it"
+  if (value === 'I know it') {
+    setFormData(prev => ({
+      ...prev,
+      excessiveThirst: '',
+      frequentFatigue: '',
+      blurredVision: '',
+      sugarIntake: ''
+    }));
+  }
+};
 
   // ─── Sections / Questions ────────────────────────────────────────────────────
   const sections = [
@@ -51,7 +71,7 @@ const SymptomDetector = () => {
         { id: 'ethnicity',    type: 'options',     label: 'What is your ethnicity?',              icon: <FaUsers />,        options: ['Khmer', 'Vietnamese', 'Chinese', 'Other'] },
         { id: 'maritalStatus',type: 'options',     label: 'What is your marital status?',         icon: <FaHeart />,        options: ['Single', 'Married', 'Divorced', 'Widowed'] },
         { id: 'heightWeight', type: 'dual-slider', label: 'What is your height and weight?',      icon: <FaRuler />,        heightMin: 140, heightMax: 220, weightMin: 40, weightMax: 150 },
-        { id: 'residenceType',type: 'options',     label: 'Where do you live?',                   icon: <FaMapMarkerAlt />, options: ['Urban', 'Suburban', 'Rural'] }
+        { id: 'residenceType',type: 'options',     label: 'What type of residence do you currently live in?ℹ', icon: <FaMapMarkerAlt />, options: ['Urban', 'Rural'] }
       ]
     },
     {
@@ -70,11 +90,53 @@ const SymptomDetector = () => {
     {
       id: 3, title: 'Lifestyle & Habits', icon: <FaLungs />, color: '#F59E0B',
       questions: [
-        { id: 'smokingStatus',     type: 'smoking', label: 'What is your smoking habit?',                                     icon: <FaSmoking />,   options: ['Never smoked', 'Former smoker', 'Current smoker'] },
-        { id: 'alcoholConsumption',type: 'options', label: 'How often do you consume alcohol?',                               icon: <FaWineBottle />,options: ['Never', 'Occasionally (social events)', 'Regularly (1-2 times/week)', 'Frequently (3+ times/week)'] },
-        { id: 'diet',              type: 'options', label: 'Which best describes your usual diet?',                           icon: <FaApple />,     options: ['Balanced (fruits, vegetables, lean protein)', 'High in salty foods (prahok, processed foods)', 'High in fatty foods (fried foods, fatty meats)', 'High in sugary foods and drinks'] },
-        { id: 'physicalActivity',  type: 'options', label: 'How often do you do moderate exercise?',                         icon: <FaHeartbeat />, options: ['Sedentary (little to no exercise)', 'Light (1-2 times/week)', 'Moderate (3-4 times/week)', 'Active (5+ times/week)'] },
-        { id: 'sleepStress',       type: 'options', label: 'How often do you feel well-rested and manage stress effectively?',icon: <FaBed />,       options: ['Rarely', 'Sometimes', 'Often', 'Almost always'] }
+        { 
+          id: 'smokingStatus',     
+          type: 'options', 
+          label: 'Have you smoked over the past year?',                                     
+          icon: <FaSmoking />,   
+          options: ['Never smoked', 'Smokes'] 
+        },
+        { 
+          id: 'workType',
+          type: 'options', 
+          label: 'What is your main type of work?',                               
+          icon: <FaUsers />,
+          options: ['Never worked', 'Children', 'Government job', 'Self-employed', 'Private']
+        },
+        { 
+          id: 'alcoholConsumption',
+          type: 'options', 
+          label: 'How often do you drink alcohol?',                               
+          icon: <FaWineBottle />,
+          options: ['Never', 'Occasionally (e.g., social events)', 'Regularly (1–2 times/week)', 'Frequently (3+ times/week)']
+        },
+        { 
+          id: 'diet',              
+          type: 'options', 
+          label: 'Which best describes your daily diet?',                           
+          icon: <FaApple />,     
+          options: [
+            'Balanced (fruits, vegetables, lean protein)', 
+            'High in salty foods (e.g., prahok, processed foods)', 
+            'High in fatty foods (e.g., fried foods, fatty meats)', 
+            'High in sugary foods & drinks'
+          ] 
+        },
+        { 
+          id: 'physicalActivity',  
+          type: 'options', 
+          label: 'How often do you do moderate exercise (e.g., brisk walking, cycling)?ℹ',                         
+          icon: <FaHeartbeat />, 
+          options: ['Sedentary (little to no exercise)', 'Light (1-2 times/week)', 'Moderate (3-4 times/week)', 'Active (5+ times/week)']
+        },
+        { 
+          id: 'sleepStress',       
+          type: 'options', 
+          label: 'How often do you feel well-rested and manage stress effectively?',                 
+          icon: <FaBed />,       
+          options: ['Rarely', 'Sometimes', 'Often', 'Almost always'] 
+        }
       ]
     }
   ];
@@ -439,33 +501,112 @@ const SymptomDetector = () => {
           </>
         );
       case 'glucose-input':
-        return (
-          <>
-            <div className="sd-options-grid sd-options-two">
-              {["I don't know", "I know it"].map(opt => (
-                <button 
-                  key={opt} 
-                  className={`sd-option-btn ${formData.knowsGlucose === opt ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange('knowsGlucose', opt)}
+  return (
+    <>
+      <div className="sd-options-grid sd-options-two">
+        {["I don't know", "I know it"].map(opt => (
+          <button 
+            key={opt} 
+            className={`sd-option-btn ${formData.knowsGlucose === opt ? 'sd-selected' : ''}`}
+            onClick={() => handleGlucoseSelection(opt)}
+          >
+            {opt} {formData.knowsGlucose === opt && <FaCheck />}
+          </button>
+        ))}
+      </div>
+      
+      {/* Show glucose input if user knows their levels */}
+      {showGlucoseInput && (
+        <div className="sd-glucose-input">
+          <input 
+            type="number" 
+            placeholder="e.g. 100" 
+            value={formData.glucose}
+            onChange={e => handleInputChange('glucose', e.target.value)} 
+            className="sd-number-input" 
+          />
+          <span className="sd-glucose-unit">mg/dL</span>
+        </div>
+      )}
+      
+      {/* Show follow-up questions if user doesn't know their levels */}
+      {showGlucoseFollowUp && (
+        <div className="sd-glucose-followup">
+          {/* Question 1: Excessive thirst */}
+          <div className="sd-followup-question">
+            <label className="sd-followup-label">
+              How often do you experience excessive thirst or frequent urination?
+            </label>
+            <div className="sd-options-grid">
+              {['Never', 'Rarely', 'Sometimes', 'Often', 'Very often'].map(option => (
+                <button
+                  key={option}
+                  className={`sd-option-btn ${formData.excessiveThirst === option ? 'sd-selected' : ''}`}
+                  onClick={() => setFormData(prev => ({ ...prev, excessiveThirst: option }))}
                 >
-                  {opt} {formData.knowsGlucose === opt && <FaCheck />}
+                  {option} {formData.excessiveThirst === option && <FaCheck />}
                 </button>
               ))}
             </div>
-            {showGlucoseInput && (
-              <div className="sd-glucose-input">
-                <input 
-                  type="number" 
-                  placeholder="e.g. 100" 
-                  value={formData.glucose}
-                  onChange={e => handleInputChange('glucose', e.target.value)} 
-                  className="sd-number-input" 
-                />
-                <span className="sd-glucose-unit">mg/dL</span>
-              </div>
-            )}
-          </>
-        );
+          </div>
+
+          {/* Question 2: Fatigue */}
+          <div className="sd-followup-question">
+            <label className="sd-followup-label">
+              Do you often feel tired or fatigued even after adequate rest?
+            </label>
+            <div className="sd-options-grid">
+              {['Never', 'Rarely', 'Sometimes', 'Often', 'Always'].map(option => (
+                <button
+                  key={option}
+                  className={`sd-option-btn ${formData.frequentFatigue === option ? 'sd-selected' : ''}`}
+                  onClick={() => setFormData(prev => ({ ...prev, frequentFatigue: option }))}
+                >
+                  {option} {formData.frequentFatigue === option && <FaCheck />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Question 3: Blurred vision */}
+          <div className="sd-followup-question">
+            <label className="sd-followup-label">
+              Have you noticed any blurred vision recently?
+            </label>
+            <div className="sd-options-grid">
+              {['Never', 'Rarely', 'Sometimes', 'Often', 'Constant'].map(option => (
+                <button
+                  key={option}
+                  className={`sd-option-btn ${formData.blurredVision === option ? 'sd-selected' : ''}`}
+                  onClick={() => setFormData(prev => ({ ...prev, blurredVision: option }))}
+                >
+                  {option} {formData.blurredVision === option && <FaCheck />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Question 4: Sugar intake */}
+          <div className="sd-followup-question">
+            <label className="sd-followup-label">
+              How would you describe your typical daily sugar intake?
+            </label>
+            <div className="sd-options-grid">
+              {['Very low', 'Low', 'Moderate', 'High', 'Very high'].map(option => (
+                <button
+                  key={option}
+                  className={`sd-option-btn ${formData.sugarIntake === option ? 'sd-selected' : ''}`}
+                  onClick={() => setFormData(prev => ({ ...prev, sugarIntake: option }))}
+                >
+                  {option} {formData.sugarIntake === option && <FaCheck />}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
       default: return null;
     }
   };
