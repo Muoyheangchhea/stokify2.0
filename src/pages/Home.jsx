@@ -7,17 +7,12 @@ import {
 } from "react-icons/fa";
 import "../styles/Home.css";
 
-// Assets
 import logo from "../assets/img/phone_home.png";
 import logo2 from "../assets/img/phone_home1.png";
 
-/**
- * ── THE FINAL 3D iPHONE MOCKUP ──
- * Refined to sit higher and float with more presence.
- */
 const IPhoneRealistic = ({ src, alt, rotation = 25, scale = 1, delay = "0s" }) => {
   const isLeft = rotation > 0;
-  
+
   const floatingStyle = {
     animation: `phoneFloat 5s ease-in-out infinite`,
     animationDelay: delay,
@@ -27,9 +22,9 @@ const IPhoneRealistic = ({ src, alt, rotation = 25, scale = 1, delay = "0s" }) =
 
   const phoneStyle = {
     position: "relative",
-    width: "265px", 
-    height: "550px",
-    borderRadius: "46px",
+    width: "clamp(130px, 36vw, 265px)",
+    height: "clamp(270px, 75vw, 550px)",
+    borderRadius: "clamp(24px, 6vw, 46px)",
     background: "#000",
     transformStyle: "preserve-3d",
     transform: `rotateY(${rotation}deg) rotateX(2deg) scale(${scale})`,
@@ -46,55 +41,52 @@ const IPhoneRealistic = ({ src, alt, rotation = 25, scale = 1, delay = "0s" }) =
 
   return (
     <div style={floatingStyle}>
-      <style>
-        {`
-          @keyframes phoneFloat {
-            0%, 100% { transform: translateY(-10px); }
-            50% { transform: translateY(-35px); }
-          }
-        `}
-      </style>
+      <style>{`
+        @keyframes phoneFloat {
+          0%, 100% { transform: translateY(-10px); }
+          50%       { transform: translateY(-35px); }
+        }
+      `}</style>
       <div style={phoneStyle}>
         {/* SCREEN */}
         <div style={{
           position: "absolute",
-          inset: "11px",
+          inset: "clamp(6px, 1.5vw, 11px)",
           background: "#000",
-          borderRadius: "36px",
+          borderRadius: "clamp(18px, 5vw, 36px)",
           overflow: "hidden",
-          boxShadow: "inset 0 0 12px rgba(0,0,0,0.9)"
+          boxShadow: "inset 0 0 12px rgba(0,0,0,0.9)",
         }}>
           <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           <div style={{
-            position: "absolute",
-            top: 0, left: 0, width: "100%", height: "100%",
+            position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
             background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
-            pointerEvents: "none"
+            pointerEvents: "none",
           }} />
         </div>
 
         {/* DYNAMIC ISLAND */}
         <div style={{
           position: "absolute",
-          top: "22px",
+          top: "clamp(10px, 2.5vw, 22px)",
           left: "50%",
           transform: "translateX(-50%) translateZ(1px)",
-          width: "85px",
-          height: "26px",
+          width: "clamp(50px, 12vw, 85px)",
+          height: "clamp(14px, 3.5vw, 26px)",
           background: "#000",
           borderRadius: "14px",
-          zIndex: 10
+          zIndex: 10,
         }} />
 
-        {/* SIDE BUTTONS */}
+        {/* SIDE BUTTON */}
         <div style={{
           position: "absolute",
-          top: "135px",
-          [isLeft ? "left" : "right"]: "-11px",
+          top: "clamp(70px, 17vw, 135px)",
+          [isLeft ? "left" : "right"]: "-4px",
           width: "4px",
-          height: "45px",
+          height: "clamp(25px, 6vw, 45px)",
           background: "linear-gradient(to bottom, #ced4da, #adb5bd)",
-          borderRadius: "2px"
+          borderRadius: "2px",
         }} />
       </div>
     </div>
@@ -108,43 +100,57 @@ const Home = () => {
   ];
 
   const riskLevels = [
-    { level: "Low Risk",      icon: <FaCheckCircle />,        modifier: "home-page-risk-node--low",
-      actions: ["Health Advisor recommendations", "LifeSync daily tasks", "Wellness tracking"] },
-    { level: "Moderate Risk", icon: <FaExclamation />,        modifier: "home-page-risk-node--moderate",
-      actions: ["Share report with caregiver", "Schedule check-up", "Enhanced monitoring"] },
-    { level: "High Risk",     icon: <FaExclamationTriangle />, modifier: "home-page-risk-node--high",
-      actions: ["F.A.S.T. stroke test", "Emergency guidance", "Call 911 immediately"] },
+    {
+      level: "Low Risk", icon: <FaCheckCircle />, modifier: "home-page-risk-node--low",
+      actions: ["Health Advisor recommendations", "LifeSync daily tasks", "Wellness tracking"],
+    },
+    {
+      level: "Moderate Risk", icon: <FaExclamation />, modifier: "home-page-risk-node--moderate",
+      actions: ["Share report with caregiver", "Schedule check-up", "Enhanced monitoring"],
+    },
+    {
+      level: "High Risk", icon: <FaExclamationTriangle />, modifier: "home-page-risk-node--high",
+      actions: ["F.A.S.T. stroke test", "Emergency guidance", "Call 911 immediately"],
+    },
   ];
 
   const features = [
-    { icon: <FaStethoscope />, title: "Symptom Detector",
+    {
+      icon: <FaStethoscope />, title: "Symptom Detector",
       description: "AI-powered symptom analysis with 95% accuracy - get results in seconds",
-      benefits: ["5-minute assessment", "3 risk categories", "Instant results"], link: "/symptom-detector" },
-    { icon: <FaHeartbeat />, title: "Health Advisor",
+      benefits: ["5-minute assessment", "3 risk categories", "Instant results"],
+      link: "/symptom-detector",
+    },
+    {
+      icon: <FaHeartbeat />, title: "Health Advisor",
       description: "Personalized wellness plans tailored to your unique health profile",
-      benefits: ["Custom recommendations", "Progress tracking", "Expert guidelines"], link: "/health-advisor" },
-    { icon: <FaSync />, title: "LifeSync",
+      benefits: ["Custom recommendations", "Progress tracking", "Expert guidelines"],
+      link: "/health-advisor",
+    },
+    {
+      icon: <FaSync />, title: "LifeSync",
       description: "Synchronize your health tasks, medications, and daily progress",
-      benefits: ["Smart reminders", "Medication tracking", "Health metrics"], link: "/lifesync" },
+      benefits: ["Smart reminders", "Medication tracking", "Health metrics"],
+      link: "/lifesync",
+    },
   ];
 
   return (
     <div className="home-page">
+
+      {/* ══════════════════════════════ HERO */}
       <section className="home-page-hero">
-        <div className="home-page-hero-content">
-          <h1>Your Health Journey Starts Here</h1>
-          <p className="home-page-hero-subtitle">
-            Experience the future of healthcare with AI-powered symptom analysis
-            and personalized wellness guidance.
-          </p>
-          <div className="home-page-hero-buttons">
-            <Link to="/about" className="home-page-btn-secondary">
-              <FaQuestionCircle /> About Us
-            </Link>
-            <Link to="/symptom-detector" className="home-page-btn-primary">
-              Start Free Trial <FaArrowRight />
-            </Link>
+
+        {/* ORDER 2 mobile → LEFT column desktop */}
+        <div className="home-page-hero-left">
+          <div className="home-page-hero-content">
+            <h1>Your Health Journey Starts Here</h1>
+            <p className="home-page-hero-subtitle">
+              Experience the future of healthcare with AI-powered symptom analysis
+              and personalized wellness guidance.
+            </p>
           </div>
+
           <div className="home-page-hero-stats">
             {stats.map((s, i) => (
               <div key={i} className="home-page-hero-stat">
@@ -156,28 +162,30 @@ const Home = () => {
               </div>
             ))}
           </div>
+
+          <div className="home-page-hero-buttons">
+            <Link to="/about" className="home-page-btn-secondary">
+              <FaQuestionCircle /> About Us
+            </Link>
+            <Link to="/symptom-detector" className="home-page-btn-primary">
+              Start Free Trial <FaArrowRight />
+            </Link>
+          </div>
         </div>
 
-        {/* DUAL DISPLAY - 3D iPHONES WITH FLOATING ANIMATION */}
-        <div className="hp-duo" style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "10px",
-            height: "600px",
-            perspective: "2000px"
-        }}>
-          {/* Back Phone */}
-          <div style={{ marginRight: "-55px", zIndex: 8 }}>
-            <IPhoneRealistic src={logo} alt="Home" rotation={30} scale={0.95} delay="0s" />
+        {/* ORDER 1 mobile → RIGHT column desktop */}
+        <div className="hp-duo">
+          <div className="hp-duo-back">
+            <IPhoneRealistic src={logo} alt="Home screen" rotation={30} scale={0.95} delay="0s" />
           </div>
-          {/* Front Phone */}
-          <div style={{ zIndex: 20, marginTop: "40px", marginRight: "100px" }}>
+          <div className="hp-duo-front">
             <IPhoneRealistic src={logo2} alt="Dashboard" rotation={-22} scale={1} delay="0.6s" />
           </div>
         </div>
+
       </section>
 
+      {/* ══════════════════════════════ FEATURES */}
       <section className="home-page-features">
         <div className="home-page-section-header">
           <h2>Comprehensive Health Solutions</h2>
@@ -198,6 +206,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ══════════════════════════════ RISK */}
       <section className="home-page-risk-section">
         <div className="home-page-section-header">
           <h2>Intelligent Risk Assessment</h2>
@@ -220,6 +229,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ══════════════════════════════ FAMILY */}
       <section className="home-page-family-section">
         <div className="home-page-family-preview">
           <div className="home-page-family-preview-icon"><FaUsers /></div>
@@ -235,6 +245,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ══════════════════════════════ CTA */}
       <section className="home-page-cta">
         <div className="home-page-cta-content">
           <h2>Ready to transform your health?</h2>
@@ -249,6 +260,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
