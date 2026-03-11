@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { predictStrokeRisk } from '../services/strokeService';
 import { FaEye } from 'react-icons/fa';
 import {
   FaUser, FaHeart, FaLungs, FaWineBottle, FaApple,
@@ -17,26 +18,28 @@ const SymptomDetector = () => {
   const [showFullReport, setShowFullReport]   = useState(false);
   const [progress, setProgress]               = useState(0);
   const [reportData, setReportData]           = useState(null);
+  const [apiError, setApiError]               = useState(null);
 
   const [formData, setFormData] = useState({
-  age: 35, sex: '', ethnicity: '', maritalStatus: '',
-  height: 170, weight: 70, residenceType: '',
-  familyStroke: '', familyHeart: '', familyDiabetes: '',
-  hasHighBP: '', bpMedication: '', hasHeartDisease: '',
-  hasDiabetes: '', diabetesMedication: '',
-  knowsBP: 'unknown', systolic: '', diastolic: '',
-  knowsGlucose: 'unknown', glucose: '',
-  excessiveThirst: '', frequentFatigue: '', blurredVision: '', sugarIntake: '',  // ADD THESE
-  smokingStatus: '', cigarettesPerDay: '',
-  workType: '', alcoholConsumption: '', diet: '', physicalActivity: '', sleepStress: ''
-});
+    age: 35, sex: '', ethnicity: '', maritalStatus: '',
+    height: 170, weight: 70, residenceType: '',
+    familyStroke: '', familyHeart: '', familyDiabetes: '',
+    hasHighBP: '', bpMedication: '', hasHeartDisease: '',
+    hasDiabetes: '', diabetesMedication: '',
+    knowsBP: 'unknown', systolic: '', diastolic: '',
+    knowsGlucose: 'unknown', glucose: '',
+    excessiveThirst: '', frequentFatigue: '', blurredVision: '', sugarIntake: '',
+    smokingStatus: '', cigarettesPerDay: '',
+    workType: '', alcoholConsumption: '', diet: '', physicalActivity: '', sleepStress: ''
+  });
 
   const [showBpMedication, setShowBpMedication]             = useState(false);
   const [showDiabetesMedication, setShowDiabetesMedication] = useState(false);
   const [showCigarettes, setShowCigarettes]                 = useState(false);
   const [showBpInputs, setShowBpInputs]                     = useState(false);
   const [showGlucoseInput, setShowGlucoseInput]             = useState(false);
-  const [showGlucoseFollowUp, setShowGlucoseFollowUp] = useState(false);
+  const [showGlucoseFollowUp, setShowGlucoseFollowUp]       = useState(false);
+  const [glucoseFollowUpStep, setGlucoseFollowUpStep]       = useState(0);
 
   useEffect(() => {
     if (!formData.age || formData.age < 20 || formData.age > 100 || isNaN(formData.age)) {
@@ -45,21 +48,52 @@ const SymptomDetector = () => {
   }, []);
 
   const handleGlucoseSelection = (value) => {
-  setFormData(prev => ({ ...prev, knowsGlucose: value }));
-  setShowGlucoseInput(value === 'I know it');
-  setShowGlucoseFollowUp(value === "I don't know");
-  
-  // Clear follow-up answers if user switches back to "I know it"
-  if (value === 'I know it') {
-    setFormData(prev => ({
-      ...prev,
-      excessiveThirst: '',
-      frequentFatigue: '',
-      blurredVision: '',
-      sugarIntake: ''
-    }));
-  }
-};
+    setFormData(prev => ({ ...prev, knowsGlucose: value }));
+    setShowGlucoseInput(value === 'I know it');
+    
+    if (value === "I don't know") {
+      setShowGlucoseFollowUp(true);
+      setGlucoseFollowUpStep(0);
+    } else {
+      setShowGlucoseFollowUp(false);
+      setGlucoseFollowUpStep(0);
+      // Clear follow-up answers
+      setFormData(prev => ({
+        ...prev,
+        excessiveThirst: '',
+        frequentFatigue: '',
+        blurredVision: '',
+        sugarIntake: ''
+      }));
+    }
+  };
+
+  const glucoseFollowUpQuestions = [
+    {
+      id: 'excessiveThirst',
+      label: 'How often do you experience excessive thirst or frequent urination?',
+      icon: <FaTint />,
+      options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Very often']
+    },
+    {
+      id: 'frequentFatigue',
+      label: 'Do you often feel tired or fatigued even after adequate rest?',
+      icon: <FaHeartbeat />,
+      options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always']
+    },
+    {
+      id: 'blurredVision',
+      label: 'Have you noticed any blurred vision recently?',
+      icon: <FaEye />,
+      options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Constant']
+    },
+    {
+      id: 'sugarIntake',
+      label: 'How would you describe your typical daily sugar intake?',
+      icon: <FaApple />,
+      options: ['Very low', 'Low', 'Moderate', 'High', 'Very high']
+    }
+  ];
 
   // ─── Sections / Questions ────────────────────────────────────────────────────
   const sections = [
@@ -71,7 +105,7 @@ const SymptomDetector = () => {
         { id: 'ethnicity',    type: 'options',     label: 'What is your ethnicity?',              icon: <FaUsers />,        options: ['Khmer', 'Vietnamese', 'Chinese', 'Other'] },
         { id: 'maritalStatus',type: 'options',     label: 'What is your marital status?',         icon: <FaHeart />,        options: ['Single', 'Married', 'Divorced', 'Widowed'] },
         { id: 'heightWeight', type: 'dual-slider', label: 'What is your height and weight?',      icon: <FaRuler />,        heightMin: 140, heightMax: 220, weightMin: 40, weightMax: 150 },
-        { id: 'residenceType',type: 'options',     label: 'What type of residence do you currently live in?ℹ', icon: <FaMapMarkerAlt />, options: ['Urban', 'Rural'] }
+        { id: 'residenceType',type: 'options',     label: 'What type of residence do you currently live in?', icon: <FaMapMarkerAlt />, options: ['Urban', 'Rural'] }
       ]
     },
     {
@@ -126,7 +160,7 @@ const SymptomDetector = () => {
         { 
           id: 'physicalActivity',  
           type: 'options', 
-          label: 'How often do you do moderate exercise (e.g., brisk walking, cycling)?ℹ',                         
+          label: 'How often do you do moderate exercise (e.g., brisk walking, cycling)?',                         
           icon: <FaHeartbeat />, 
           options: ['Sedentary (little to no exercise)', 'Light (1-2 times/week)', 'Moderate (3-4 times/week)', 'Active (5+ times/week)']
         },
@@ -143,10 +177,17 @@ const SymptomDetector = () => {
 
   // ─── Derived progress counters ───────────────────────────────────────────────
   const totalQuestions = sections.reduce((sum, sec) => sum + sec.questions.length, 0);
-  const currentQuestion =
-    sections.slice(0, currentSection - 1).reduce((sum, sec) => sum + sec.questions.length, 0) +
-    currentStep;
-  const cardProgressPct = Math.round(((currentQuestion - 1) / totalQuestions) * 100);
+  
+  // Adjust total questions if in follow-up mode
+  const adjustedTotalQuestions = showGlucoseFollowUp 
+    ? totalQuestions + glucoseFollowUpQuestions.length 
+    : totalQuestions;
+  
+  const currentQuestion = showGlucoseFollowUp
+    ? sections.slice(0, currentSection - 1).reduce((sum, sec) => sum + sec.questions.length, 0) + currentStep + glucoseFollowUpStep
+    : sections.slice(0, currentSection - 1).reduce((sum, sec) => sum + sec.questions.length, 0) + currentStep;
+    
+  const cardProgressPct = Math.round(((currentQuestion - 1) / adjustedTotalQuestions) * 100);
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────
   const calculateBMI = () => {
@@ -259,6 +300,45 @@ const SymptomDetector = () => {
     return report;
   };
 
+  // ─── NEW: Generate report with API results ─────────────────────────────────
+  const generateReportWithApiResult = (apiResult) => {
+    console.log('📊 Generating report with API result:', apiResult);
+    
+    const baseReport = generateReport();
+    
+    // Determine risk level based on hybrid risk or probability
+    const riskScore = apiResult.hybrid_risk || (apiResult.probability * 100);
+    let riskLevel = 'Low';
+    let riskColor = '#10B981';
+    let riskDescription = apiResult.message || 'Your risk is low';
+    
+    if (riskScore >= 50) {
+      riskLevel = 'High';
+      riskColor = '#EF4444';
+      riskDescription = apiResult.message || 'High stroke risk - consult a doctor';
+    } else if (riskScore >= 30) {
+      riskLevel = 'Moderate';
+      riskColor = '#F59E0B';
+      riskDescription = apiResult.message || 'Moderate stroke risk - consider lifestyle changes';
+    }
+    
+    return {
+      ...baseReport,
+      prediction: apiResult.prediction,
+      probability: apiResult.probability,
+      hybrid_risk: apiResult.hybrid_risk,
+      questionnaire_score: apiResult.questionnaire_score,
+      patientId: apiResult.patientId,
+      risk: {
+        ...baseReport.risk,
+        score: Math.round(riskScore),
+        level: riskLevel,
+        color: riskColor,
+        description: riskDescription
+      }
+    };
+  };
+
   // ─── Input Handler ────────────────────────────────────────────────────────────
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -276,28 +356,105 @@ const SymptomDetector = () => {
       if (q.type === 'dual-slider') { total += 2; if (formData.height) completed++; if (formData.weight) completed++; }
       else { total++; if (formData[q.id]) completed++; }
     }));
+    
+    // Add follow-up questions to progress if in follow-up mode
+    if (showGlucoseFollowUp) {
+      total += glucoseFollowUpQuestions.length;
+      if (formData.excessiveThirst) completed++;
+      if (formData.frequentFatigue) completed++;
+      if (formData.blurredVision) completed++;
+      if (formData.sugarIntake) completed++;
+    }
+    
     setProgress(Math.min(Math.round((completed / total) * 100), 100));
   };
 
   // ─── Navigation ───────────────────────────────────────────────────────────────
   const goToNext = () => {
-    if (currentStep < sections[currentSection - 1].questions.length) { setCurrentStep(s => s + 1); }
-    else if (currentSection < sections.length)                        { setCurrentSection(s => s + 1); setCurrentStep(1); }
-    else                                                               { handleSubmit(); }
+    if (showGlucoseFollowUp) {
+      // In follow-up mode
+      if (glucoseFollowUpStep < glucoseFollowUpQuestions.length - 1) {
+        // Move to next follow-up question
+        setGlucoseFollowUpStep(prev => prev + 1);
+      } else {
+        // Last follow-up question, exit mode and go to next section/question
+        setShowGlucoseFollowUp(false);
+        setGlucoseFollowUpStep(0);
+        
+        // Move to next question in main flow
+        if (currentStep < sections[currentSection - 1].questions.length) {
+          setCurrentStep(s => s + 1);
+        } else if (currentSection < sections.length) {
+          setCurrentSection(s => s + 1);
+          setCurrentStep(1);
+        } else {
+          handleSubmit();
+        }
+      }
+    } else {
+      // Normal navigation
+      if (currentStep < sections[currentSection - 1].questions.length) {
+        setCurrentStep(s => s + 1);
+      } else if (currentSection < sections.length) {
+        setCurrentSection(s => s + 1);
+        setCurrentStep(1);
+      } else {
+        handleSubmit();
+      }
+    }
   };
 
   const goToPrevious = () => {
-    if (currentStep > 1)         { setCurrentStep(s => s - 1); }
-    else if (currentSection > 1) { setCurrentSection(s => s - 1); setCurrentStep(sections[currentSection - 2].questions.length); }
+    if (showGlucoseFollowUp) {
+      // In follow-up mode
+      if (glucoseFollowUpStep > 0) {
+        // Go back to previous follow-up question
+        setGlucoseFollowUpStep(prev => prev - 1);
+      } else {
+        // Back to main glucose question
+        setShowGlucoseFollowUp(false);
+        setGlucoseFollowUpStep(0);
+      }
+    } else {
+      // Normal navigation
+      if (currentStep > 1) {
+        setCurrentStep(s => s - 1);
+      } else if (currentSection > 1) {
+        setCurrentSection(s => s - 1);
+        setCurrentStep(sections[currentSection - 2].questions.length);
+      }
+    }
   };
 
-  const handleSubmit = () => {
+  // ─── FIXED: handleSubmit now calls the API ─────────────────────────────────
+  const handleSubmit = async () => {
     setIsSubmitting(true);
-    setTimeout(() => { const r = generateReport(); setReportData(r); setIsSubmitting(false); setShowResults(true); }, 3000);
+    setApiError(null);
+    
+    try {
+      console.log('🚀 Calling API with form data:', formData);
+      const result = await predictStrokeRisk(formData);
+      
+      if (result.success) {
+        console.log('✅ API call successful:', result.data);
+        const report = generateReportWithApiResult(result.data);
+        setReportData(report);
+        setIsSubmitting(false);
+        setShowResults(true);
+      } else {
+        console.error('❌ API call failed:', result.error);
+        setApiError(result.error);
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error('❌ Error in handleSubmit:', error);
+      setApiError('Failed to connect to server. Please try again.');
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
-    setCurrentSection(1); setCurrentStep(1); setShowResults(false); setShowFullReport(false); setProgress(0);
+    setCurrentSection(1); setCurrentStep(1); setShowResults(false); setShowFullReport(false); setProgress(0); setApiError(null);
     setFormData({ age:35, sex:'', ethnicity:'', maritalStatus:'', height:170, weight:70, residenceType:'', familyStroke:'', familyHeart:'', familyDiabetes:'', hasHighBP:'', bpMedication:'', hasHeartDisease:'', hasDiabetes:'', diabetesMedication:'', knowsBP:'unknown', systolic:'', diastolic:'', knowsGlucose:'unknown', glucose:'', smokingStatus:'', cigarettesPerDay:'', alcoholConsumption:'', diet:'', physicalActivity:'', sleepStress:'' });
   };
 
@@ -320,6 +477,31 @@ const SymptomDetector = () => {
 
   const renderQuestion = (question) => {
     if (!question) return null;
+    
+    // If in glucose follow-up mode and we're on the knowsGlucose question, render follow-up instead
+    if (showGlucoseFollowUp && question.id === 'knowsGlucose') {
+      const followUpQ = glucoseFollowUpQuestions[glucoseFollowUpStep];
+      if (!followUpQ) return null;
+      
+      // Use the same structure as regular options questions for consistency
+      return (
+        <div className="sd-options-grid">
+          {followUpQ.options.map(option => (
+            <button
+              key={option}
+              className={`sd-option-btn ${formData[followUpQ.id] === option ? 'sd-selected' : ''}`}
+              onClick={() => {
+                setFormData(prev => ({ ...prev, [followUpQ.id]: option }));
+              }}
+            >
+              {option} {formData[followUpQ.id] === option && <FaCheck />}
+            </button>
+          ))}
+        </div>
+      );
+    }
+    
+    // Original renderQuestion logic for all other questions
     switch (question.type) {
       case 'slider': {
         let val = formData[question.id];
@@ -501,112 +683,35 @@ const SymptomDetector = () => {
           </>
         );
       case 'glucose-input':
-  return (
-    <>
-      <div className="sd-options-grid sd-options-two">
-        {["I don't know", "I know it"].map(opt => (
-          <button 
-            key={opt} 
-            className={`sd-option-btn ${formData.knowsGlucose === opt ? 'sd-selected' : ''}`}
-            onClick={() => handleGlucoseSelection(opt)}
-          >
-            {opt} {formData.knowsGlucose === opt && <FaCheck />}
-          </button>
-        ))}
-      </div>
-      
-      {/* Show glucose input if user knows their levels */}
-      {showGlucoseInput && (
-        <div className="sd-glucose-input">
-          <input 
-            type="number" 
-            placeholder="e.g. 100" 
-            value={formData.glucose}
-            onChange={e => handleInputChange('glucose', e.target.value)} 
-            className="sd-number-input" 
-          />
-          <span className="sd-glucose-unit">mg/dL</span>
-        </div>
-      )}
-      
-      {/* Show follow-up questions if user doesn't know their levels */}
-      {showGlucoseFollowUp && (
-        <div className="sd-glucose-followup">
-          {/* Question 1: Excessive thirst */}
-          <div className="sd-followup-question">
-            <label className="sd-followup-label">
-              How often do you experience excessive thirst or frequent urination?
-            </label>
-            <div className="sd-options-grid">
-              {['Never', 'Rarely', 'Sometimes', 'Often', 'Very often'].map(option => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData.excessiveThirst === option ? 'sd-selected' : ''}`}
-                  onClick={() => setFormData(prev => ({ ...prev, excessiveThirst: option }))}
+        return (
+          <>
+            <div className="sd-options-grid sd-options-two">
+              {["I don't know", "I know it"].map(opt => (
+                <button 
+                  key={opt} 
+                  className={`sd-option-btn ${formData.knowsGlucose === opt ? 'sd-selected' : ''}`}
+                  onClick={() => handleGlucoseSelection(opt)}
                 >
-                  {option} {formData.excessiveThirst === option && <FaCheck />}
+                  {opt} {formData.knowsGlucose === opt && <FaCheck />}
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Question 2: Fatigue */}
-          <div className="sd-followup-question">
-            <label className="sd-followup-label">
-              Do you often feel tired or fatigued even after adequate rest?
-            </label>
-            <div className="sd-options-grid">
-              {['Never', 'Rarely', 'Sometimes', 'Often', 'Always'].map(option => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData.frequentFatigue === option ? 'sd-selected' : ''}`}
-                  onClick={() => setFormData(prev => ({ ...prev, frequentFatigue: option }))}
-                >
-                  {option} {formData.frequentFatigue === option && <FaCheck />}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Question 3: Blurred vision */}
-          <div className="sd-followup-question">
-            <label className="sd-followup-label">
-              Have you noticed any blurred vision recently?
-            </label>
-            <div className="sd-options-grid">
-              {['Never', 'Rarely', 'Sometimes', 'Often', 'Constant'].map(option => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData.blurredVision === option ? 'sd-selected' : ''}`}
-                  onClick={() => setFormData(prev => ({ ...prev, blurredVision: option }))}
-                >
-                  {option} {formData.blurredVision === option && <FaCheck />}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Question 4: Sugar intake */}
-          <div className="sd-followup-question">
-            <label className="sd-followup-label">
-              How would you describe your typical daily sugar intake?
-            </label>
-            <div className="sd-options-grid">
-              {['Very low', 'Low', 'Moderate', 'High', 'Very high'].map(option => (
-                <button
-                  key={option}
-                  className={`sd-option-btn ${formData.sugarIntake === option ? 'sd-selected' : ''}`}
-                  onClick={() => setFormData(prev => ({ ...prev, sugarIntake: option }))}
-                >
-                  {option} {formData.sugarIntake === option && <FaCheck />}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+            
+            {/* Show glucose input if user knows their levels */}
+            {showGlucoseInput && (
+              <div className="sd-glucose-input">
+                <input 
+                  type="number" 
+                  placeholder="e.g. 100" 
+                  value={formData.glucose}
+                  onChange={e => handleInputChange('glucose', e.target.value)} 
+                  className="sd-number-input" 
+                />
+                <span className="sd-glucose-unit">mg/dL</span>
+              </div>
+            )}
+          </>
+        );
       default: return null;
     }
   };
@@ -635,188 +740,186 @@ const SymptomDetector = () => {
     );
   };
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  FULL REPORT VIEW - Updated with Stroke Risk Assessment title
-// ═══════════════════════════════════════════════════════════════════════════
-if (showFullReport && reportData) {
-  const { risk, patientInfo, vitalSigns, recommendations, disclaimer, generated } = reportData;
-  const glucoseNum = parseInt(vitalSigns.glucose);
-  const glucoseStatus = vitalSigns.glucose !== 'Not provided'
-    ? (glucoseNum > 125 ? { label: 'High', color: '#EF4444' } : glucoseNum > 100 ? { label: 'Borderline', color: '#F59E0B' } : { label: 'Normal', color: '#10B981' })
-    : { label: 'Not measured', color: '#9CA3AF' };
-  const bpStatusColor = vitalSigns.bpStatus === 'Normal' ? '#10B981' : vitalSigns.bpStatus === 'Borderline' ? '#F59E0B' : '#EF4444';
-  
-  return (
-    <div className="sd-container">
-      <div className="sd-bg-blob sd-blob-1" /><div className="sd-bg-blob sd-blob-2" />
-      <div className="sd-report-page">
-        <div className="sd-report-page-inner">
-          <div className="sd-report-card">
-            <div className="sd-report-brand">
-              <div className="sd-report-brand-left">
-                {/* Small Stroke Risk Assessment text above the date */}
-                <div className="sd-report-small-title">Stroke Risk Assessment</div>
-                <div className="sd-report-date-badge">Generated: {generated}</div>
+  // ═══════════════════════════════════════════════════════════════════════════
+  //  FULL REPORT VIEW
+  // ═══════════════════════════════════════════════════════════════════════════
+  if (showFullReport && reportData) {
+    const { risk, patientInfo, vitalSigns, recommendations, disclaimer, generated } = reportData;
+    const glucoseNum = parseInt(vitalSigns.glucose);
+    const glucoseStatus = vitalSigns.glucose !== 'Not provided'
+      ? (glucoseNum > 125 ? { label: 'High', color: '#EF4444' } : glucoseNum > 100 ? { label: 'Borderline', color: '#F59E0B' } : { label: 'Normal', color: '#10B981' })
+      : { label: 'Not measured', color: '#9CA3AF' };
+    const bpStatusColor = vitalSigns.bpStatus === 'Normal' ? '#10B981' : vitalSigns.bpStatus === 'Borderline' ? '#F59E0B' : '#EF4444';
+    
+    return (
+      <div className="sd-container">
+        <div className="sd-bg-blob sd-blob-1" /><div className="sd-bg-blob sd-blob-2" />
+        <div className="sd-report-page">
+          <div className="sd-report-page-inner">
+            <div className="sd-report-card">
+              <div className="sd-report-brand">
+                <div className="sd-report-brand-left">
+                  <div className="sd-report-small-title">Stroke Risk Assessment</div>
+                  <div className="sd-report-date-badge">Generated: {generated}</div>
+                </div>
+                <button className="sd-report-download-box" onClick={handleDownloadReport}>
+                  <FaDownload /> Download Report
+                </button>
               </div>
-              {/* Download button inside card where date used to be */}
-              <button className="sd-report-download-box" onClick={handleDownloadReport}>
-                <FaDownload /> Download Report
-              </button>
-            </div>
-            <div className="sd-report-hero">
-              <div className="sd-report-hero-icon"><FaFileAlt /></div>
-              <h1 className="sd-report-title">Comprehensive Health Assessment Report</h1>
-              <p className="sd-report-subtitle">Stroke Risk Evaluation and Personalized Recommendations</p>
-            </div>
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Risk Summary</h2>
-              <div className="sd-risk-summary-card" style={{ borderLeftColor: risk.color }}>
-                <div className="sd-risk-summary-header">
-                  <div>
-                    <span className="sd-risk-level-label">Overall Stroke Risk</span>
-                    <span className="sd-risk-level-value" style={{ color: risk.color }}>{risk.level}</span>
-                  </div>
-                  <span className="sd-risk-score" style={{ color: risk.color }}>{risk.score}%</span>
-                </div>
-                <div className="sd-risk-meter-large">
-                  <div className="sd-risk-bar-large"><div className="sd-risk-progress-large" style={{ width: `${risk.score}%`, background: risk.color }} /></div>
-                  <div className="sd-risk-scale">{['0%','25%','50%','75%','100%'].map(l => <span key={l}>{l}</span>)}</div>
-                </div>
-                <p className="sd-risk-description">{risk.description}</p>
-                <div className="sd-ten-year-risk">
-                  <span className="sd-ten-year-label">Estimated 10-Year Stroke Risk</span>
-                  <span className="sd-ten-year-value" style={{ color: risk.color }}>{risk.tenYearRisk}%</span>
-                </div>
+              <div className="sd-report-hero">
+                <div className="sd-report-hero-icon"><FaFileAlt /></div>
+                <h1 className="sd-report-title">Comprehensive Health Assessment Report</h1>
+                <p className="sd-report-subtitle">Stroke Risk Evaluation and Personalized Recommendations</p>
               </div>
-            </div>
-            <div className="sd-report-grid">
-              <div>
-                <h2 className="sd-section-heading">Patient Information</h2>
-                <div className="sd-info-grid">
-                  {[
-                    {label:'Age', value:`${patientInfo.age} years`},
-                    {label:'Sex', value:patientInfo.sex},
-                    {label:'Ethnicity', value:patientInfo.ethnicity},
-                    {label:'Marital Status', value:patientInfo.maritalStatus},
-                    {label:'Height', value:`${patientInfo.height} cm`},
-                    {label:'Weight', value:`${patientInfo.weight} kg`}
-                  ].map(({label,value}) => (
-                    <div key={label} className="sd-info-item">
-                      <span className="sd-info-label">{label}</span>
-                      <span className="sd-info-value">{value}</span>
-                    </div>
-                  ))}
-                  <div className="sd-info-item">
-                    <span className="sd-info-label">BMI</span>
-                    <span className="sd-info-value" style={{ color: patientInfo.bmiColor }}>
-                      {patientInfo.bmi} — {patientInfo.bmiCategory}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <h2 className="sd-section-heading">Vital Signs</h2>
-                <div className="sd-vitals-grid" style={{ gridTemplateColumns: '1fr' }}>
-                  <div className="sd-vital-card">
-                    <div className="sd-vital-icon-wrap" style={{ color: '#E63E4E' }}><FaHeartbeat /></div>
+              <div className="sd-report-section">
+                <h2 className="sd-section-heading">Risk Summary</h2>
+                <div className="sd-risk-summary-card" style={{ borderLeftColor: risk.color }}>
+                  <div className="sd-risk-summary-header">
                     <div>
-                      <div className="sd-vital-label">Blood Pressure</div>
-                      <div className="sd-vital-value">{vitalSigns.bloodPressure}</div>
-                      <span className="sd-vital-status" style={{ color: bpStatusColor, background: `${bpStatusColor}18` }}>
-                        {vitalSigns.bpStatus}
-                      </span>
+                      <span className="sd-risk-level-label">Overall Stroke Risk</span>
+                      <span className="sd-risk-level-value" style={{ color: risk.color }}>{risk.level}</span>
                     </div>
+                    <span className="sd-risk-score" style={{ color: risk.color }}>{risk.score}%</span>
                   </div>
-                  <div className="sd-vital-card">
-                    <div className="sd-vital-icon-wrap" style={{ color: '#10B981' }}><FaTint /></div>
-                    <div>
-                      <div className="sd-vital-label">Blood Glucose</div>
-                      <div className="sd-vital-value">
-                        {vitalSigns.glucose}{vitalSigns.glucose !== 'Not provided' ? ' mg/dL' : ''}
+                  <div className="sd-risk-meter-large">
+                    <div className="sd-risk-bar-large"><div className="sd-risk-progress-large" style={{ width: `${risk.score}%`, background: risk.color }} /></div>
+                    <div className="sd-risk-scale">{['0%','25%','50%','75%','100%'].map(l => <span key={l}>{l}</span>)}</div>
+                  </div>
+                  <p className="sd-risk-description">{risk.description}</p>
+                  <div className="sd-ten-year-risk">
+                    <span className="sd-ten-year-label">Estimated 10-Year Stroke Risk</span>
+                    <span className="sd-ten-year-value" style={{ color: risk.color }}>{risk.tenYearRisk}%</span>
+                  </div>
+                </div>
+              </div>
+              <div className="sd-report-grid">
+                <div>
+                  <h2 className="sd-section-heading">Patient Information</h2>
+                  <div className="sd-info-grid">
+                    {[
+                      {label:'Age', value:`${patientInfo.age} years`},
+                      {label:'Sex', value:patientInfo.sex},
+                      {label:'Ethnicity', value:patientInfo.ethnicity},
+                      {label:'Marital Status', value:patientInfo.maritalStatus},
+                      {label:'Height', value:`${patientInfo.height} cm`},
+                      {label:'Weight', value:`${patientInfo.weight} kg`}
+                    ].map(({label,value}) => (
+                      <div key={label} className="sd-info-item">
+                        <span className="sd-info-label">{label}</span>
+                        <span className="sd-info-value">{value}</span>
                       </div>
-                      <span className="sd-vital-status" style={{ color: glucoseStatus.color, background: `${glucoseStatus.color}18` }}>
-                        {glucoseStatus.label}
+                    ))}
+                    <div className="sd-info-item">
+                      <span className="sd-info-label">BMI</span>
+                      <span className="sd-info-value" style={{ color: patientInfo.bmiColor }}>
+                        {patientInfo.bmi} — {patientInfo.bmiCategory}
                       </span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Identified Risk Factors</h2>
-              <div className="sd-risk-factors-list">
-                {risk.factors.map((f, i) => {
-                  const fc = f.impact === 'high' ? '#EF4444' : f.impact === 'moderate' ? '#F59E0B' : '#10B981';
-                  return (
-                    <div key={i} className="sd-risk-factor-item">
-                      <div className="sd-risk-factor-header">
-                        <span className="sd-risk-factor-name">{f.factor}</span>
-                        <span className={`sd-risk-factor-impact sd-${f.impact}`}>
-                          {f.impact} +{f.points} pts
+                <div>
+                  <h2 className="sd-section-heading">Vital Signs</h2>
+                  <div className="sd-vitals-grid" style={{ gridTemplateColumns: '1fr' }}>
+                    <div className="sd-vital-card">
+                      <div className="sd-vital-icon-wrap" style={{ color: '#E63E4E' }}><FaHeartbeat /></div>
+                      <div>
+                        <div className="sd-vital-label">Blood Pressure</div>
+                        <div className="sd-vital-value">{vitalSigns.bloodPressure}</div>
+                        <span className="sd-vital-status" style={{ color: bpStatusColor, background: `${bpStatusColor}18` }}>
+                          {vitalSigns.bpStatus}
                         </span>
                       </div>
-                      <div className="sd-risk-factor-bar">
-                        <div className="sd-risk-factor-progress" style={{ width: `${Math.min((f.points/25)*100,100)}%`, background: fc }} />
+                    </div>
+                    <div className="sd-vital-card">
+                      <div className="sd-vital-icon-wrap" style={{ color: '#10B981' }}><FaTint /></div>
+                      <div>
+                        <div className="sd-vital-label">Blood Glucose</div>
+                        <div className="sd-vital-value">
+                          {vitalSigns.glucose}{vitalSigns.glucose !== 'Not provided' ? ' mg/dL' : ''}
+                        </div>
+                        <span className="sd-vital-status" style={{ color: glucoseStatus.color, background: `${glucoseStatus.color}18` }}>
+                          {glucoseStatus.label}
+                        </span>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Personalized Recommendations</h2>
-              <div className="sd-recommendations-grid">
-                {recommendations.map((rec, i) => (
-                  <div key={i} className="sd-recommendation-card">
-                    <div className="sd-recommendation-header" style={{ color: rec.color }}>
-                      {rec.icon} <h3 style={{ margin:0, fontSize:'1rem' }}>{rec.category}</h3>
-                    </div>
-                    <ul className="sd-recommendation-list">
-                      {rec.items.map((item,j) => (
-                        <li key={j}>
-                          <FaCheck className="sd-recommendation-check" style={{ color: rec.color, flexShrink:0 }} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-            <div className="sd-report-section">
-              <h2 className="sd-section-heading">Stroke Warning Signs — FAST</h2>
-              <div className="sd-fast-grid">
-                {[
-                  {l:'F', title:'Face Drooping', desc:'Does one side of the face droop or feel numb? Ask the person to smile.'},
-                  {l:'A', title:'Arm Weakness', desc:'Is one arm weak or numb? Ask the person to raise both arms.'},
-                  {l:'S', title:'Speech Difficulty', desc:'Is speech slurred or strange? Ask them to repeat a simple sentence.'},
-                  {l:'T', title:'Time to Call Emergency', desc:'If any of these symptoms appear, call emergency services immediately.'}
-                ].map(({l,title,desc}) => (
-                  <div key={l} className="sd-fast-card">
-                    <div className="sd-fast-letter">{l}</div>
-                    <div className="sd-fast-content">
-                      <strong>{title}</strong>
-                      <p>{desc}</p>
+              <div className="sd-report-section">
+                <h2 className="sd-section-heading">Identified Risk Factors</h2>
+                <div className="sd-risk-factors-list">
+                  {risk.factors.map((f, i) => {
+                    const fc = f.impact === 'high' ? '#EF4444' : f.impact === 'moderate' ? '#F59E0B' : '#10B981';
+                    return (
+                      <div key={i} className="sd-risk-factor-item">
+                        <div className="sd-risk-factor-header">
+                          <span className="sd-risk-factor-name">{f.factor}</span>
+                          <span className={`sd-risk-factor-impact sd-${f.impact}`}>
+                            {f.impact} +{f.points} pts
+                          </span>
+                        </div>
+                        <div className="sd-risk-factor-bar">
+                          <div className="sd-risk-factor-progress" style={{ width: `${Math.min((f.points/25)*100,100)}%`, background: fc }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="sd-report-section">
+                <h2 className="sd-section-heading">Personalized Recommendations</h2>
+                <div className="sd-recommendations-grid">
+                  {recommendations.map((rec, i) => (
+                    <div key={i} className="sd-recommendation-card">
+                      <div className="sd-recommendation-header" style={{ color: rec.color }}>
+                        {rec.icon} <h3 style={{ margin:0, fontSize:'1rem' }}>{rec.category}</h3>
+                      </div>
+                      <ul className="sd-recommendation-list">
+                        {rec.items.map((item,j) => (
+                          <li key={j}>
+                            <FaCheck className="sd-recommendation-check" style={{ color: rec.color, flexShrink:0 }} />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="sd-report-disclaimer">
-              <FaExclamationTriangle className="sd-report-disclaimer-icon" />
-              <p>{disclaimer}</p>
-            </div>
-            <div className="sd-report-footer">
-              <button className="sd-btn-primary" onClick={() => setShowFullReport(false)}>
-                <FaArrowLeft /> Back to Summary
-              </button>
+              <div className="sd-report-section">
+                <h2 className="sd-section-heading">Stroke Warning Signs — FAST</h2>
+                <div className="sd-fast-grid">
+                  {[
+                    {l:'F', title:'Face Drooping', desc:'Does one side of the face droop or feel numb? Ask the person to smile.'},
+                    {l:'A', title:'Arm Weakness', desc:'Is one arm weak or numb? Ask the person to raise both arms.'},
+                    {l:'S', title:'Speech Difficulty', desc:'Is speech slurred or strange? Ask them to repeat a simple sentence.'},
+                    {l:'T', title:'Time to Call Emergency', desc:'If any of these symptoms appear, call emergency services immediately.'}
+                  ].map(({l,title,desc}) => (
+                    <div key={l} className="sd-fast-card">
+                      <div className="sd-fast-letter">{l}</div>
+                      <div className="sd-fast-content">
+                        <strong>{title}</strong>
+                        <p>{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="sd-report-disclaimer">
+                <FaExclamationTriangle className="sd-report-disclaimer-icon" />
+                <p>{disclaimer}</p>
+              </div>
+              <div className="sd-report-footer">
+                <button className="sd-btn-primary" onClick={() => setShowFullReport(false)}>
+                  <FaArrowLeft /> Back to Summary
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   // ═══════════════════════════════════════════════════════════════════════════
   //  RESULTS VIEW
@@ -923,19 +1026,29 @@ if (showFullReport && reportData) {
   //  MAIN FORM VIEW
   // ═══════════════════════════════════════════════════════════════════════════
   const isFirstStep = currentSection === 1 && currentStep === 1;
-  const isLastStep  = currentSection === sections.length && currentStep === currentSectionData?.questions.length;
+  const isLastStep = !showGlucoseFollowUp && currentSection === sections.length && currentStep === currentSectionData?.questions.length;
 
   return (
     <div className="sd-container">
       <div className="sd-bg-blob sd-blob-1" />
       <div className="sd-bg-blob sd-blob-2" />
 
+      {/* Error banner */}
+      {apiError && (
+        <div className="sd-error-banner">
+          <FaExclamationTriangle /> {apiError}
+          <button onClick={() => setApiError(null)}>×</button>
+        </div>
+      )}
+
       {/* Fixed header — section pill + title */}
       <div className="sd-header">
         <div className="sd-header-content">
           <div className="sd-section-info">
             <span className="sd-section-pill">Section {currentSection}/3</span>
-            <span className="sd-section-title">{currentSectionData?.title}</span>
+            <span className="sd-section-title">
+              {showGlucoseFollowUp ? 'Glucose Assessment' : currentSectionData?.title}
+            </span>
           </div>
         </div>
       </div>
@@ -946,24 +1059,24 @@ if (showFullReport && reportData) {
           <div className="sd-question-card">
 
             {/* Colour top stripe */}
-            <div className="sd-section-badge" style={{ background: currentSectionData?.color }} />
+            <div className="sd-section-badge" style={{ background: showGlucoseFollowUp ? '#10B981' : currentSectionData?.color }} />
 
             {/* Floating section pill with proper border */}
             <div 
               className="sd-section-badge-pill" 
               style={{ 
-                color: currentSectionData?.color, 
-                borderColor: currentSectionData?.color + ' !important' 
+                color: showGlucoseFollowUp ? '#10B981' : currentSectionData?.color, 
+                borderColor: showGlucoseFollowUp ? '#10B981' : currentSectionData?.color 
               }}
             >
-              {currentSectionData?.icon}
-              <span>{currentSectionData?.title}</span>
+              {showGlucoseFollowUp ? <FaTint /> : currentSectionData?.icon}
+              <span>{showGlucoseFollowUp ? 'Glucose Assessment' : currentSectionData?.title}</span>
             </div>
 
             {/* In-card progress bar - showing percentage */}
             <div className="sd-card-progress">
               <div className="sd-card-progress-header">
-                <span className="sd-card-progress-label">Question {currentQuestion} of {totalQuestions}</span>
+                <span className="sd-card-progress-label">Question {currentQuestion} of {adjustedTotalQuestions}</span>
                 <span className="sd-card-progress-pct">{cardProgressPct}% Complete</span>
               </div>
               <div className="sd-card-progress-track">
@@ -974,23 +1087,34 @@ if (showFullReport && reportData) {
             {/* Question body */}
             <div className="sd-question-body">
               <div className="sd-icon-wrapper">
-                <div className="sd-question-icon" style={{ background: `${currentSectionData?.color}12`, color: currentSectionData?.color }}>
-                  {currentQuestionData?.icon}
+                <div className="sd-question-icon" style={{ 
+                  background: showGlucoseFollowUp 
+                    ? '#10B98120' 
+                    : `${currentSectionData?.color}12`, 
+                  color: showGlucoseFollowUp ? '#10B981' : currentSectionData?.color 
+                }}>
+                  {showGlucoseFollowUp 
+                    ? glucoseFollowUpQuestions[glucoseFollowUpStep]?.icon 
+                    : currentQuestionData?.icon}
                 </div>
               </div>
-              <h2 className="sd-question-text">{currentQuestionData?.label}</h2>
+              <h2 className="sd-question-text">
+                {showGlucoseFollowUp 
+                  ? glucoseFollowUpQuestions[glucoseFollowUpStep]?.label 
+                  : currentQuestionData?.label}
+              </h2>
               <div className="sd-question-input-area">
                 {renderQuestion(currentQuestionData)}
-                {renderConditionalField()}
+                {!showGlucoseFollowUp && renderConditionalField()}
               </div>
             </div>
 
             {/* Navigation */}
             <div className="sd-navigation">
               <button 
-                className={`sd-nav-btn sd-back ${isFirstStep ? 'sd-disabled' : ''}`} 
+                className={`sd-nav-btn sd-back ${(isFirstStep && !showGlucoseFollowUp) ? 'sd-disabled' : ''}`} 
                 onClick={goToPrevious} 
-                disabled={isFirstStep}
+                disabled={isFirstStep && !showGlucoseFollowUp}
               >
                 <FaArrowLeft /> Back
               </button>
@@ -998,9 +1122,20 @@ if (showFullReport && reportData) {
                 {currentSectionData?.questions.map((_, i) => (
                   <div 
                     key={i} 
-                    className={`sd-step-dot ${i+1===currentStep?'sd-active':''} ${i+1<currentStep?'sd-completed':''}`} 
+                    className={`sd-step-dot ${i+1===currentStep && !showGlucoseFollowUp ? 'sd-active' : ''} ${i+1<currentStep ? 'sd-completed' : ''}`} 
                   />
                 ))}
+                {showGlucoseFollowUp && (
+                  <>
+                    {glucoseFollowUpQuestions.map((_, i) => (
+                      <div 
+                        key={`follow-${i}`} 
+                        className={`sd-step-dot ${i===glucoseFollowUpStep ? 'sd-active' : ''} ${i<glucoseFollowUpStep ? 'sd-completed' : ''}`} 
+                        style={{ backgroundColor: i < glucoseFollowUpStep ? '#10B981' : undefined }}
+                      />
+                    ))}
+                  </>
+                )}
               </div>
               <button className="sd-nav-btn sd-next" onClick={goToNext} disabled={isSubmitting}>
                 {isSubmitting ? 'Processing...' : isLastStep ? 'Submit' : 'Next'}

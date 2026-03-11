@@ -1162,26 +1162,4 @@
     font-size: 0.85rem;
     text-align: center;
   }
-}
-
-/* Animation for follow-up questions */
-.sd-followup-question {
-  animation: sdSlideInUp 0.3s ease-out;
-}
-
-/* Ensure the main glucose question doesn't overflow */
-.sd-question-input-area {
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 0.25rem;
-}
-
-.sd-question-input-area::-webkit-scrollbar {
-  width: 3px;
-}
-
-.sd-question-input-area::-webkit-scrollbar-thumb {
-  background: var(--primary-light);
-  border-radius: 10px;
-}
+} 
