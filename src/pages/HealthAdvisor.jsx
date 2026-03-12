@@ -1,1560 +1,741 @@
-import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import axios from 'axios';
+import "../styles/HealthAdvisor.css";
 
-// ─── Inline SVG Icons ───
-const Icon = ({ path, size = 18, style = {} }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={style}
-  >
-    <path d={path} />
-  </svg>
-);
-const HeartIcon = (p) => (
-  <Icon
-    {...p}
-    path="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-  />
-);
-const RunIcon = (p) => (
-  <Icon
-    {...p}
-    path="M13 4a1 1 0 1 0 2 0 1 1 0 0 0-2 0M5.88 8.17l1.41 1.42 1.41-1.42L7.3 6.75zM20 12h-4l-2-4-4 3-2 5h12M8 19l-2 3M16 19l2 3"
-  />
-);
-const BedIcon = (p) => (
-  <Icon {...p} path="M2 4v16M2 8h18a2 2 0 0 1 2 2v6H2M2 15h20" />
-);
-const DropIcon = (p) => (
-  <Icon {...p} path="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-);
-const ActivityIcon = (p) => <Icon {...p} path="M22 12h-4l-3 9L9 3l-3 9H2" />;
-const SendIcon = (p) => (
-  <Icon {...p} path="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-);
-const BotIcon = (p) => (
-  <Icon
-    {...p}
-    path="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M5 14v7h14v-7M9 18h2v2H9zm4 0h2v2h-2z"
-  />
-);
-const UserIcon = (p) => (
-  <Icon
-    {...p}
-    path="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
-  />
-);
-const XIcon = (p) => <Icon {...p} path="M18 6L6 18M6 6l12 12" />;
-const CheckIcon = (p) => <Icon {...p} path="M20 6L9 17l-5-5" />;
-const ArrowIcon = (p) => <Icon {...p} path="M5 12h14M12 5l7 7-7 7" />;
-const ZapIcon = (p) => <Icon {...p} path="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />;
-const WeightIcon = (p) => (
-  <Icon
-    {...p}
-    path="M12 3a1 1 0 0 1 1 1v1h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5V4a1 1 0 0 1 1-1z"
-  />
-);
-const AlertIcon = (p) => (
-  <Icon
-    {...p}
-    path="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"
-  />
-);
-const LeafIcon = (p) => (
-  <Icon
-    {...p}
-    path="M2 22c1.25-1.25 2.5-2.5 3.75-5 1.25-2.5 3.75-7.5 6.25-9.17C14.5 6.17 17 7 19 9c2 2 3 4.5 3 7-2.5 0-5-.5-7-2-2-1.5-3-4-3-4s-.5 2.5-2 5c-1.5 2.5-3 5-8 7z"
-  />
-);
+// ─── API base (matches your existing strokeService setup) ─────────────────────
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-// ─── Strokify Brand Tokens ───
-const B = {
-  red: "#E63E4E",
-  redLight: "#FF6B7A",
-  redDark: "#B31E2C",
-  pink: "#FFE5E8",
-  pinkLight: "#FFF1F3",
-  pinkDark: "#FFB8C1",
-  gray50: "#F8FAFC",
-  gray100: "#F1F5F9",
-  gray200: "#E2E8F0",
-  gray300: "#CBD5E1",
-  gray400: "#94A3B8",
-  gray500: "#64748B",
-  gray600: "#475569",
-  gray700: "#334155",
-  gray800: "#1E293B",
-  gray900: "#0F172A",
-  // category accents
-  nutrition: "#16A34A",
-  exercise: "#EA580C",
-  sleep: "#7C3AED",
-  mental: "#DB2777",
-  water: "#0284C7",
-  steps: "#D97706",
+// ─── Inline SVG Icons ─────────────────────────────────────────────────────────
+const I = {
+  Heart:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+  Activity: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+  Droplets: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg>,
+  Moon:     () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>,
+  Apple:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>,
+  Chat:     () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>,
+  X:        () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+  Send:     () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>,
+  Sparkles: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+  Refresh:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
+  Calendar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>,
+  Check:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+  User:     () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  Bot:      () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" x2="8" y1="16" y2="16"/><line x1="16" x2="16" y1="16" y2="16"/></svg>,
+  Zap:      () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+  Chart:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>,
+  ClipboardList: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>,
+  Loader:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:'ha-spin 1s linear infinite'}}><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg>,
+  ArrowRight: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+  History:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>,
 };
 
-// ─── Helper to get first name ───
-const getFirstName = (fullName) => {
-  if (!fullName) return "User";
-  return fullName.split(" ")[0];
-};
-
-export default function HealthAdvisor() {
-  const { user } = useAuth();
-  const userName = user?.name || "User";
-  const firstName = getFirstName(userName);
-
-  // User data - in a real app, this would come from your API/context
-  const userData = {
-    name: userName,
-    age: 35,
-    bmi: 22.5,
-    bloodPressure: "118/76",
-    heartRate: 72,
-    sleepHours: 7.5,
-    waterIntake: 6,
-    steps: 7234,
-  };
-
-  const wellnessCategories = [
-    {
-      id: "nutrition",
-      title: "Nutrition",
-      color: B.nutrition,
-      score: 85,
-      tips: [
-        "Add one serving of vegetables to each meal",
-        "Choose whole grains over refined carbs",
-        "Limit processed foods to 1–2 times/week",
-        "Include lean protein in every meal",
-      ],
-      recommendations: [
-        {
-          title: "Mediterranean Diet",
-          description: "Rich in fruits, vegetables, and healthy fats",
-          action: "Try a Greek salad with olive oil today",
-        },
-        {
-          title: "Hydration Goal",
-          description: "Aim for 8 glasses of water daily",
-          action: "Keep a water bottle at your desk",
-        },
-      ],
-    },
-    {
-      id: "exercise",
-      title: "Activity",
-      color: B.exercise,
-      score: 62,
-      tips: [
-        "Take the stairs instead of the elevator",
-        "Walk for 10 minutes after each meal",
-        "Try 20 minutes of stretching today",
-        "Aim for 150 minutes of cardio weekly",
-      ],
-      recommendations: [
-        {
-          title: "Daily Walk",
-          description: "30-minute brisk walk burns ~150 calories",
-          action: "Schedule a walk during your lunch break",
-        },
-        {
-          title: "Strength Training",
-          description: "2–3 sessions per week builds muscle mass",
-          action: "Try 15 minutes of bodyweight exercises",
-        },
-      ],
-    },
-    {
-      id: "sleep",
-      title: "Sleep",
-      color: B.sleep,
-      score: 78,
-      tips: [
-        "Maintain a consistent sleep schedule",
-        "Avoid screens 1 hour before bed",
-        "Keep your bedroom cool and dark",
-        "Limit caffeine after 2 PM",
-      ],
-      recommendations: [
-        {
-          title: "Sleep Routine",
-          description: "7–9 hours of quality sleep is optimal",
-          action: "Try going to bed 15 minutes earlier",
-        },
-        {
-          title: "Wind-Down Ritual",
-          description: "A calming pre-sleep routine improves quality",
-          action: "Read a book or practice deep breathing",
-        },
-      ],
-    },
-    {
-      id: "mental",
-      title: "Mental",
-      color: B.mental,
-      score: 71,
-      tips: [
-        "Practice 5 minutes of mindfulness daily",
-        "Take short breaks during work",
-        "Connect with friends or family",
-        "Write down three things you're grateful for",
-      ],
-      recommendations: [
-        {
-          title: "Stress Management",
-          description: "Chronic stress directly affects physical health",
-          action: "Try a 5-minute breathing exercise now",
-        },
-        {
-          title: "Social Connection",
-          description: "Strong relationships improve longevity",
-          action: "Call a friend you haven't spoken to recently",
-        },
-      ],
-    },
-  ];
-
-  const quickStats = [
-    {
-      label: "BMI",
-      value: userData.bmi,
-      unit: "",
-      color: B.nutrition,
-      icon: <WeightIcon size={16} />,
-    },
-    {
-      label: "Blood Pressure",
-      value: userData.bloodPressure,
-      unit: "mmHg",
-      color: B.exercise,
-      icon: <HeartIcon size={16} />,
-    },
-    {
-      label: "Heart Rate",
-      value: userData.heartRate,
-      unit: "bpm",
-      color: B.mental,
-      icon: <ActivityIcon size={16} />,
-    },
-    {
-      label: "Sleep",
-      value: userData.sleepHours,
-      unit: "hrs",
-      color: B.sleep,
-      icon: <BedIcon size={16} />,
-    },
-    {
-      label: "Water",
-      value: userData.waterIntake,
-      unit: "/ 8 gl",
-      color: B.water,
-      icon: <DropIcon size={16} />,
-    },
-    {
-      label: "Steps",
-      value: userData.steps.toLocaleString(),
-      unit: "steps",
-      color: B.steps,
-      icon: <RunIcon size={16} />,
-    },
-  ];
-
-  const suggestedQuestions = [
-    "How's my BMI?",
-    "Blood pressure check",
-    "Improve my sleep",
-    "Am I hydrated enough?",
-    "Step count tips",
-    "Managing stress",
-  ];
-
-  const generateResponse = (q) => {
-    q = q.toLowerCase();
-    if (q.includes("bmi") || q.includes("weight"))
-      return `Your BMI of ${userData.bmi} is in the healthy range (18.5–24.9). Well-balanced for your height — keep it up!`;
-    if (q.includes("blood pressure") || q.includes("bp"))
-      return `Your blood pressure (${userData.bloodPressure}) is optimal. Continue with regular exercise and a low-sodium diet.`;
-    if (q.includes("heart rate") || q.includes("pulse"))
-      return `Your resting heart rate of ${userData.heartRate} bpm is in the healthy range (60–100 bpm). Great cardiovascular fitness.`;
-    if (q.includes("sleep") || q.includes("tired"))
-      return `You're getting ${userData.sleepHours} hours — right in the 7–9 recommended range. Consistent bedtimes, even on weekends, will improve quality further.`;
-    if (q.includes("water") || q.includes("hydrat"))
-      return `You're at ${userData.waterIntake}/8 glasses today. A visible water bottle on your desk is one of the easiest habit nudges you can make.`;
-    if (q.includes("step") || q.includes("walk") || q.includes("exercise"))
-      return `You've logged ${userData.steps.toLocaleString()} steps — just ${(10000 - userData.steps).toLocaleString()} away from 10,000. A short evening walk would close that gap.`;
-    if (q.includes("stress") || q.includes("anxiet") || q.includes("mental"))
-      return `Try box breathing: inhale 4 counts, hold 4, exhale 4. Even 5 minutes of mindfulness daily measurably reduces cortisol.`;
-    if (q.includes("risk") || q.includes("overall") || q.includes("healthy"))
-      return `Your overall health risk is low. Blood pressure and heart rate are both optimal. Key focus: water intake and daily steps.`;
-    const defaults = [
-      `I can analyze your BMI (${userData.bmi}), blood pressure (${userData.bloodPressure}), sleep, hydration, and activity. What would you like to explore?`,
-      `Your biggest opportunity is your step count and hydration. Would you like tips on either?`,
-      `Your health data looks solid. Ask me about any metric — heart rate, sleep quality, nutrition, or stress management.`,
-    ];
-    return defaults[Math.floor(Math.random() * defaults.length)];
-  };
-
-  // ─── Circular Progress ───
-  function CircleProgress({ score, color, size = 88 }) {
-    const r = (size - 8) / 2;
-    const circ = 2 * Math.PI * r;
-    const [dash, setDash] = useState(0);
-    useEffect(() => {
-      const t = setTimeout(() => setDash((score / 100) * circ), 60);
-      return () => clearTimeout(t);
-    }, [score, circ]);
-    return (
-      <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke={B.gray100}
-          strokeWidth="6"
-        />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth="6"
-          strokeDasharray={circ}
-          strokeDashoffset={circ - dash}
-          strokeLinecap="round"
-          style={{
-            transition: "stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1)",
-          }}
-        />
-      </svg>
-    );
-  }
-
-  const [activeCategory, setActiveCategory] = useState("nutrition");
-  const [chatOpen, setChatOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "bot",
-      content: `Hi ${firstName}! I'm your AI Health Advisor. Ask me anything about your health metrics, wellness goals, or lifestyle habits.`,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
-  ]);
-  const [input, setInput] = useState("");
-  const [typing, setTyping] = useState(false);
-  const [interacted, setInteracted] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const messagesRef = useRef(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  useEffect(() => {
-    if (messagesRef.current)
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [messages, typing]);
-
-  const activeCat = wellnessCategories.find((c) => c.id === activeCategory);
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
+// ─── Claude API helper ────────────────────────────────────────────────────────
+async function callClaude(systemPrompt, userMsg, history = []) {
+  const messages = [...history, { role: 'user', content: userMsg }];
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages }),
   });
+  const data = await res.json();
+  return data.content?.[0]?.text || 'Unable to generate a response.';
+}
 
-  const sendMessage = (text = null) => {
-    const msg = text || input;
-    if (!msg.trim()) return;
-    setInteracted(true);
-    setMessages((p) => [
-      ...p,
-      {
-        id: Date.now(),
-        type: "user",
-        content: msg,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      },
-    ]);
-    setInput("");
-    setTyping(true);
-    setTimeout(() => {
-      setMessages((p) => [
-        ...p,
-        {
-          id: Date.now() + 1,
-          type: "bot",
-          content: generateResponse(msg),
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
-      setTyping(false);
-    }, 1400);
-  };
+// ─── Auth helpers ─────────────────────────────────────────────────────────────
+function getToken() { return localStorage.getItem('token'); }
+function getUser()  {
+  try { return JSON.parse(localStorage.getItem('user')); } catch { return null; }
+}
 
+// ─── Fetch latest assessment from backend ────────────────────────────────────
+async function fetchLatestAssessment() {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const res = await axios.get(`${API_URL}/symptoms/history`, {
+      headers: { Authorization: `Bearer ${token}`, 'x-auth-token': token },
+    });
+    // Expecting array sorted newest-first, or single latest record
+    const data = res.data;
+    if (Array.isArray(data) && data.length > 0) return data[0];
+    if (data && data.risk) return data;
+    return null;
+  } catch (e) {
+    console.error('Failed to fetch assessment:', e);
+    return null;
+  }
+}
+
+// ─── Category config ──────────────────────────────────────────────────────────
+const CATS = [
+  { id: 'cardiovascular', label: 'Heart Health',   Icon: 'Heart',    color: '#E63E4E', bg: 'rgba(230,62,78,0.07)' },
+  { id: 'nutrition',      label: 'Nutrition',      Icon: 'Apple',    color: '#16a34a', bg: 'rgba(22,163,74,0.07)' },
+  { id: 'activity',       label: 'Activity',       Icon: 'Activity', color: '#ea580c', bg: 'rgba(234,88,12,0.07)' },
+  { id: 'sleep',          label: 'Sleep & Stress', Icon: 'Moon',     color: '#7c3aed', bg: 'rgba(124,58,237,0.07)' },
+  { id: 'bloodsugar',     label: 'Blood Sugar',    Icon: 'Droplets', color: '#0284c7', bg: 'rgba(2,132,199,0.07)' },
+];
+
+const DEFAULT_GOALS = [
+  { id: 1, label: 'Days with 30-min exercise',    target: 20, done: 0, color: '#ea580c', Icon: 'Activity' },
+  { id: 2, label: 'Days following balanced diet', target: 25, done: 0, color: '#16a34a', Icon: 'Apple'    },
+  { id: 3, label: 'Days with 7+ hours sleep',     target: 22, done: 0, color: '#7c3aed', Icon: 'Moon'     },
+  { id: 4, label: 'Blood pressure check days',    target: 15, done: 0, color: '#E63E4E', Icon: 'Heart'    },
+];
+
+const SUGGESTED_QS = [
+  'What foods should I avoid?',
+  'How can I lower my blood pressure?',
+  'Best exercises for my risk level?',
+  'What does my BMI mean?',
+  'Warning signs I should watch for?',
+];
+
+function getTime() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  EMPTY STATE — shown to everyone without assessment data (auth or not)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Blurred ghost of the dashboard sitting behind the gate card
+function GhostDashboard() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: B.gray50,
-        fontFamily: "'DM Sans',-apple-system, BlinkMacSystemFont, sans-serif",
-        color: B.gray900,
-        paddingBottom: "80px",
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: ${B.pinkDark}; border-radius: 10px; }
-        @keyframes slideUp { from { opacity:0; transform:translateY(14px) scale(0.97); } to { opacity:1; transform:none; } }
-        @keyframes bounce  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-        .s-stat:hover { border-color:${B.pinkDark}!important; transform:translateY(-2px)!important; box-shadow:0 8px 24px rgba(230,62,78,0.1)!important; }
-        .s-rec:hover  { transform:translateY(-2px)!important; box-shadow:0 8px 20px rgba(0,0,0,0.07)!important; }
-        .s-tab:hover  { background:${B.pink}!important; border-color:${B.pinkDark}!important; }
-        .s-sug:hover  { background:${B.pink}!important; border-color:${B.pinkDark}!important; color:${B.red}!important; }
-        .s-chatbtn:hover { transform:translateY(-3px)!important; box-shadow:0 16px 40px rgba(230,62,78,0.45)!important; }
-        input::placeholder { color:${B.gray300}!important; }
-        @media(max-width:640px){
-          .s-stats-grid { grid-template-columns:repeat(2,1fr)!important; }
-          .s-score-row  { flex-direction:column!important; }
-          .s-chatbtn-lbl{ display:none!important; }
-          .s-chatbtn    { padding:14px!important; border-radius:50%!important; }
-          .s-chatwin    { width:calc(100vw - 32px)!important; right:16px!important; left:16px!important; bottom:80px!important; }
-        }
-      `}</style>
-
-      {/* ── HEADER ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "36px 24px 0" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-            gap: "16px",
-            marginBottom: "28px",
-          }}
-        >
+    <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
+      <div style={{ filter:'blur(6px)', opacity:.35, transform:'scale(1.02)', transformOrigin:'top center', padding:'36px 24px' }}>
+        {/* Ghost topbar */}
+        <div style={{ display:'flex', justifyContent:'space-between', marginBottom:28 }}>
           <div>
-            <h1
-              style={{
-                fontSize: "clamp(1.8rem,4vw,2.6rem)",
-                fontWeight: "800",
-                letterSpacing: "-0.03em",
-                lineHeight: 1.1,
-                color: B.gray900,
-              }}
-            >
-              Good morning, <span style={{ color: B.red }}>{firstName}</span>
-            </h1>
-            <p
-              style={{
-                fontSize: "0.9rem",
-                color: B.gray400,
-                marginTop: "6px",
-                fontWeight: "400",
-              }}
-            >
-              {today}
-            </p>
+            <div style={{ width:220, height:36, borderRadius:10, background:'#e2e8f0', marginBottom:8 }} />
+            <div style={{ width:300, height:16, borderRadius:6, background:'#edf0f6' }} />
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 16px",
-              background: "#F0FDF4",
-              border: "1px solid #BBF7D0",
-              borderRadius: "100px",
-              fontSize: "0.8rem",
-              color: "#16A34A",
-              fontWeight: "600",
-              flexShrink: 0,
-            }}
-          >
-            <span
-              style={{
-                width: "7px",
-                height: "7px",
-                borderRadius: "50%",
-                background: "#22C55E",
-                boxShadow: "0 0 8px #22C55E44",
-                display: "inline-block",
-              }}
-            />
-            Health Risk: Low
-          </div>
+          <div style={{ width:140, height:38, borderRadius:100, background:'#fca5a5' }} />
         </div>
-
-        {/* Daily Tip */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            padding: "18px 22px",
-            background: B.pinkLight,
-            border: `1px solid ${B.pinkDark}`,
-            borderRadius: "18px",
-            marginBottom: "32px",
-          }}
-        >
-          <div
-            style={{
-              width: "44px",
-              height: "44px",
-              background: B.pink,
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: B.red,
-              flexShrink: 0,
-            }}
-          >
-            <DropIcon size={20} />
-          </div>
-          <div>
-            <div
-              style={{
-                fontSize: "0.65rem",
-                fontWeight: "700",
-                color: B.red,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                marginBottom: "3px",
-              }}
-            >
-              Daily Tip
+        {/* Ghost stat cards */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:28 }}>
+          {[0,1,2,3].map(i => (
+            <div key={i} style={{ background:'white', borderRadius:16, padding:16, border:'1px solid #edf0f6' }}>
+              <div style={{ width:'60%', height:11, borderRadius:5, background:'#edf0f6', marginBottom:8 }} />
+              <div style={{ width:'45%', height:28, borderRadius:8, background:'#e2e8f0' }} />
             </div>
-            <div
-              style={{ fontSize: "0.9rem", color: B.gray700, lineHeight: 1.45 }}
-            >
-              Start your day with a glass of water — it boosts your metabolism
-              by up to 30% in the first hour.
+          ))}
+        </div>
+        {/* Ghost tabs */}
+        <div style={{ display:'flex', gap:8, marginBottom:16 }}>
+          {[100,110,95,130,105].map((w,i) => (
+            <div key={i} style={{ width:w, height:36, borderRadius:100, background: i===0 ? '#fca5a5' : '#edf0f6' }} />
+          ))}
+        </div>
+        {/* Ghost insight cards */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:13, background:'white', borderRadius:24, padding:26, border:'1px solid #edf0f6' }}>
+          {[0,1,2,3].map(i => (
+            <div key={i} style={{ borderRadius:16, padding:17, background:'#f8f9fc', border:'1px solid #edf0f6' }}>
+              <div style={{ width:'40%', height:16, borderRadius:6, background:'#e2e8f0', marginBottom:10 }} />
+              <div style={{ width:'90%', height:12, borderRadius:5, background:'#edf0f6', marginBottom:6 }} />
+              <div style={{ width:'70%', height:12, borderRadius:5, background:'#edf0f6', marginBottom:6 }} />
+              <div style={{ width:'55%', height:12, borderRadius:5, background:'#edf0f6' }} />
             </div>
-          </div>
+          ))}
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* ── QUICK STATS ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px 40px" }}
-      >
-        <div
-          className="s-stats-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
-            gap: "12px",
-          }}
-        >
-          {quickStats.map((s, i) => (
-            <div
-              key={i}
-              className="s-stat"
-              style={{
-                background: "#fff",
-                padding: "16px",
-                borderRadius: "18px",
-                border: `1px solid ${B.gray200}`,
-                transition: "all 0.2s ease",
-                cursor: "default",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px",
-                }}
-              >
-                <div
-                  style={{
-                    width: "34px",
-                    height: "34px",
-                    background: `${s.color}14`,
-                    borderRadius: "9px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: s.color,
-                  }}
-                >
-                  {s.icon}
-                </div>
-                <div
-                  style={{
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "50%",
-                    background: s.color,
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "0.68rem",
-                  fontWeight: "600",
-                  color: B.gray400,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.07em",
-                  marginBottom: "4px",
-                }}
-              >
-                {s.label}
-              </div>
-              <div
-                style={{
-                  fontSize: "1.45rem",
-                  fontWeight: "700",
-                  color: s.color,
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1,
-                }}
-              >
-                {s.value}
-              </div>
-              {s.unit && (
-                <div
-                  style={{
-                    fontSize: "0.68rem",
-                    color: B.gray400,
-                    marginTop: "2px",
-                  }}
-                >
-                  {s.unit}
-                </div>
+function EmptyState({ isLoggedIn, user, onGoToAssessment, onDismiss }) {
+  // What step they're on: logged-out = step 0, logged-in no data = step 1
+  const step = isLoggedIn ? 1 : 0;
+  const name = user?.name?.split(' ')[0];
+
+  const steps = [
+    { label: 'Sign in or create a free account', done: isLoggedIn },
+    { label: 'Complete your 5-minute stroke risk assessment', done: false },
+    { label: 'Unlock your full AI Health Advisor dashboard', done: false },
+  ];
+
+  return (
+    <div className="ha-gate" style={{ position:'relative', minHeight:'100vh' }}>
+      {/* Blurred ghost dashboard behind the card */}
+      <GhostDashboard />
+
+      {/* Semi-transparent backdrop */}
+      <div style={{
+        position:'absolute', inset:0,
+        background:'rgba(248,249,252,0.55)',
+        backdropFilter:'blur(2px)',
+      }} />
+
+      {/* Gate card */}
+      <div className="ha-gate-card" style={{ position:'relative', zIndex:2 }}>
+
+        {/* X Close Button */}
+        <button className="ha-gate-close" onClick={onDismiss} aria-label="Close">
+          <I.X />
+        </button>
+
+        {/* Heading */}
+        <h2 className="ha-gate-title">
+          {isLoggedIn && name
+            ? <>Hi {name}! Your <span>Health Advisor</span> is waiting</>
+            : <>Complete your assessment to unlock <span>Health Advisor</span></>
+          }
+        </h2>
+
+        {/* Description */}
+        <p className="ha-gate-desc">
+          {isLoggedIn
+            ? "Your personalised AI insights, monthly health tracker, and chatbot are ready — all you need to do is take the stroke risk assessment first."
+            : "Get personalised AI health insights, a monthly tracker, and an AI chatbot — all tailored to your stroke risk profile. Start with a free assessment."
+          }
+        </p>
+
+        {/* Progress steps */}
+        <div className="ha-gate-steps">
+          {steps.map((s, i) => (
+            <div key={i} className={`ha-gate-step ${s.done ? 'done' : ''}`}>
+              <span className="ha-gate-step-num">
+                {s.done ? <I.Check /> : i + 1}
+              </span>
+              <span style={{ flex:1 }}>{s.label}</span>
+              {i === step && !s.done && (
+                <span style={{
+                  fontSize:'.6rem', fontWeight:700, padding:'2px 8px',
+                  borderRadius:100, background:'rgba(230,62,78,.1)', color:'#E63E4E',
+                  whiteSpace:'nowrap',
+                }}>
+                  You are here
+                </span>
               )}
             </div>
           ))}
         </div>
-      </div>
 
-      {/* ── WELLNESS CATEGORIES ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px 48px" }}
-      >
-        <div style={{ marginBottom: "20px" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.1rem,2.5vw,1.35rem)",
-              fontWeight: "700",
-              color: B.gray900,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Wellness Categories
-          </h2>
-          <p
-            style={{ fontSize: "0.82rem", color: B.gray400, marginTop: "4px" }}
-          >
-            Personalized insights based on your health profile
+        {/* CTA */}
+        <button className="ha-gate-btn primary" onClick={onGoToAssessment}>
+          <I.ClipboardList />
+          {isLoggedIn ? 'Start Stroke Risk Assessment' : 'Take the Free Assessment'}
+          <I.ArrowRight />
+        </button>
+
+        {/* Subtle reassurance */}
+        <p style={{ fontSize:'.72rem', color:'#b0bac8', marginTop:14, lineHeight:1.5 }}>
+          Takes about 5 minutes · No medical equipment needed · Results are instant
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  MAIN DASHBOARD (shown when user has assessment data)
+// ═══════════════════════════════════════════════════════════════════════════════
+function AdvisorDashboard({ report, user, onGoToAssessment }) {
+  const { risk, patientInfo, vitalSigns, factors } = report;
+
+  const [activeTab,   setActiveTab]   = useState('cardiovascular');
+  const [insights,    setInsights]    = useState({});
+  const [loadingTab,  setLoadingTab]  = useState(null);
+  const [chatOpen,    setChatOpen]    = useState(false);
+  const [messages,    setMessages]    = useState([{
+    role: 'bot',
+    text: `Hi${user?.name ? ' ' + user.name.split(' ')[0] : ''}! I've reviewed your ${risk.level.toLowerCase()} stroke risk assessment (score: ${risk.score}%). Ask me anything about your results or how to improve your health.`,
+    time: getTime(),
+  }]);
+  const [chatInput,   setChatInput]   = useState('');
+  const [chatBusy,    setChatBusy]    = useState(false);
+  const [goals,       setGoals]       = useState(DEFAULT_GOALS);
+  const [ticked,      setTicked]      = useState({});
+  const msgsEnd = useRef(null);
+
+  const sysPrompt = `You are a compassionate health advisor for Strokify, a stroke risk app used in Cambodia.
+
+Patient profile:
+- Name: ${user?.name || 'Patient'}
+- Risk: ${risk.level} (${risk.score}%)
+- Age: ${patientInfo?.age}, Sex: ${patientInfo?.sex}
+- BMI: ${patientInfo?.bmi} (${patientInfo?.bmiCategory})
+- BP: ${vitalSigns?.bloodPressure} — ${vitalSigns?.bpStatus}
+- Glucose: ${vitalSigns?.glucose} mg/dL
+- Top risk factors: ${(factors || []).map(f => f.factor).join(', ')}
+
+Instructions:
+- Keep replies concise (3–5 sentences max)
+- Be warm, supportive, and practical
+- Tailor advice to Southeast Asian lifestyle and diet (Cambodian context when relevant)
+- Always suggest consulting a doctor for clinical decisions
+- Plain text only — no markdown, no bullet points`;
+
+  useEffect(() => { msgsEnd.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  useEffect(() => { loadInsight('cardiovascular'); }, []); // eslint-disable-line
+
+  const loadInsight = useCallback(async (tabId) => {
+    if (insights[tabId] || loadingTab === tabId) return;
+    setLoadingTab(tabId);
+    const prompts = {
+      cardiovascular: `Patient BP ${vitalSigns?.bloodPressure} (${vitalSigns?.bpStatus}), ${risk.level} risk. 4 specific heart health recommendations for Southeast Asia. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
+      nutrition:      `BMI ${patientInfo?.bmi} (${patientInfo?.bmiCategory}), glucose ${vitalSigns?.glucose}mg/dL, ${risk.level} risk. 4 nutrition tips considering Cambodian/Southeast Asian cuisine. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
+      activity:       `Age ${patientInfo?.age}, BMI ${patientInfo?.bmi}, ${risk.level} risk. 4 exercise recommendations. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
+      sleep:          `${risk.level} risk, age ${patientInfo?.age}. 4 sleep and stress management tips. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
+      bloodsugar:     `Glucose ${vitalSigns?.glucose}mg/dL, ${risk.level} risk. 4 blood sugar management tips. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
+    };
+    try {
+      const raw   = await callClaude(sysPrompt, prompts[tabId]);
+      const clean = raw.replace(/```json|```/g, '').trim();
+      setInsights(prev => ({ ...prev, [tabId]: JSON.parse(clean) }));
+    } catch {
+      setInsights(prev => ({ ...prev, [tabId]: [
+        { title: 'Connection issue', detail: 'Unable to load AI insights right now. Please refresh to try again.', priority: 'low' }
+      ]}));
+    }
+    setLoadingTab(null);
+  }, [insights, loadingTab, sysPrompt, vitalSigns, patientInfo, risk]);
+
+  const sendMsg = useCallback(async (txt) => {
+    const msg = txt || chatInput.trim();
+    if (!msg || chatBusy) return;
+    setChatInput('');
+    setMessages(p => [...p, { role: 'user', text: msg, time: getTime() }]);
+    setChatBusy(true);
+    try {
+      const hist = messages.slice(-8).map(m => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }));
+      const reply = await callClaude(sysPrompt, msg, hist);
+      setMessages(p => [...p, { role: 'bot', text: reply, time: getTime() }]);
+    } catch {
+      setMessages(p => [...p, { role: 'bot', text: "Sorry, I'm having trouble connecting right now. Please try again.", time: getTime() }]);
+    }
+    setChatBusy(false);
+  }, [chatInput, chatBusy, messages, sysPrompt]);
+
+  const logGoal = (id) => {
+    setGoals(prev => prev.map(g => g.id === id && g.done < g.target ? { ...g, done: g.done + 1 } : g));
+    setTicked(prev => ({ ...prev, [id]: true }));
+    setTimeout(() => setTicked(prev => ({ ...prev, [id]: false })), 700);
+  };
+
+  const cat     = CATS.find(c => c.id === activeTab);
+  const CatIcon = I[cat?.Icon] || I.Heart;
+  const riskGrad =
+    risk.level === 'Low'  ? 'linear-gradient(135deg,#10B981,#34d399)' :
+    risk.level === 'High' ? 'linear-gradient(135deg,#EF4444,#f87171)' :
+                            'linear-gradient(135deg,#F59E0B,#fbbf24)';
+
+  const assessedDate = report.generatedAt
+    ? new Date(report.generatedAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })
+    : 'Recently';
+
+  return (
+    <div className="ha-wrap">
+
+      {/* ── Topbar ── */}
+      <div className="ha-top">
+        <div>
+          <h1 className="ha-title">Health <span>Advisor</span></h1>
+          <p className="ha-sub">
+            {user?.name ? `Welcome back, ${user.name.split(' ')[0]}. ` : ''}
+            AI-powered insights tailored to your stroke risk profile.
           </p>
         </div>
-        {/* Tabs */}
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            overflowX: "auto",
-            paddingBottom: "4px",
-            marginBottom: "20px",
-            scrollbarWidth: "none",
-          }}
-        >
-          {wellnessCategories.map((cat) => {
-            const active = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                className="s-tab"
-                onClick={() => setActiveCategory(cat.id)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "9px 18px",
-                  background: active ? B.pink : "#fff",
-                  border: `1px solid ${active ? B.pinkDark : B.gray200}`,
-                  borderRadius: "100px",
-                  color: active ? B.red : B.gray500,
-                  fontSize: "0.82rem",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  transition: "all 0.2s",
-                }}
-              >
-                {cat.title}
-                <span
-                  style={{
-                    padding: "2px 8px",
-                    borderRadius: "100px",
-                    fontSize: "0.68rem",
-                    background: active ? `${cat.color}14` : B.gray100,
-                    color: active ? cat.color : B.gray400,
-                    fontWeight: "700",
-                  }}
-                >
-                  {cat.score}%
-                </span>
-              </button>
-            );
-          })}
+        <div className="ha-risk-pill" style={{ background: riskGrad }}>
+          <span className="ha-rdot" />
+          {risk.level} Risk · {risk.score}%
         </div>
-        {/* Category Card */}
-        {activeCat && (
-          <div
-            style={{
-              background: "#fff",
-              border: `1px solid ${B.gray200}`,
-              borderRadius: "24px",
-              padding: "clamp(20px,4vw,32px)",
-            }}
-          >
-            <div
-              className="s-score-row"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "20px",
-                marginBottom: "28px",
-                paddingBottom: "28px",
-                borderBottom: `1px solid ${B.gray100}`,
-                flexWrap: "wrap",
-              }}
+      </div>
+
+      {/* ── Assessment date bar ── */}
+      <div className="ha-assessed-bar">
+        <div className="ha-assessed-left">
+          <I.History />
+          <div>
+            <div className="ha-assessed-label">Last assessment</div>
+            <div className="ha-assessed-date">{assessedDate}</div>
+          </div>
+        </div>
+        <button className="ha-reassess-btn" onClick={onGoToAssessment}>
+          <I.Refresh /> Retake Assessment
+        </button>
+      </div>
+
+      {/* ── Stats strip ── */}
+      <div className="ha-sum">
+        {[
+          { label: 'BMI',           val: patientInfo?.bmi || '—',       sub: patientInfo?.bmiCategory || '—',  col: patientInfo?.bmiCategory === 'Healthy weight' ? '#10B981' : '#F59E0B' },
+          { label: 'Blood Pressure',val: vitalSigns?.bloodPressure || '—', sub: vitalSigns?.bpStatus || '—',   col: vitalSigns?.bpStatus === 'Normal' ? '#10B981' : '#F59E0B' },
+          { label: 'Glucose',       val: vitalSigns?.glucose || '—',    sub: 'mg/dL',                          col: parseInt(vitalSigns?.glucose) > 125 ? '#EF4444' : parseInt(vitalSigns?.glucose) > 100 ? '#F59E0B' : '#10B981' },
+          { label: 'Risk Score',    val: `${risk.score}%`,              sub: '10-yr estimate',                 col: risk.color || '#F59E0B' },
+        ].map(({ label, val, sub, col }) => (
+          <div className="ha-sc" key={label}>
+            <div className="ha-sl">{label}</div>
+            <div className="ha-sv" style={{ color: col }}>{val}</div>
+            <div className="ha-ss">{sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── AI Insights ── */}
+      <div className="ha-sh"><I.Sparkles />AI-Powered Health Insights</div>
+      <div className="ha-tabs">
+        {CATS.map(c => {
+          const TabIco = I[c.Icon];
+          return (
+            <button
+              key={c.id}
+              className={`ha-tab ${activeTab === c.id ? 'on' : ''}`}
+              style={activeTab === c.id ? { background: c.color, borderColor: c.color } : {}}
+              onClick={() => { setActiveTab(c.id); loadInsight(c.id); }}
             >
-              <div style={{ position: "relative", flexShrink: 0 }}>
-                <CircleProgress
-                  score={activeCat.score}
-                  color={activeCat.color}
-                  size={88}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%,-50%)",
-                    fontSize: "1.05rem",
-                    fontWeight: "700",
-                    color: activeCat.color,
-                  }}
-                >
-                  {activeCat.score}%
-                </div>
+              <span className="ha-ti"><TabIco /></span>
+              {c.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="ha-panel" style={{ borderTopColor: cat?.color, borderTopWidth: 3 }}>
+        <div className="ha-ph">
+          <div className="ha-pico" style={{ background: cat?.bg, color: cat?.color }}><CatIcon /></div>
+          <div>
+            <div className="ha-pt">{cat?.label} Recommendations</div>
+            <div className="ha-ps">Personalised for your profile · Powered by Claude AI</div>
+          </div>
+          <button className="ha-regen" onClick={() => {
+            setInsights(prev => { const n = { ...prev }; delete n[activeTab]; return n; });
+            setTimeout(() => loadInsight(activeTab), 60);
+          }}>
+            <I.Refresh /> Refresh
+          </button>
+        </div>
+
+        {loadingTab === activeTab ? (
+          <div className="ha-ig">
+            {[0,1,2,3].map(i => (
+              <div key={i} style={{ borderRadius: 16, padding: 17, border: '1px solid #edf0f6' }}>
+                <div className="ha-skel" style={{ height: 18, width: '38%', marginBottom: 10, borderRadius: 6 }} />
+                <div className="ha-skel" style={{ height: 14, width: '85%', marginBottom: 6, borderRadius: 5 }} />
+                <div className="ha-skel" style={{ height: 14, width: '60%', borderRadius: 5 }} />
               </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: "1rem",
-                    fontWeight: "700",
-                    color: activeCat.color,
-                    marginBottom: "5px",
-                  }}
-                >
-                  {activeCat.title} Score
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.82rem",
-                    color: B.gray500,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Your {activeCat.title.toLowerCase()} habits are{" "}
-                  {activeCat.score >= 80
-                    ? "excellent — keep it up!"
-                    : activeCat.score >= 60
-                      ? "good, with room to grow."
-                      : "developing — let's improve together."}
-                </div>
-              </div>
-            </div>
-            {/* Tips */}
-            <div style={{ marginBottom: "24px" }}>
-              <div
-                style={{
-                  fontSize: "0.68rem",
-                  fontWeight: "700",
-                  color: B.gray400,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  marginBottom: "12px",
-                }}
-              >
-                Quick Tips
-              </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))",
-                  gap: "10px",
-                }}
-              >
-                {activeCat.tips.map((tip, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "9px",
-                      padding: "12px 14px",
-                      background: B.pinkLight,
-                      border: `1px solid ${B.pinkDark}`,
-                      borderRadius: "12px",
-                    }}
-                  >
-                    <CheckIcon
-                      size={13}
-                      style={{
-                        color: activeCat.color,
-                        flexShrink: 0,
-                        marginTop: "1px",
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        color: B.gray700,
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {tip}
-                    </span>
+            ))}
+          </div>
+        ) : !insights[activeTab] ? (
+          <div style={{ textAlign: 'center', padding: '36px 0', color: '#a8b3c4' }}>
+            <div style={{ fontSize: '1.8rem', marginBottom: 8 }}>✨</div>
+            <p style={{ fontSize: '.88rem' }}>Loading your personalised AI insights…</p>
+          </div>
+        ) : (
+          <div className="ha-ig">
+            {insights[activeTab].map((item, i) => {
+              const pc = item.priority === 'high' ? '#EF4444' : item.priority === 'low' ? '#10B981' : '#F59E0B';
+              const pb = item.priority === 'high' ? 'rgba(239,68,68,.08)' : item.priority === 'low' ? 'rgba(16,185,129,.08)' : 'rgba(245,158,11,.08)';
+              return (
+                <div key={i} className="ha-ic" style={{ background: cat?.bg, borderColor: `${cat?.color}22` }}>
+                  <style>{`.ha-ic:nth-child(${i+1})::before { background: ${cat?.color}; }`}</style>
+                  <div className="ha-icp" style={{ background: pb, color: pc }}>
+                    <I.Zap />{item.priority} priority
                   </div>
-                ))}
-              </div>
-            </div>
-            {/* Recommendations */}
-            <div>
-              <div
-                style={{
-                  fontSize: "0.68rem",
-                  fontWeight: "700",
-                  color: B.gray400,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  marginBottom: "12px",
-                }}
-              >
-                Recommendations
-              </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill,minmax(250px,1fr))",
-                  gap: "12px",
-                }}
-              >
-                {activeCat.recommendations.map((rec, i) => (
-                  <div
-                    key={i}
-                    className="s-rec"
-                    style={{
-                      padding: "18px",
-                      background: B.gray50,
-                      border: `1px solid ${B.gray200}`,
-                      borderTop: `3px solid ${activeCat.color}`,
-                      borderRadius: "16px",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: "0.88rem",
-                          fontWeight: "700",
-                          color: B.gray900,
-                        }}
-                      >
-                        {rec.title}
-                      </div>
-                      <ArrowIcon
-                        size={13}
-                        style={{
-                          color: activeCat.color,
-                          flexShrink: 0,
-                          marginTop: "2px",
-                        }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.78rem",
-                        color: B.gray500,
-                        marginBottom: "12px",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {rec.description}
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        padding: "8px 12px",
-                        background: `${activeCat.color}0e`,
-                        border: `1px solid ${activeCat.color}20`,
-                        borderRadius: "8px",
-                        fontSize: "0.75rem",
-                        color: activeCat.color,
-                      }}
-                    >
-                      <ZapIcon size={11} />
-                      {rec.action}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  <div className="ha-ict">{item.title}</div>
+                  <div className="ha-icd">{item.detail}</div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* ── DAILY GOALS ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px 48px" }}
-      >
-        <div style={{ marginBottom: "20px" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.1rem,2.5vw,1.35rem)",
-              fontWeight: "700",
-              color: B.gray900,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Daily Goals
-          </h2>
-          <p
-            style={{ fontSize: "0.82rem", color: B.gray400, marginTop: "4px" }}
-          >
-            Track your progress toward today's targets
-          </p>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))",
-            gap: "14px",
-          }}
-        >
-          {[
-            {
-              label: "Steps",
-              value: `${userData.steps.toLocaleString()} / 10,000`,
-              pct: (userData.steps / 10000) * 100,
-              color: B.steps,
-              icon: <RunIcon size={15} />,
-            },
-            {
-              label: "Water Intake",
-              value: `${userData.waterIntake} / 8 glasses`,
-              pct: (userData.waterIntake / 8) * 100,
-              color: B.water,
-              icon: <DropIcon size={15} />,
-            },
-            {
-              label: "Sleep",
-              value: `${userData.sleepHours} / 8 hrs`,
-              pct: (userData.sleepHours / 8) * 100,
-              color: B.sleep,
-              icon: <BedIcon size={15} />,
-            },
-            {
-              label: "Fruits & Veg",
-              value: "4 / 5 servings",
-              pct: 80,
-              color: B.nutrition,
-              icon: <LeafIcon size={15} />,
-            },
-          ].map((p, i) => (
-            <div
-              key={i}
-              style={{
-                padding: "18px",
-                background: "#fff",
-                border: `1px solid ${B.gray200}`,
-                borderRadius: "16px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "14px",
-                }}
-              >
-                <span style={{ color: p.color }}>{p.icon}</span>
-                <span
-                  style={{
-                    fontSize: "0.82rem",
-                    color: B.gray600,
-                    flex: 1,
-                    fontWeight: "500",
-                  }}
-                >
-                  {p.label}
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.78rem",
-                    color: B.gray800,
-                    fontWeight: "600",
-                  }}
-                >
-                  {p.value}
-                </span>
+      {/* ── Monthly Goals ── */}
+      <div className="ha-sh"><I.Calendar />Monthly Health Tracker</div>
+      <div className="ha-goals">
+        {goals.map(g => {
+          const GIco = I[g.Icon] || I.Activity;
+          const pct  = Math.round((g.done / g.target) * 100);
+          return (
+            <div className="ha-gc" key={g.id}>
+              <div className="ha-gh">
+                <div className="ha-gi" style={{ background: `${g.color}14`, color: g.color }}><GIco /></div>
+                <div className="ha-glabel">{g.label}</div>
+                <div className="ha-gcount" style={{ color: g.color }}>{g.done}/{g.target}</div>
               </div>
-              <div
+              <div className="ha-gbar">
+                <div className="ha-gfill" style={{ width: `${pct}%`, background: `linear-gradient(90deg,${g.color},${g.color}99)` }} />
+              </div>
+              <button
+                className="ha-gbtn"
                 style={{
-                  height: "5px",
-                  background: B.gray100,
-                  borderRadius: "100px",
-                  overflow: "hidden",
+                  color: ticked[g.id] || g.done >= g.target ? g.color : '#6b7280',
+                  borderColor: ticked[g.id] || g.done >= g.target ? `${g.color}44` : '#edf0f6',
                 }}
+                onClick={() => logGoal(g.id)}
+                disabled={g.done >= g.target}
               >
-                <div
-                  style={{
-                    height: "100%",
-                    width: mounted ? `${Math.min(p.pct, 100)}%` : "0%",
-                    background: `linear-gradient(90deg,${p.color}88,${p.color})`,
-                    borderRadius: "100px",
-                    transition: "width 1.1s cubic-bezier(0.4,0,0.2,1)",
-                  }}
-                />
+                {g.done >= g.target ? <><I.Check />Completed!</> : ticked[g.id] ? <><I.Check />Logged!</> : '+ Log Today'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Risk Factor Breakdown ── */}
+      <div className="ha-sh"><I.Chart />Your Risk Factor Breakdown</div>
+      <div className="ha-panel">
+        {(factors || []).length === 0 ? (
+          <p style={{ fontSize: '.85rem', color: '#a8b3c4', textAlign: 'center', padding: '20px 0' }}>No risk factors recorded.</p>
+        ) : (factors || []).map((f, i) => {
+          const fc  = f.impact === 'high' ? '#EF4444' : f.impact === 'moderate' ? '#F59E0B' : '#10B981';
+          const pct = Math.min(Math.round((f.points / 30) * 100), 100);
+          return (
+            <div className="ha-rf" key={i}>
+              <div className="ha-rfh">
+                <span className="ha-rfn">{f.factor}</span>
+                <span className="ha-rfl" style={{ background: `${fc}14`, color: fc }}>{f.impact}</span>
+              </div>
+              <div className="ha-rfbar">
+                <div className="ha-rfill" style={{ width: `${pct}%`, background: `linear-gradient(90deg,${fc},${fc}88)` }} />
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* ── HEALTH INSIGHTS ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px 48px" }}
-      >
-        <div style={{ marginBottom: "20px" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.1rem,2.5vw,1.35rem)",
-              fontWeight: "700",
-              color: B.gray900,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Health Insights
-          </h2>
-          <p
-            style={{ fontSize: "0.82rem", color: B.gray400, marginTop: "4px" }}
-          >
-            AI-powered analysis of your metrics
-          </p>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))",
-            gap: "14px",
-          }}
-        >
-          {[
-            {
-              positive: true,
-              icon: <ActivityIcon size={16} />,
-              title: "Blood Pressure Optimal",
-              text: `Your reading (${userData.bloodPressure}) is ideal. Keep up your current habits.`,
-            },
-            {
-              positive: false,
-              icon: <RunIcon size={16} />,
-              title: "Boost Daily Steps",
-              text: `You're at ${userData.steps.toLocaleString()} steps. Reaching 10,000 improves cardiovascular health significantly.`,
-            },
-            {
-              positive: true,
-              icon: <BedIcon size={16} />,
-              title: "Sleep Quality is Good",
-              text: `${userData.sleepHours} hours meets recommendations. Consistent timing would further boost recovery.`,
-            },
-            {
-              positive: false,
-              icon: <DropIcon size={16} />,
-              title: "Hydration Gap",
-              text: `You're at ${userData.waterIntake}/8 glasses. A visible water bottle on your desk is proven to increase intake.`,
-            },
-          ].map((ins, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "14px",
-                padding: "18px",
-                background: ins.positive ? "#F0FDF4" : B.pinkLight,
-                border: `1px solid ${ins.positive ? "#BBF7D0" : B.pinkDark}`,
-                borderRadius: "16px",
-              }}
-            >
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  flexShrink: 0,
-                  background: ins.positive ? "#DCFCE7" : B.pink,
-                  borderRadius: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: ins.positive ? "#16A34A" : B.red,
-                }}
-              >
-                {ins.icon}
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: "700",
-                    color: B.gray900,
-                    marginBottom: "4px",
-                  }}
-                >
-                  {ins.title}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.78rem",
-                    color: B.gray500,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {ins.text}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── QUOTE ── */}
-      <div
-        style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px 48px" }}
-      >
-        <div
-          style={{
-            padding: "clamp(24px,5vw,48px)",
-            background: `linear-gradient(145deg,${B.pinkLight},#fff)`,
-            border: `1px solid ${B.pinkDark}`,
-            borderRadius: "24px",
-            textAlign: "center",
-          }}
-        >
-          <LeafIcon size={28} style={{ color: B.red, opacity: 0.3 }} />
-          <p
-            style={{
-              fontSize: "clamp(1rem,2.5vw,1.25rem)",
-              fontStyle: "italic",
-              color: B.gray600,
-              lineHeight: 1.7,
-              maxWidth: "580px",
-              margin: "12px auto",
-            }}
-          >
-            "The greatest wealth is health. Small daily improvements lead to
-            stunning long-term results."
-          </p>
-          <p style={{ fontSize: "0.8rem", color: B.gray400 }}>— Virgil</p>
-        </div>
-      </div>
-
-      {/* ── CHAT BUTTON ── */}
-      <button
-        className="s-chatbtn"
-        onClick={() => setChatOpen((o) => !o)}
-        style={{
-          position: "fixed",
-          bottom: "28px",
-          right: "28px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          padding: "14px 22px",
-          background: `linear-gradient(135deg,${B.red},${B.redLight})`,
-          color: "#fff",
-          border: "none",
-          borderRadius: "100px",
-          fontSize: "0.88rem",
-          fontWeight: "700",
-          cursor: "pointer",
-          boxShadow: "0 8px 28px rgba(230,62,78,0.35)",
-          transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
-          zIndex: 200,
-          letterSpacing: "0.01em",
-        }}
-      >
-        <BotIcon size={18} />
-        <span className="s-chatbtn-lbl">
-          {chatOpen ? "Close Chat" : "Ask Health AI"}
-        </span>
+      {/* ── Chat FAB ── */}
+      <button className="ha-fab" onClick={() => setChatOpen(o => !o)}>
+        <I.Chat /><span>Ask Health AI</span>
       </button>
 
-      {/* ── CHAT WINDOW ── */}
+      {/* ── Chat Window ── */}
       {chatOpen && (
-        <div
-          className="s-chatwin"
-          style={{
-            position: "fixed",
-            bottom: "92px",
-            right: "28px",
-            width: "clamp(300px,90vw,390px)",
-            height: "580px",
-            background: "#fff",
-            border: `1px solid ${B.gray200}`,
-            borderRadius: "24px",
-            boxShadow: "0 32px 80px rgba(0,0,0,0.14)",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            zIndex: 199,
-            animation: "slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              padding: "16px 20px",
-              borderBottom: `1px solid ${B.pinkDark}`,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              background: B.pinkLight,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  background: `linear-gradient(135deg,${B.red},${B.redLight})`,
-                  borderRadius: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                }}
-              >
-                <BotIcon size={16} />
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: "0.88rem",
-                    fontWeight: "700",
-                    color: B.gray900,
-                  }}
-                >
-                  AI Health Advisor
-                </div>
-                <div style={{ fontSize: "0.7rem", color: B.gray400 }}>
-                  Always here for your wellness questions
-                </div>
-              </div>
+        <div className="ha-cw">
+          <div className="ha-cwh">
+            <div className="ha-cav"><I.Bot /></div>
+            <div>
+              <div className="ha-cn">Health AI Assistant</div>
+              <div className="ha-csub">Powered by Claude · Always available</div>
             </div>
-            <button
-              onClick={() => setChatOpen(false)}
-              style={{
-                background: B.pink,
-                border: `1px solid ${B.pinkDark}`,
-                width: "30px",
-                height: "30px",
-                borderRadius: "8px",
-                color: B.red,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <XIcon size={13} />
-            </button>
+            <button className="ha-cxbtn" onClick={() => setChatOpen(false)}><I.X /></button>
           </div>
 
-          {/* Messages */}
-          <div
-            ref={messagesRef}
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              background: B.gray50,
-            }}
-          >
-            {messages.map((m) => {
-              const isUser = m.type === "user";
-              return (
-                <div
-                  key={m.id}
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    alignSelf: isUser ? "flex-end" : "flex-start",
-                    flexDirection: isUser ? "row-reverse" : "row",
-                    maxWidth: "88%",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "28px",
-                      height: "28px",
-                      flexShrink: 0,
-                      background: isUser
-                        ? `linear-gradient(135deg,${B.red},${B.redLight})`
-                        : B.pink,
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: isUser ? "#fff" : B.red,
-                    }}
-                  >
-                    {isUser ? <UserIcon size={13} /> : <BotIcon size={13} />}
-                  </div>
-                  <div>
-                    <div
-                      style={{
-                        padding: "10px 14px",
-                        background: isUser
-                          ? `linear-gradient(135deg,${B.red},${B.redLight})`
-                          : "#fff",
-                        border: `1px solid ${isUser ? "transparent" : B.gray200}`,
-                        borderRadius: isUser
-                          ? "16px 4px 16px 16px"
-                          : "4px 16px 16px 16px",
-                        fontSize: "0.82rem",
-                        color: isUser ? "#fff" : B.gray700,
-                        lineHeight: 1.55,
-                      }}
-                    >
-                      {m.content}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.6rem",
-                        color: B.gray400,
-                        marginTop: "3px",
-                        textAlign: isUser ? "right" : "left",
-                      }}
-                    >
-                      {m.time}
-                    </div>
-                  </div>
+          <div className="ha-msgs">
+            {messages.map((m, i) => (
+              <div key={i} className={`ha-m ${m.role === 'user' ? 'u' : ''}`}>
+                <div className="ha-mico" style={m.role === 'bot'
+                  ? { background: 'rgba(230,62,78,.1)', color: '#E63E4E' }
+                  : { background: 'linear-gradient(135deg,#E63E4E,#ff6b7a)', color: 'white' }
+                }>
+                  {m.role === 'bot' ? <I.Bot /> : <I.User />}
                 </div>
-              );
-            })}
-            {typing && (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "8px",
-                  alignSelf: "flex-start",
-                  maxWidth: "88%",
-                }}
-              >
-                <div
-                  style={{
-                    width: "28px",
-                    height: "28px",
-                    flexShrink: 0,
-                    background: B.pink,
-                    borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: B.red,
-                  }}
-                >
-                  <BotIcon size={13} />
+                <div>
+                  <div className="ha-mb">{m.text}</div>
+                  <div className="ha-mt">{m.time}</div>
                 </div>
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    background: "#fff",
-                    border: `1px solid ${B.gray200}`,
-                    borderRadius: "4px 16px 16px 16px",
-                  }}
-                >
-                  <div style={{ display: "flex", gap: "4px" }}>
-                    {[0, 1, 2].map((i) => (
-                      <span
-                        key={i}
-                        style={{
-                          width: "7px",
-                          height: "7px",
-                          borderRadius: "50%",
-                          background: B.red,
-                          display: "block",
-                          animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
-                        }}
-                      />
-                    ))}
-                  </div>
+              </div>
+            ))}
+            {chatBusy && (
+              <div className="ha-m">
+                <div className="ha-mico" style={{ background: 'rgba(230,62,78,.1)', color: '#E63E4E' }}><I.Bot /></div>
+                <div className="ha-typing">
+                  <span className="ha-td"/><span className="ha-td"/><span className="ha-td"/>
                 </div>
               </div>
             )}
+            <div ref={msgsEnd} />
           </div>
 
-          {/* Suggested */}
-          {!interacted && (
-            <div
-              style={{
-                padding: "10px 14px",
-                borderTop: `1px solid ${B.gray100}`,
-                background: "#fff",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "0.65rem",
-                  color: B.gray400,
-                  fontWeight: "600",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  marginBottom: "8px",
-                }}
-              >
-                Suggested
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {suggestedQuestions.map((q, i) => (
-                  <button
-                    key={i}
-                    className="s-sug"
-                    onClick={() => sendMessage(q)}
-                    style={{
-                      padding: "6px 12px",
-                      background: B.pinkLight,
-                      border: `1px solid ${B.pinkDark}`,
-                      borderRadius: "100px",
-                      color: B.gray600,
-                      fontSize: "0.75rem",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {q}
-                  </button>
+          {messages.length <= 2 && (
+            <div className="ha-sug">
+              <div className="ha-sugt">Suggested questions</div>
+              <div className="ha-sugc">
+                {SUGGESTED_QS.map(q => (
+                  <button key={q} className="ha-chip" onClick={() => sendMsg(q)}>{q}</button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Input */}
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-              padding: "12px 14px",
-              borderTop: `1px solid ${B.gray100}`,
-            }}
-          >
+          <div className="ha-cinput">
             <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              className="ha-ci"
               placeholder="Ask about your health..."
-              style={{
-                flex: 1,
-                padding: "10px 14px",
-                background: B.pinkLight,
-                border: `1px solid ${B.pinkDark}`,
-                borderRadius: "100px",
-                color: B.gray900,
-                fontSize: "0.82rem",
-                outline: "none",
-              }}
-              onFocus={(e) => (e.target.style.borderColor = B.red)}
-              onBlur={(e) => (e.target.style.borderColor = B.pinkDark)}
+              value={chatInput}
+              onChange={e => setChatInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendMsg()}
             />
-            <button
-              onClick={() => sendMessage()}
-              disabled={!input.trim()}
-              style={{
-                width: "38px",
-                height: "38px",
-                background: input.trim()
-                  ? `linear-gradient(135deg,${B.red},${B.redLight})`
-                  : B.gray100,
-                border: "none",
-                borderRadius: "50%",
-                color: input.trim() ? "#fff" : B.gray300,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: input.trim() ? "pointer" : "not-allowed",
-                flexShrink: 0,
-                transition: "all 0.2s",
-              }}
-            >
-              <SendIcon size={14} />
+            <button className="ha-csend" onClick={() => sendMsg()} disabled={!chatInput.trim() || chatBusy}>
+              {chatBusy ? <I.Loader /> : <I.Send />}
             </button>
           </div>
-
-          {/* Disclaimer */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "8px 14px",
-              borderTop: `1px solid ${B.pinkDark}`,
-              fontSize: "0.65rem",
-              color: B.gray400,
-              background: B.pinkLight,
-            }}
-          >
-            <AlertIcon size={11} style={{ color: B.red, flexShrink: 0 }} />
-            AI-generated. Always consult a healthcare professional for medical
-            concerns.
-          </div>
+          <div className="ha-disc">⚕ Not a substitute for professional medical advice</div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ROOT COMPONENT — handles auth gating + data fetching
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Props:
+ *  - onGoToAssessment  : () => void   — navigate to SymptomDetector
+ *  - reportData        : object|null  — pass directly after assessment completes (skips fetch)
+ */
+export default function HealthAdvisor({ onGoToAssessment, reportData: propReport }) {
+  // 'loading' | 'empty' | 'ready' | 'gate-dismissed'
+  const [status,     setStatus]     = useState('loading');
+  const [report,     setReport]     = useState(propReport || null);
+  const [user,       setUser]       = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const goAssess = onGoToAssessment || (() => { window.location.href = '/symptom-detector'; });
+
+  useEffect(() => {
+    async function init() {
+      const token = getToken();
+      const u     = getUser();
+      setUser(u);
+      setIsLoggedIn(!!token);
+
+      // Report passed directly (e.g. right after SymptomDetector finishes)
+      if (propReport) {
+        setReport(propReport);
+        setStatus('ready');
+        return;
+      }
+
+      // Not logged in — nothing to fetch, show empty state
+      if (!token) {
+        setStatus('empty');
+        return;
+      }
+
+      // Logged in — try to load latest assessment from backend
+      const data = await fetchLatestAssessment();
+      if (!data) {
+        setStatus('empty');
+        return;
+      }
+
+      setReport(data);
+      setStatus('ready');
+    }
+    init();
+  }, [propReport]);
+
+  const handleDismissGate = () => {
+    setStatus('gate-dismissed');
+  };
+
+  return (
+    <div className="ha">
+        <div className="ha-blob ha-b1" />
+        <div className="ha-blob ha-b2" />
+
+        {status === 'loading' && (
+          <div className="ha-loading">
+            <div className="ha-loading-spinner" />
+            <p className="ha-loading-text">Loading your health data…</p>
+          </div>
+        )}
+
+        {status === 'empty' && (
+          <EmptyState
+            isLoggedIn={isLoggedIn}
+            user={user}
+            onGoToAssessment={goAssess}
+            onDismiss={handleDismissGate}
+          />
+        )}
+
+        {status === 'gate-dismissed' && (
+          <div className="ha-wrap" style={{ opacity: 0.7 }}>
+            {/* Show empty dashboard skeleton with no data */}
+            <div className="ha-top">
+              <div>
+                <h1 className="ha-title">Health <span>Advisor</span></h1>
+                <p className="ha-sub">AI-powered insights tailored to your stroke risk profile.</p>
+              </div>
+              <div className="ha-risk-pill" style={{ background: 'linear-gradient(135deg,#94a3b8,#cbd5e1)' }}>
+                <span className="ha-rdot" />No Data · —%
+              </div>
+            </div>
+
+            {/* Assessment date bar */}
+            <div className="ha-assessed-bar">
+              <div className="ha-assessed-left">
+                <I.History />
+                <div>
+                  <div className="ha-assessed-label">Last assessment</div>
+                  <div className="ha-assessed-date">Not available</div>
+                </div>
+              </div>
+              <button className="ha-reassess-btn" onClick={goAssess}>
+                <I.Refresh /> Take Assessment
+              </button>
+            </div>
+
+            {/* Stats strip skeleton */}
+            <div className="ha-sum">
+              {[1,2,3,4].map(i => (
+                <div className="ha-sc" key={i}>
+                  <div className="ha-skel" style={{ height: 16, width: '60%', marginBottom: 8, borderRadius: 5 }} />
+                  <div className="ha-skel" style={{ height: 28, width: '45%', borderRadius: 8 }} />
+                </div>
+              ))}
+            </div>
+
+            {/* Tabs skeleton */}
+            <div className="ha-tabs">
+              {[1,2,3,4,5].map(i => (
+                <div key={i} className="ha-skel" style={{ width: 110, height: 36, borderRadius: 100 }} />
+              ))}
+            </div>
+
+            {/* Panel skeleton */}
+            <div className="ha-panel">
+              <div className="ha-ph">
+                <div className="ha-skel" style={{ width: 46, height: 46, borderRadius: 13 }} />
+                <div>
+                  <div className="ha-skel" style={{ width: 180, height: 20, borderRadius: 6, marginBottom: 5 }} />
+                  <div className="ha-skel" style={{ width: 220, height: 14, borderRadius: 5 }} />
+                </div>
+              </div>
+              <div className="ha-ig">
+                {[1,2,3,4].map(i => (
+                  <div key={i} style={{ borderRadius: 16, padding: 17, border: '1px solid #edf0f6' }}>
+                    <div className="ha-skel" style={{ height: 18, width: '38%', marginBottom: 10, borderRadius: 6 }} />
+                    <div className="ha-skel" style={{ height: 14, width: '85%', marginBottom: 6, borderRadius: 5 }} />
+                    <div className="ha-skel" style={{ height: 14, width: '60%', borderRadius: 5 }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Monthly goals skeleton */}
+            <div className="ha-sh"><I.Calendar />Monthly Health Tracker</div>
+            <div className="ha-goals">
+              {[1,2,3,4].map(i => (
+                <div key={i} className="ha-gc">
+                  <div className="ha-gh">
+                    <div className="ha-skel" style={{ width: 33, height: 33, borderRadius: 9 }} />
+                    <div className="ha-skel" style={{ flex: 1, height: 18, borderRadius: 6 }} />
+                  </div>
+                  <div className="ha-skel" style={{ height: 5, borderRadius: 100, marginBottom: 11 }} />
+                  <div className="ha-skel" style={{ width: '100%', height: 30, borderRadius: 10 }} />
+                </div>
+              ))}
+            </div>
+
+            {/* Chat FAB */}
+            <button className="ha-fab" style={{ opacity: 0.6, pointerEvents: 'none' }}>
+              <I.Chat /><span>Ask Health AI</span>
+            </button>
+          </div>
+        )}
+
+        {status === 'ready' && report && (
+          <AdvisorDashboard
+            report={report}
+            user={user}
+            onGoToAssessment={goAssess}
+          />
+        )}
     </div>
   );
 }
