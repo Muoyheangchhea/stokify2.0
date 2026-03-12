@@ -306,7 +306,7 @@ const mapFormToBackend = (formData) => {
     work_Govt_job: formData.workType === 'Government job' ? 1 : 0,
     work_Never_worked: formData.workType === 'Never worked' ? 1 : 0,
     work_Private: formData.workType === 'Private' ? 1 : 0,
-    work_Self-employed: formData.workType === 'Self-employed' ? 1 : 0,
+    "work_Self-employed": formData.workType === 'Self-employed' ? 1 : 0,
     work_children: formData.workType === 'Children' ? 1 : 0
   };
 };
