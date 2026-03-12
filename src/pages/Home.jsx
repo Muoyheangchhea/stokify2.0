@@ -176,10 +176,10 @@ const Home = () => {
         {/* ORDER 1 mobile → RIGHT column desktop */}
         <div className="hp-duo">
           <div className="hp-duo-back">
-            <IPhoneRealistic src={logo} alt="Home screen" rotation={30} scale={0.95} delay="0s" />
+            <IPhoneRealistic src={logo} alt="Home screen" rotation={25} scale={0.98} delay="0s" />
           </div>
           <div className="hp-duo-front">
-            <IPhoneRealistic src={logo2} alt="Dashboard" rotation={-22} scale={1} delay="0.6s" />
+            <IPhoneRealistic src={logo2} alt="Dashboard" rotation={-20} scale={1} delay="0.6s" />
           </div>
         </div>
 
