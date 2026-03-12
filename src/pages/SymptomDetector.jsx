@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { predictStrokeRisk } from '../services/strokeService';
 import { FaEye } from 'react-icons/fa';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import {
   FaUser, FaHeart, FaLungs, FaWineBottle, FaApple,
   FaBed, FaArrowRight, FaArrowLeft, FaCheck, FaBrain,
@@ -19,6 +21,7 @@ const SymptomDetector = () => {
   const [progress, setProgress]               = useState(0);
   const [reportData, setReportData]           = useState(null);
   const [apiError, setApiError]               = useState(null);
+  const [validationError, setValidationError] = useState('');
 
   const [formData, setFormData] = useState({
     age: 35, sex: '', ethnicity: '', maritalStatus: '',
@@ -50,6 +53,7 @@ const SymptomDetector = () => {
   const handleGlucoseSelection = (value) => {
     setFormData(prev => ({ ...prev, knowsGlucose: value }));
     setShowGlucoseInput(value === 'I know it');
+    setValidationError('');
     
     if (value === "I don't know") {
       setShowGlucoseFollowUp(true);
@@ -189,6 +193,68 @@ const SymptomDetector = () => {
     
   const cardProgressPct = Math.round(((currentQuestion - 1) / adjustedTotalQuestions) * 100);
 
+  // ─── Validation Functions ─────────────────────────────────────────────────
+  const isQuestionAnswered = () => {
+    if (showGlucoseFollowUp) {
+      // Check if current follow-up question is answered
+      const currentFollowUpQ = glucoseFollowUpQuestions[glucoseFollowUpStep];
+      return formData[currentFollowUpQ.id] && formData[currentFollowUpQ.id].trim() !== '';
+    }
+
+    const question = currentQuestionData;
+    if (!question) return false;
+
+    switch (question.type) {
+      case 'slider':
+        // Slider always has a value (default 35)
+        return true;
+      
+      case 'dual-slider':
+        // Both height and weight are required
+        return formData.height && formData.weight;
+      
+      case 'yes-no':
+      case 'options':
+        // Check if option is selected
+        return formData[question.id] && formData[question.id].trim() !== '';
+      
+      case 'bp-input':
+        if (formData.knowsBP === "I don't know") {
+          return true; // "I don't know" is a valid answer
+        } else if (formData.knowsBP === "I know it") {
+          // Both systolic and diastolic are required
+          return formData.systolic && formData.diastolic;
+        }
+        return false; // No selection made yet
+      
+      case 'glucose-input':
+        if (formData.knowsGlucose === "I don't know") {
+          return true; // "I don't know" is a valid answer
+        } else if (formData.knowsGlucose === "I know it") {
+          // Glucose value is required
+          return formData.glucose && formData.glucose.trim() !== '';
+        }
+        return false; // No selection made yet
+      
+      default:
+        return true;
+    }
+  };
+
+  const isConditionalAnswered = () => {
+    if (!currentQuestionData?.conditional) return true;
+    
+    if (currentQuestionData.id === 'hasHighBP' && showBpMedication) {
+      return formData.bpMedication && formData.bpMedication.trim() !== '';
+    }
+    
+    if (currentQuestionData.id === 'hasDiabetes' && showDiabetesMedication) {
+      return formData.diabetesMedication && formData.diabetesMedication.trim() !== '';
+    }
+    
+    return true;
+  };
+
   // ─── Helpers ─────────────────────────────────────────────────────────────────
   const calculateBMI = () => {
     if (formData.height && formData.weight) {
@@ -229,11 +295,9 @@ const SymptomDetector = () => {
       if (g > 125)      { maxScore += 10; score += 10; factors.push({ factor: 'Elevated blood glucose', impact: 'high',     points: 10 }); }
       else if (g > 100) { maxScore += 5;  score += 5;  factors.push({ factor: 'Pre-diabetic range',     impact: 'moderate', points: 5  }); }
     }
-    if (formData.smokingStatus === 'Current smoker') {
+    if (formData.smokingStatus === 'Smokes') {
       maxScore += 25; score += 25; factors.push({ factor: 'Current smoker', impact: 'high', points: 25 });
       if (formData.cigarettesPerDay > 20) { score += 5; factors.push({ factor: 'Heavy smoker', impact: 'high', points: 5 }); }
-    } else if (formData.smokingStatus === 'Former smoker') {
-      maxScore += 10; score += 10; factors.push({ factor: 'Former smoker', impact: 'moderate', points: 10 });
     }
     if (formData.alcoholConsumption?.includes('Frequently'))  { maxScore += 15; score += 15; factors.push({ factor: 'Heavy alcohol use',   impact: 'high',     points: 15 }); }
     else if (formData.alcoholConsumption?.includes('Regularly')) { maxScore += 8; score += 8; factors.push({ factor: 'Regular alcohol use', impact: 'moderate', points: 8  }); }
@@ -260,7 +324,7 @@ const SymptomDetector = () => {
       recs.push({ category: 'Blood Pressure',   icon: <FaHeartbeat />, color: '#E63E4E', items: ['Monitor blood pressure regularly at home', 'Reduce sodium intake', 'Take medications exactly as prescribed', 'Consider the DASH diet'] });
     if (data.hasDiabetes === 'Yes' || (data.glucose && parseInt(data.glucose) > 100))
       recs.push({ category: 'Blood Sugar',      icon: <FaTint />,      color: '#10B981', items: ['Monitor blood glucose levels regularly', 'Limit sugary drinks and desserts', 'Choose complex carbohydrates', 'Eat meals at consistent times'] });
-    if (data.smokingStatus === 'Current smoker')
+    if (data.smokingStatus === 'Smokes')
       recs.push({ category: 'Quit Smoking',     icon: <FaSmoking />,   color: '#F59E0B', items: ['Consider nicotine replacement therapy', 'Join a cessation program', 'Identify and avoid triggers', 'Talk to your doctor about options'] });
     if (data.diet?.includes('salty') || data.diet?.includes('fatty') || data.diet?.includes('sugary'))
       recs.push({ category: 'Diet',             icon: <FaApple />,     color: '#8B5CF6', items: ['Limit processed and fast food', 'Reduce salty condiments and snacks', 'Choose lean proteins', 'Aim for 5 servings of fruit and vegetables daily'] });
@@ -300,7 +364,7 @@ const SymptomDetector = () => {
     return report;
   };
 
-  // ─── NEW: Generate report with API results ─────────────────────────────────
+  // ─── Generate report with API results ─────────────────────────────────
   const generateReportWithApiResult = (apiResult) => {
     console.log('📊 Generating report with API result:', apiResult);
     
@@ -342,9 +406,11 @@ const SymptomDetector = () => {
   // ─── Input Handler ────────────────────────────────────────────────────────────
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    setValidationError('');
+    
     if (field === 'hasHighBP')     { setShowBpMedication(value === 'Yes');          if (value !== 'Yes')             setFormData(p => ({ ...p, bpMedication: '' })); }
     if (field === 'hasDiabetes')   { setShowDiabetesMedication(value === 'Yes');    if (value !== 'Yes')             setFormData(p => ({ ...p, diabetesMedication: '' })); }
-    if (field === 'smokingStatus') { setShowCigarettes(value === 'Current smoker'); if (value !== 'Current smoker') setFormData(p => ({ ...p, cigarettesPerDay: '' })); }
+    if (field === 'smokingStatus') { setShowCigarettes(value === 'Smokes'); if (value !== 'Smokes') setFormData(p => ({ ...p, cigarettesPerDay: '' })); }
     if (field === 'knowsBP')       { setShowBpInputs(value === 'I know it');        if (value !== 'I know it')       setFormData(p => ({ ...p, systolic: '', diastolic: '' })); }
     if (field === 'knowsGlucose')  { setShowGlucoseInput(value === 'I know it');    if (value !== 'I know it')       setFormData(p => ({ ...p, glucose: '' })); }
     calculateProgress();
@@ -369,8 +435,22 @@ const SymptomDetector = () => {
     setProgress(Math.min(Math.round((completed / total) * 100), 100));
   };
 
-  // ─── Navigation ───────────────────────────────────────────────────────────────
+  // ─── Navigation with Validation ───────────────────────────────────────────────
   const goToNext = () => {
+    // Validate current question
+    if (!isQuestionAnswered()) {
+      setValidationError('Please answer this question before proceeding.');
+      return;
+    }
+
+    // Validate conditional field if visible
+    if (!isConditionalAnswered()) {
+      setValidationError('Please answer the follow-up question before proceeding.');
+      return;
+    }
+
+    setValidationError('');
+
     if (showGlucoseFollowUp) {
       // In follow-up mode
       if (glucoseFollowUpStep < glucoseFollowUpQuestions.length - 1) {
@@ -399,12 +479,38 @@ const SymptomDetector = () => {
         setCurrentSection(s => s + 1);
         setCurrentStep(1);
       } else {
+        // Validate all questions are answered before final submit
+        const allAnswered = sections.every(section => 
+          section.questions.every(q => {
+            if (q.type === 'slider') return true; // Slider always has default
+            if (q.type === 'dual-slider') return formData.height && formData.weight;
+            if (q.type === 'bp-input') {
+              if (formData.knowsBP === "I don't know") return true;
+              if (formData.knowsBP === "I know it") return formData.systolic && formData.diastolic;
+              return false;
+            }
+            if (q.type === 'glucose-input') {
+              if (formData.knowsGlucose === "I don't know") return true;
+              if (formData.knowsGlucose === "I know it") return formData.glucose;
+              return false;
+            }
+            return formData[q.id] && formData[q.id].trim() !== '';
+          })
+        );
+
+        if (!allAnswered) {
+          setValidationError('Please answer all questions before submitting.');
+          return;
+        }
+        
         handleSubmit();
       }
     }
   };
 
   const goToPrevious = () => {
+    setValidationError('');
+    
     if (showGlucoseFollowUp) {
       // In follow-up mode
       if (glucoseFollowUpStep > 0) {
@@ -426,7 +532,7 @@ const SymptomDetector = () => {
     }
   };
 
-  // ─── FIXED: handleSubmit now calls the API ─────────────────────────────────
+  // ─── handleSubmit now calls the API ─────────────────────────────────
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setApiError(null);
@@ -454,21 +560,289 @@ const SymptomDetector = () => {
   };
 
   const handleReset = () => {
-    setCurrentSection(1); setCurrentStep(1); setShowResults(false); setShowFullReport(false); setProgress(0); setApiError(null);
+    setCurrentSection(1); setCurrentStep(1); setShowResults(false); setShowFullReport(false); setProgress(0); setApiError(null); setValidationError('');
     setFormData({ age:35, sex:'', ethnicity:'', maritalStatus:'', height:170, weight:70, residenceType:'', familyStroke:'', familyHeart:'', familyDiabetes:'', hasHighBP:'', bpMedication:'', hasHeartDisease:'', hasDiabetes:'', diabetesMedication:'', knowsBP:'unknown', systolic:'', diastolic:'', knowsGlucose:'unknown', glucose:'', smokingStatus:'', cigarettesPerDay:'', alcoholConsumption:'', diet:'', physicalActivity:'', sleepStress:'' });
   };
 
   const handleViewFullReport = () => { if (!reportData) generateReport(); setShowFullReport(true); };
   
+  // ─── Download Report ───────────────────────────────────────────────────────────
   const handleDownloadReport = () => {
-    if (!reportData) return;
-    const txt = `STROKE RISK ASSESSMENT REPORT\nGenerated: ${reportData.generated}\n\nRisk Level: ${reportData.risk.level} (${reportData.risk.score}%)\n\n${reportData.disclaimer}`;
-    const a = Object.assign(document.createElement('a'), { 
-      href: URL.createObjectURL(new Blob([txt], { type: 'text/plain' })), 
-      download: `stroke-report-${new Date().toISOString().split('T')[0]}.txt` 
-    });
-    a.click(); 
-    URL.revokeObjectURL(a.href);
+    // Make sure we have report data
+    let data = reportData;
+    
+    // If we're in results view but reportData is null, generate it
+    if (!data && showResults) {
+      data = generateReport();
+    }
+    
+    // If still no data, exit
+    if (!data) {
+      console.error('No report data available');
+      alert('No report data available to download.');
+      return;
+    }
+    
+    try {
+      // Create new PDF document
+      const doc = new jsPDF();
+      
+      // Set colors
+      const primaryColor = [230, 62, 78]; // #E63E4E
+      const textColor = [60, 60, 60];
+      
+      // Add header
+      doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.rect(0, 0, doc.internal.pageSize.width, 35, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Stroke Risk Assessment', 20, 22);
+      
+      // Add generation date
+      doc.setTextColor(100, 100, 100);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      const dateStr = data.generated || new Date().toLocaleString();
+      doc.text(`Generated: ${dateStr}`, 20, 45);
+      
+      let yPos = 60;
+      
+      // Risk Summary
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('RISK SUMMARY', 20, yPos);
+      yPos += 8;
+      
+      // Risk level and score
+      const riskLevel = data.risk?.level || 'Unknown';
+      const riskScore = data.risk?.score || 0;
+      
+      let riskColor;
+      switch(riskLevel) {
+        case 'Low':
+          riskColor = [16, 185, 129]; // Green
+          break;
+        case 'Moderate':
+          riskColor = [245, 158, 11]; // Orange
+          break;
+        case 'High':
+          riskColor = [239, 68, 68]; // Red
+          break;
+        default:
+          riskColor = [100, 116, 139]; // Gray
+      }
+      
+      doc.setTextColor(riskColor[0], riskColor[1], riskColor[2]);
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${riskLevel} Risk (${riskScore}%)`, 20, yPos);
+      yPos += 10;
+      
+      // Description
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      const description = data.risk?.description || 'No description available';
+      const splitDescription = doc.splitTextToSize(description, 170);
+      doc.text(splitDescription, 20, yPos);
+      yPos += (splitDescription.length * 5) + 10;
+      
+      // Check if we need a new page
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // Patient Information
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('PATIENT INFORMATION', 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      
+      const patientInfo = [
+        `Age: ${data.patientInfo?.age || '—'} years`,
+        `Sex: ${data.patientInfo?.sex || '—'}`,
+        `Ethnicity: ${data.patientInfo?.ethnicity || '—'}`,
+        `Marital Status: ${data.patientInfo?.maritalStatus || '—'}`,
+        `Height: ${data.patientInfo?.height || '—'} cm`,
+        `Weight: ${data.patientInfo?.weight || '—'} kg`,
+        `BMI: ${data.patientInfo?.bmi || '—'} (${data.patientInfo?.bmiCategory || '—'})`
+      ];
+      
+      patientInfo.forEach(line => {
+        doc.text(line, 25, yPos);
+        yPos += 6;
+      });
+      yPos += 5;
+      
+      // Check if we need a new page
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // Vital Signs
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('VITAL SIGNS', 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      
+      const bpValue = data.vitalSigns?.bloodPressure || 'Not provided';
+      const bpStatus = data.vitalSigns?.bpStatus || 'Unknown';
+      
+      let glucoseValue = data.vitalSigns?.glucose || 'Not provided';
+      let glucoseStatus = 'Not measured';
+      if (glucoseValue !== 'Not provided') {
+        const glucoseNum = parseInt(glucoseValue);
+        if (glucoseNum > 125) glucoseStatus = 'High';
+        else if (glucoseNum > 100) glucoseStatus = 'Borderline';
+        else glucoseStatus = 'Normal';
+        glucoseValue = `${glucoseValue} mg/dL`;
+      }
+      
+      doc.text(`Blood Pressure: ${bpValue} (${bpStatus})`, 25, yPos);
+      yPos += 6;
+      doc.text(`Blood Glucose: ${glucoseValue} (${glucoseStatus})`, 25, yPos);
+      yPos += 10;
+      
+      // Check if we need a new page
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // Top Risk Factors
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('TOP RISK FACTORS', 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      
+      const factors = data.risk?.factors || [];
+      if (factors.length > 0) {
+        factors.slice(0, 8).forEach(factor => {
+          const factorText = `• ${factor.factor || 'Unknown'} - ${factor.impact || 'Unknown'} impact (${factor.points || 0} pts)`;
+          const splitFactor = doc.splitTextToSize(factorText, 165);
+          doc.text(splitFactor, 25, yPos);
+          yPos += (splitFactor.length * 5) + 2;
+        });
+      } else {
+        doc.text('No risk factors identified.', 25, yPos);
+        yPos += 6;
+      }
+      yPos += 5;
+      
+      // Check if we need a new page
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // Recommendations
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('RECOMMENDATIONS', 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      
+      const recommendations = data.recommendations || [];
+      if (recommendations.length > 0) {
+        recommendations.slice(0, 4).forEach(rec => {
+          doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+          doc.setFont('helvetica', 'bold');
+          doc.text(`${rec.category || 'Recommendation'}:`, 25, yPos);
+          yPos += 5;
+          
+          doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+          doc.setFont('helvetica', 'normal');
+          
+          (rec.items || []).forEach(item => {
+            const itemLines = doc.splitTextToSize(`  • ${item}`, 160);
+            doc.text(itemLines, 25, yPos);
+            yPos += (itemLines.length * 5) + 2;
+          });
+          yPos += 5;
+        });
+      } else {
+        doc.text('No specific recommendations available.', 25, yPos);
+        yPos += 6;
+      }
+      yPos += 5;
+      
+      // Check if we need a new page
+      if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // FAST Warning Signs
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('STROKE WARNING SIGNS - FAST', 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      
+      const fastSigns = [
+        'F - Face Drooping: Does one side of the face droop or feel numb? Ask the person to smile.',
+        'A - Arm Weakness: Is one arm weak or numb? Ask the person to raise both arms.',
+        'S - Speech Difficulty: Is speech slurred or strange? Ask them to repeat a simple sentence.',
+        'T - Time to Call Emergency: If any symptoms appear, call emergency services immediately.'
+      ];
+      
+      fastSigns.forEach(sign => {
+        const splitSign = doc.splitTextToSize(sign, 165);
+        doc.text(splitSign, 25, yPos);
+        yPos += (splitSign.length * 4) + 2;
+      });
+      yPos += 5;
+      
+      // Check if we need a new page
+      if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      // Disclaimer
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'italic');
+      doc.setTextColor(150, 150, 150);
+      
+      const disclaimer = data.disclaimer || 'This assessment is for informational purposes only and is not a substitute for professional medical advice.';
+      const splitDisclaimer = doc.splitTextToSize(disclaimer, 170);
+      doc.text(splitDisclaimer, 20, yPos);
+      
+      // Save the PDF
+      doc.save(`stroke-report-${new Date().toISOString().split('T')[0]}.pdf`);
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('There was an error generating the PDF. Please check the console for details.');
+    }
   };
 
   // ─── Render helpers ───────────────────────────────────────────────────────────
@@ -492,6 +866,7 @@ const SymptomDetector = () => {
               className={`sd-option-btn ${formData[followUpQ.id] === option ? 'sd-selected' : ''}`}
               onClick={() => {
                 setFormData(prev => ({ ...prev, [followUpQ.id]: option }));
+                setValidationError('');
               }}
             >
               {option} {formData[followUpQ.id] === option && <FaCheck />}
@@ -607,38 +982,6 @@ const SymptomDetector = () => {
               </button>
             ))}
           </div>
-        );
-      case 'smoking':
-        return (
-          <>
-            <div className="sd-options-grid">
-              {question.options.map(opt => (
-                <button 
-                  key={opt} 
-                  className={`sd-option-btn ${formData.smokingStatus === opt ? 'sd-selected' : ''}`}
-                  onClick={() => handleInputChange('smokingStatus', opt)}
-                >
-                  {opt} {formData.smokingStatus === opt && <FaCheck />}
-                </button>
-              ))}
-            </div>
-            {showCigarettes && (
-              <div className="sd-conditional-section">
-                <label className="sd-conditional-label">How many cigarettes per day?</label>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <input 
-                    type="number" 
-                    min="1" 
-                    max="100" 
-                    value={formData.cigarettesPerDay}
-                    onChange={e => handleInputChange('cigarettesPerDay', e.target.value)}
-                    placeholder="e.g. 10" 
-                    className="sd-number-input" 
-                  />
-                </div>
-              </div>
-            )}
-          </>
         );
       case 'bp-input':
         return (
@@ -1041,17 +1384,21 @@ const SymptomDetector = () => {
         </div>
       )}
 
-      {/* Fixed header — section pill + title */}
-      <div className="sd-header">
-        <div className="sd-header-content">
-          <div className="sd-section-info">
-            <span className="sd-section-pill">Section {currentSection}/3</span>
-            <span className="sd-section-title">
-              {showGlucoseFollowUp ? 'Glucose Assessment' : currentSectionData?.title}
-            </span>
+      {/* Validation error message with close button */}
+      {validationError && (
+        <div className="sd-validation-error">
+          <div className="sd-validation-content">
+            <FaExclamationTriangle /> {validationError}
           </div>
+          <button 
+            className="sd-close-error" 
+            onClick={() => setValidationError('')}
+            aria-label="Close"
+          >
+            ×
+          </button>
         </div>
-      </div>
+      )}
 
       {/* Question area */}
       <div className="sd-question-wrapper">
@@ -1102,6 +1449,9 @@ const SymptomDetector = () => {
                 {showGlucoseFollowUp 
                   ? glucoseFollowUpQuestions[glucoseFollowUpStep]?.label 
                   : currentQuestionData?.label}
+                {!isQuestionAnswered() && !showGlucoseFollowUp && currentQuestionData?.type !== 'slider' && (
+                  <span className="sd-required-star">*</span>
+                )}
               </h2>
               <div className="sd-question-input-area">
                 {renderQuestion(currentQuestionData)}
