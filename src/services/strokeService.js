@@ -333,17 +333,22 @@ export const predictStrokeRisk = async (formData) => {
     const mappedData = mapFormToBackend(formData);
     
     // Step 3: Prepare feature order for ML API
-    const feature_order = [
-      "sex", "age", "hypertension", "heart_disease", "ever_married",
-      "Residence_type", "avg_glucose_level", "bmi", "smoking_status",
-      "work_Govt_job", "work_Never_worked", "work_Private",
-      "work_Self-employed", "work_children"
-    ];
-
-    const orderedData = {};
-    feature_order.forEach(key => {
-      orderedData[key] = mappedData[key] !== undefined ? mappedData[key] : 0;
-    });
+    const orderedData = {
+      sex: mappedData.sex ?? 0,
+      age: mappedData.age ?? 0,
+      hypertension: mappedData.hypertension ?? 0,
+      heart_disease: mappedData.heart_disease ?? 0,
+      ever_married: mappedData.ever_married ?? 0,
+      Residence_type: mappedData.Residence_type ?? 0,
+      avg_glucose_level: mappedData.avg_glucose_level ?? 0,
+      bmi: mappedData.bmi ?? 22,
+      smoking_status: mappedData.smoking_status ?? 0,
+      work_Govt_job: mappedData.work_Govt_job ?? 0,
+      work_Never_worked: mappedData.work_Never_worked ?? 0,
+      work_Private: mappedData.work_Private ?? 0,
+      "work_Self-employed": mappedData["work_Self-employed"] ?? 0,
+      work_children: mappedData.work_children ?? 0
+};
 
     console.log('📤 Data being sent to ML API:', orderedData);
 
