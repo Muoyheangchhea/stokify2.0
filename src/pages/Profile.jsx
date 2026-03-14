@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../services/config";
 import {
   FaUser,
   FaEnvelope,
@@ -104,7 +105,7 @@ const Profile = () => {
 
       // Fetch from your API
       const response = await fetch(
-        `http://localhost:5000/api/users/${user?.id}`,
+        `${API_BASE_URL}/users/${user?.id}`, // Updated
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -271,7 +272,7 @@ const Profile = () => {
         formData.append("profilePicture", pictureFile);
 
         const uploadResponse = await fetch(
-          "http://localhost:5000/api/users/upload-picture",
+          `${API_BASE_URL}/users/upload-picture`, // Updated
           {
             method: "POST",
             headers: {
@@ -307,7 +308,7 @@ const Profile = () => {
 
       // Save to database
       const response = await fetch(
-        `http://localhost:5000/api/users/${user?.id}`,
+        `${API_BASE_URL}/users/${user?.id}`, // Updated
         {
           method: "PUT",
           headers: {
@@ -371,7 +372,8 @@ const Profile = () => {
         setIsLoading(true);
 
         // Delete from database
-        await fetch(`http://localhost:5000/api/users/${user?.id}`, {
+        await fetch(`${API_BASE_URL}/users/${user?.id}`, {
+          // Updated
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
-import logo from '../assets/img/Strokify_Logo.png';
+import logo from "../assets/img/Strokify_Logo.png";
+import API_BASE_URL from "../services/config";
 import {
   FaEnvelope,
   FaLock,
@@ -209,7 +210,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -303,7 +304,9 @@ const Login = () => {
       <div className="login-brand">
         <div className="brand-inner">
           <div className="brand-logo">
-            <span><img src={logo} alt="Strokify Logo" className="logo-icon" /></span>
+            <span>
+              <img src={logo} alt="Strokify Logo" className="logo-icon" />
+            </span>
             <span className="logo-text">Strokify</span>
           </div>
 

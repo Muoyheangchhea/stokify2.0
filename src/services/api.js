@@ -7,7 +7,8 @@ const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials: true
 });
 
 // Request interceptor to add token
@@ -18,7 +19,7 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
       config.headers['x-auth-token'] = token;
     }
-    console.log(`🚀 ${config.method.toUpperCase()} ${config.url}`, config.data);
+    console.log(`🚀 ${config.method.toUpperCase()} ${config.url}`, config.data || '');
     return config;
   },
   (error) => {
@@ -72,6 +73,19 @@ export const authAPI = {
       const response = await api.post('/auth/login', data);
       return formatResponse(response);
     } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+  
+  // ✅ GOOGLE AUTH METHOD ADDED
+  googleAuth: async (data) => {
+    try {
+      console.log('📤 Sending Google auth data:', data);
+      const response = await api.post('/auth/google', data);
+      console.log('📥 Google auth response:', response.data);
+      return formatResponse(response);
+    } catch (error) {
+      console.error('❌ Google auth API error:', error.response?.data || error.message);
       throw error.response?.data || error.message;
     }
   },

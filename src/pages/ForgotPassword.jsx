@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../services/config";
 import {
   FaEnvelope,
   FaArrowLeft,
@@ -491,14 +492,11 @@ const ForgotPassword = () => {
     setAlert(null);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/forgot-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
       const data = await response.json();
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import logo from "../assets/img/Strokify_Logo.png";
+import API_BASE_URL from "../services/config";
 import {
   FaLock,
   FaEye,
@@ -550,11 +551,12 @@ const ResetPassword = () => {
   const [isVerifying, setIsVerifying] = useState(true);
 
   // Verify token on component mount
+  // Verify token on component mount
   useEffect(() => {
     const verifyToken = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/auth/verify-reset-token/${token}`,
+          `${API_BASE_URL}/auth/verify-reset-token/${token}`, // Updated
         );
         const data = await response.json();
 
@@ -640,7 +642,7 @@ const ResetPassword = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/reset-password",
+        `${API_BASE_URL}/auth/reset-password`, // Updated
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

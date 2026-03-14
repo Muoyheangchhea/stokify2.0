@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
-import logo from '../assets/img/Strokify_Logo.png';
+import logo from "../assets/img/Strokify_Logo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import API_BASE_URL from "../services/config";
 import {
   FaEnvelope,
   FaLock,
@@ -155,7 +156,7 @@ const Register = () => {
       setIsLoading(true);
       setShowRoleModal(false);
       const checkResponse = await fetch(
-        `http://localhost:5000/api/auth/check-user?email=${encodeURIComponent(googleUserInfo.email)}`,
+        `${API_BASE_URL}/auth/check-user?email=${encodeURIComponent(googleUserInfo.email)}`, // Updated
       );
 
       const checkData = await checkResponse.json();
@@ -273,7 +274,8 @@ const Register = () => {
     try {
       setIsLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
+        // Updated
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -109,49 +109,38 @@ export const AuthProvider = ({ children }) => {
     // Optional: Call logout API
     authAPI.logout().catch(console.error);
   };
-  // In your AuthContext.jsx - update the googleAuth function
+
+  // ✅ UPDATED GOOGLE AUTH FUNCTION
   const googleAuth = async (userData) => {
     try {
       setLoading(true);
       setError(null);
 
       console.log("🔐 Google auth for:", userData.email);
+      console.log("🔍 API Base URL:", import.meta.env.VITE_API_URL);
 
-      const response = await fetch("http://localhost:5000/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: userData.email,
-          name: userData.name,
-          googleId: userData.googleId,
-          picture: userData.picture,
-          role: userData.role,
-        }),
+      // Use authAPI instead of hardcoded fetch
+      const response = await authAPI.googleAuth({
+        email: userData.email,
+        name: userData.name,
+        googleId: userData.googleId,
+        picture: userData.picture,
+        role: userData.role,
       });
 
-      const data = await response.json();
+      console.log("📥 Google auth response:", response);
 
-      if (!response.ok) {
-        if (response.status === 409) {
-          return { success: false, error: "User already exists" };
-        }
-        if (response.status === 404) {
-          return { success: false, error: "User not found" };
-        }
-        return {
-          success: false,
-          error: data.message || "Google authentication failed",
-        };
-      }
+      // response is already formatted by api.js
+      const { user, token } = response.data;
 
       // Make sure picture is properly saved
       const userWithPicture = {
-        ...data.user,
-        picture: data.user.picture || userData.picture, // Fallback to the Google picture if not returned
+        ...user,
+        picture: user.picture || userData.picture,
       };
 
       // Save to localStorage
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(userWithPicture));
 
       setUser(userWithPicture);
@@ -159,7 +148,10 @@ export const AuthProvider = ({ children }) => {
       return { success: true, user: userWithPicture };
     } catch (err) {
       console.error("❌ Google auth error:", err);
-      return { success: false, error: err.message };
+      // err is already the error message from api.js
+      const errorMessage = err.message || "Google authentication failed";
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }

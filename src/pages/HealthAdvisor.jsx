@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import "../styles/HealthAdvisor.css";
+import API_BASE_URL from '../services/config'; 
 
 // ─── API base (matches your existing strokeService setup) ─────────────────────
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = API_BASE_URL;
 
 // ─── Inline SVG Icons ─────────────────────────────────────────────────────────
 const I = {
