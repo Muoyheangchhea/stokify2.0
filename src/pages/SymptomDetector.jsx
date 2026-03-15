@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { predictStrokeRisk } from '../services/strokeService';
 import { FaEye } from 'react-icons/fa';
 import jsPDF from 'jspdf';
@@ -13,6 +14,7 @@ import {
 import '../styles/SymptomDetector.css';
 
 const SymptomDetector = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep]         = useState(1);
   const [currentSection, setCurrentSection]   = useState(1);
   const [isSubmitting, setIsSubmitting]       = useState(false);
@@ -1303,7 +1305,17 @@ const SymptomDetector = () => {
               </div>
               <div className="sd-results-actions">
                 <button className="sd-btn-primary" onClick={handleReset}>New Assessment</button>
-                <button className="sd-btn-secondary" onClick={handleViewFullReport}>
+                <button className="sd-btn-secondary" onClick={() => {
+                  // Make sure we have the report data
+                  const report = reportData || generateReport();
+                  console.log('📤 Saving report to sessionStorage:', report);
+                  
+                  // Store in sessionStorage
+                  sessionStorage.setItem('healthAdvisorReport', JSON.stringify(report));
+                  
+                  // Navigate to Health Advisor
+                  navigate('/health-advisor');
+                }}>
                   <FaFileAlt /> View Full Report
                 </button>
               </div>
