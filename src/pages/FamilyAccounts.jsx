@@ -66,7 +66,7 @@ const FamilyAccounts = () => {
         monthly: 0,
         yearly: 0,
       },
-      members: "Monitor 1 elder + 3 family members",
+      members: "Accessible in 1 device",
       description: "Essential monitoring for one aging parent",
       features: [
         { name: "Real-time health dashboard", included: true },
@@ -93,11 +93,11 @@ const FamilyAccounts = () => {
         monthly: 0.99,
         yearly: 9.86,
       },
-      members: "Monitor 2 elders + 5 family members",
+      members: "Accessible up to 2 devices",
       description: "Complete peace of mind for multiple parents",
       features: [
         { name: "Everything in Basic", included: true },
-        { name: "Monitor up to 2 elders", included: true },
+        { name: "Monitor up to 2 devices", included: true },
         { name: "Video check-in calls", included: true },
         { name: "24/7 nurse hotline", included: true },
         { name: "Fall detection alerts", included: true },
@@ -120,11 +120,11 @@ const FamilyAccounts = () => {
         monthly: 1.5,
         yearly: 14.94,
       },
-      members: "Monitor 4 elders + 8 family members",
+      members: "Accessible up to 3 devices",
       description: "Maximum protection for extended family",
       features: [
         { name: "Everything in Premium", included: true },
-        { name: "Monitor up to 4 elders", included: true },
+        { name: "Monitor up to 3 devices", included: true },
         { name: "24/7 dedicated care coordinator", included: true },
         { name: "Smart home integration", included: true },
         { name: "Wearable device included", included: true },
@@ -300,7 +300,7 @@ const FamilyAccounts = () => {
               View Care Plans
             </button>
           </div>
-          <div className="hero-stats">
+          {/* <div className="hero-stats">
             {stats.map((stat, index) => (
               <div key={index} className="stat-item">
                 <span className="stat-icon">{stat.icon}</span>
@@ -310,7 +310,7 @@ const FamilyAccounts = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         {/* Hero Visual - Single Image */}
         <div className="hero-visual">
