@@ -1,9 +1,22 @@
 /* ==============================================
    STROKIFY PROFILE — UNIFIED DESIGN SYSTEM
    FULLY RESPONSIVE ACROSS ALL DEVICES
+   FORCED LIGHT MODE (ignores system dark mode)
    ============================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap");
+
+/* ── FORCE LIGHT MODE COLORS ── */
+/* Override any system dark mode preferences */
+:root {
+  color-scheme: light only;
+}
+
+/* Force light mode on HTML element */
+html {
+  color-scheme: light !important;
+  forced-color-adjust: none;
+}
 
 /* ── RESET & VARIABLES ── */
 * {
@@ -48,8 +61,8 @@ body {
   --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   --border-radius-card: 24px;
   --border-radius-btn: 60px;
-  --navbar-height: 80px; /* Height of floating navbar */
-  --navbar-height-mobile: 70px; /* Mobile navbar height */
+  --navbar-height: 80px;
+  --navbar-height-mobile: 70px;
 }
 
 /* ── BASE ── */
@@ -61,11 +74,15 @@ body {
   width: 100%;
   overflow-x: hidden;
   position: relative;
-  /* Add padding top for floating navbar */
   padding-top: var(--navbar-height);
 }
 
-/* Adjust padding for mobile */
+/* Override any dark mode attempts */
+.profile-page,
+.profile-page * {
+  color-scheme: light;
+}
+
 @media (max-width: 768px) {
   .profile-page {
     padding-top: var(--navbar-height-mobile);
@@ -112,10 +129,147 @@ body {
   z-index: 1;
 }
 
-/* Adjust shell height for mobile */
 @media (max-width: 768px) {
   .profile-shell {
     min-height: calc(100vh - var(--navbar-height-mobile));
+  }
+}
+
+/* ── FORCE LIGHT MODE ON ALL ELEMENTS ── */
+/* Override any system dark mode preferences */
+@media (prefers-color-scheme: dark) {
+  .profile-page,
+  .profile-sidebar,
+  .profile-main,
+  .card-section,
+  .main-header,
+  .profile-alert,
+  .field-group input,
+  .field-group select,
+  .field-group textarea,
+  .vital-card,
+  .sec-row,
+  .pref-row,
+  .history-row,
+  .stat-chip,
+  .btn-ghost,
+  .profile-loading {
+    background-color: var(--gray-50) !important;
+    color: var(--gray-900) !important;
+    border-color: var(--gray-200) !important;
+  }
+
+  .profile-sidebar {
+    background: white !important;
+    border-right: 1px solid var(--gray-200) !important;
+  }
+
+  .profile-main {
+    background: var(--gray-50) !important;
+  }
+
+  .card-section {
+    background: white !important;
+    border: 1px solid var(--gray-200) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+
+  .main-header {
+    background: white !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+  }
+
+  .profile-alert {
+    background: white !important;
+    border: 1px solid var(--gray-200) !important;
+  }
+
+  .profile-alert.success {
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+    color: #166534 !important;
+    border-color: #86EFAC !important;
+  }
+
+  .profile-alert.error {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%) !important;
+    color: #991B1B !important;
+    border-color: #FECACA !important;
+  }
+
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    background: var(--gray-50) !important;
+    border-color: var(--gray-200) !important;
+    color: var(--gray-900) !important;
+  }
+
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    background: white !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(230, 62, 78, 0.1) !important;
+  }
+
+  .vital-card {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+  }
+
+  .vital-card:hover {
+    background: white !important;
+  }
+
+  .sec-row,
+  .pref-row,
+  .history-row {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+  }
+
+  .sec-row:hover,
+  .pref-row:hover,
+  .history-row:hover {
+    background: white !important;
+  }
+
+  .stat-chip {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+  }
+
+  .stat-chip:hover {
+    background: white !important;
+  }
+
+  .btn-ghost {
+    background: white !important;
+    color: var(--gray-700) !important;
+    border: 2px solid var(--gray-200) !important;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    background: rgba(230, 62, 78, 0.02) !important;
+  }
+
+  .profile-loading {
+    background: var(--gray-50) !important;
+  }
+
+  .loading-pulse {
+    border-color: var(--primary) !important;
+  }
+
+  .sidebar-identity h2,
+  .section-title {
+    background: linear-gradient(180deg, #111827 30%, #6b7280 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.04)) !important;
   }
 }
 
@@ -190,6 +344,12 @@ body {
   }
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ========== SIDEBAR ========== */
 .profile-sidebar {
   width: var(--sidebar-w);
@@ -201,7 +361,6 @@ body {
   align-items: center;
   gap: 24px;
   position: sticky;
-  /* top: var(--navbar-height); Account for floating navbar */
   height: calc(100vh - var(--navbar-height));
   overflow-y: auto;
   flex-shrink: 0;
@@ -210,7 +369,6 @@ body {
   animation: aboutFadeIn 0.6s ease-out;
 }
 
-/* Adjust sidebar top for mobile */
 @media (max-width: 768px) {
   .profile-sidebar {
     top: var(--navbar-height-mobile);
@@ -599,7 +757,6 @@ body {
   animation: aboutFadeIn 0.8s ease-out;
 }
 
-/* Adjust main content for mobile */
 @media (max-width: 768px) {
   .profile-main {
     min-height: calc(100vh - var(--navbar-height-mobile));
@@ -814,12 +971,6 @@ body {
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* ========== CONTENT AREA ========== */
@@ -1392,7 +1543,6 @@ input:checked:hover + .toggle-track:before {
   padding-top: var(--navbar-height);
 }
 
-/* Adjust loading for mobile */
 @media (max-width: 768px) {
   .profile-loading {
     padding-top: var(--navbar-height-mobile);
@@ -2099,56 +2249,5 @@ input:checked:hover + .toggle-track:before {
 
   .section-title::after {
     background: black;
-  }
-}
-
-/* Dark mode support (optional) */
-@media (prefers-color-scheme: dark) {
-  .profile-page {
-    background: #1a1a1a;
-    color: #f0f0f0;
-  }
-
-  .profile-sidebar,
-  .card-section,
-  .main-header {
-    background: #2d2d2d;
-    border-color: #404040;
-  }
-
-  .sidebar-identity h2,
-  .section-title {
-    background: linear-gradient(180deg, #ffffff 30%, #a0a0a0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .field-group input,
-  .field-group select,
-  .field-group textarea,
-  .vital-card,
-  .sec-row,
-  .pref-row,
-  .history-row,
-  .stat-chip {
-    background: #333;
-    border-color: #404040;
-    color: #f0f0f0;
-  }
-
-  .btn-ghost {
-    background: #333;
-    color: #f0f0f0;
-    border-color: #404040;
-  }
-
-  .profile-alert.success {
-    background: #064e3b;
-    color: #a7f3d0;
-  }
-
-  .profile-alert.error {
-    background: #7f1d1d;
-    color: #fecaca;
   }
 }
