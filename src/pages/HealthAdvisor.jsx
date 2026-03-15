@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/HealthAdvisor.css";
 import API_BASE_URL from '../services/config'; 
@@ -32,39 +33,15 @@ const I = {
 
 // ─── Claude API helper ────────────────────────────────────────────────────────
 async function callClaude(systemPrompt, userMsg, history = []) {
-  const messages = [...history, { role: 'user', content: userMsg }];
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages }),
-  });
-  const data = await res.json();
-  return data.content?.[0]?.text || 'Unable to generate a response.';
+  // This will still have CORS issues - you'll need a backend proxy for this
+  console.warn('Claude API call attempted - this will fail due to CORS');
+  return 'Claude API is not available due to CORS. Please set up a backend proxy.';
 }
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 function getToken() { return localStorage.getItem('token'); }
 function getUser()  {
   try { return JSON.parse(localStorage.getItem('user')); } catch { return null; }
-}
-
-// ─── Fetch latest assessment from backend ────────────────────────────────────
-async function fetchLatestAssessment() {
-  const token = getToken();
-  if (!token) return null;
-  try {
-    const res = await axios.get(`${API_URL}/symptoms/history`, {
-      headers: { Authorization: `Bearer ${token}`, 'x-auth-token': token },
-    });
-    // Expecting array sorted newest-first, or single latest record
-    const data = res.data;
-    if (Array.isArray(data) && data.length > 0) return data[0];
-    if (data && data.risk) return data;
-    return null;
-  } catch (e) {
-    console.error('Failed to fetch assessment:', e);
-    return null;
-  }
 }
 
 // ─── Category config ──────────────────────────────────────────────────────────
@@ -95,16 +72,11 @@ function getTime() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//  EMPTY STATE — shown to everyone without assessment data (auth or not)
-// ═══════════════════════════════════════════════════════════════════════════════
-
 // Blurred ghost of the dashboard sitting behind the gate card
 function GhostDashboard() {
   return (
     <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
       <div style={{ filter:'blur(6px)', opacity:.35, transform:'scale(1.02)', transformOrigin:'top center', padding:'36px 24px' }}>
-        {/* Ghost topbar */}
         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:28 }}>
           <div>
             <div style={{ width:220, height:36, borderRadius:10, background:'#e2e8f0', marginBottom:8 }} />
@@ -112,7 +84,6 @@ function GhostDashboard() {
           </div>
           <div style={{ width:140, height:38, borderRadius:100, background:'#fca5a5' }} />
         </div>
-        {/* Ghost stat cards */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:28 }}>
           {[0,1,2,3].map(i => (
             <div key={i} style={{ background:'white', borderRadius:16, padding:16, border:'1px solid #edf0f6' }}>
@@ -121,13 +92,11 @@ function GhostDashboard() {
             </div>
           ))}
         </div>
-        {/* Ghost tabs */}
         <div style={{ display:'flex', gap:8, marginBottom:16 }}>
           {[100,110,95,130,105].map((w,i) => (
             <div key={i} style={{ width:w, height:36, borderRadius:100, background: i===0 ? '#fca5a5' : '#edf0f6' }} />
           ))}
         </div>
-        {/* Ghost insight cards */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:13, background:'white', borderRadius:24, padding:26, border:'1px solid #edf0f6' }}>
           {[0,1,2,3].map(i => (
             <div key={i} style={{ borderRadius:16, padding:17, background:'#f8f9fc', border:'1px solid #edf0f6' }}>
@@ -144,7 +113,6 @@ function GhostDashboard() {
 }
 
 function EmptyState({ isLoggedIn, user, onGoToAssessment, onDismiss }) {
-  // What step they're on: logged-out = step 0, logged-in no data = step 1
   const step = isLoggedIn ? 1 : 0;
   const name = user?.name?.split(' ')[0];
 
@@ -156,41 +124,28 @@ function EmptyState({ isLoggedIn, user, onGoToAssessment, onDismiss }) {
 
   return (
     <div className="ha-gate" style={{ position:'relative', minHeight:'100vh' }}>
-      {/* Blurred ghost dashboard behind the card */}
       <GhostDashboard />
-
-      {/* Semi-transparent backdrop */}
       <div style={{
         position:'absolute', inset:0,
         background:'rgba(248,249,252,0.55)',
         backdropFilter:'blur(2px)',
       }} />
-
-      {/* Gate card */}
       <div className="ha-gate-card" style={{ position:'relative', zIndex:2 }}>
-
-        {/* X Close Button */}
         <button className="ha-gate-close" onClick={onDismiss} aria-label="Close">
           <I.X />
         </button>
-
-        {/* Heading */}
         <h2 className="ha-gate-title">
           {isLoggedIn && name
             ? <>Hi {name}! Your <span>Health Advisor</span> is waiting</>
             : <>Complete your assessment to unlock <span>Health Advisor</span></>
           }
         </h2>
-
-        {/* Description */}
         <p className="ha-gate-desc">
           {isLoggedIn
             ? "Your personalised AI insights, monthly health tracker, and chatbot are ready — all you need to do is take the stroke risk assessment first."
             : "Get personalised AI health insights, a monthly tracker, and an AI chatbot — all tailored to your stroke risk profile. Start with a free assessment."
           }
         </p>
-
-        {/* Progress steps */}
         <div className="ha-gate-steps">
           {steps.map((s, i) => (
             <div key={i} className={`ha-gate-step ${s.done ? 'done' : ''}`}>
@@ -210,15 +165,11 @@ function EmptyState({ isLoggedIn, user, onGoToAssessment, onDismiss }) {
             </div>
           ))}
         </div>
-
-        {/* CTA */}
         <button className="ha-gate-btn primary" onClick={onGoToAssessment}>
           <I.ClipboardList />
           {isLoggedIn ? 'Start Stroke Risk Assessment' : 'Take the Free Assessment'}
           <I.ArrowRight />
         </button>
-
-        {/* Subtle reassurance */}
         <p style={{ fontSize:'.72rem', color:'#b0bac8', marginTop:14, lineHeight:1.5 }}>
           Takes about 5 minutes · No medical equipment needed · Results are instant
         </p>
@@ -227,9 +178,7 @@ function EmptyState({ isLoggedIn, user, onGoToAssessment, onDismiss }) {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//  MAIN DASHBOARD (shown when user has assessment data)
-// ═══════════════════════════════════════════════════════════════════════════════
+// MAIN DASHBOARD
 function AdvisorDashboard({ report, user, onGoToAssessment }) {
   const { risk, patientInfo, vitalSigns, factors } = report;
 
@@ -267,29 +216,50 @@ Instructions:
 - Plain text only — no markdown, no bullet points`;
 
   useEffect(() => { msgsEnd.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
-  useEffect(() => { loadInsight('cardiovascular'); }, []); // eslint-disable-line
 
   const loadInsight = useCallback(async (tabId) => {
     if (insights[tabId] || loadingTab === tabId) return;
     setLoadingTab(tabId);
-    const prompts = {
-      cardiovascular: `Patient BP ${vitalSigns?.bloodPressure} (${vitalSigns?.bpStatus}), ${risk.level} risk. 4 specific heart health recommendations for Southeast Asia. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
-      nutrition:      `BMI ${patientInfo?.bmi} (${patientInfo?.bmiCategory}), glucose ${vitalSigns?.glucose}mg/dL, ${risk.level} risk. 4 nutrition tips considering Cambodian/Southeast Asian cuisine. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
-      activity:       `Age ${patientInfo?.age}, BMI ${patientInfo?.bmi}, ${risk.level} risk. 4 exercise recommendations. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
-      sleep:          `${risk.level} risk, age ${patientInfo?.age}. 4 sleep and stress management tips. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
-      bloodsugar:     `Glucose ${vitalSigns?.glucose}mg/dL, ${risk.level} risk. 4 blood sugar management tips. JSON only: [{"title":"...","detail":"...","priority":"high|medium|low"}]`,
-    };
-    try {
-      const raw   = await callClaude(sysPrompt, prompts[tabId]);
-      const clean = raw.replace(/```json|```/g, '').trim();
-      setInsights(prev => ({ ...prev, [tabId]: JSON.parse(clean) }));
-    } catch {
-      setInsights(prev => ({ ...prev, [tabId]: [
-        { title: 'Connection issue', detail: 'Unable to load AI insights right now. Please refresh to try again.', priority: 'low' }
-      ]}));
-    }
-    setLoadingTab(null);
-  }, [insights, loadingTab, sysPrompt, vitalSigns, patientInfo, risk]);
+    
+    // Mock insights for now since Claude API has CORS issues
+    setTimeout(() => {
+      const mockInsights = {
+        cardiovascular: [
+          { title: 'Monitor Blood Pressure', detail: 'Check your blood pressure regularly at home, especially if you have a family history of hypertension.', priority: 'high' },
+          { title: 'Reduce Sodium Intake', detail: 'Limit salty foods like prahok, fish sauce, and processed foods common in Cambodian cuisine.', priority: 'high' },
+          { title: 'Regular Heart Check-ups', detail: 'Schedule annual check-ups with your doctor to monitor heart health.', priority: 'medium' },
+          { title: 'Know the Warning Signs', detail: 'Learn the signs of heart attack and stroke - chest pain, shortness of breath, and arm pain.', priority: 'medium' }
+        ],
+        nutrition: [
+          { title: 'Balanced Diet', detail: 'Aim for a mix of vegetables, lean proteins, and whole grains in your daily meals.', priority: 'high' },
+          { title: 'Limit Sugary Drinks', detail: 'Reduce consumption of sweetened beverages which can spike blood sugar.', priority: 'high' },
+          { title: 'Portion Control', detail: 'Be mindful of portion sizes, especially with rice and fried foods.', priority: 'medium' },
+          { title: 'Healthy Snacks', detail: 'Choose fresh fruits like mango, banana, or dragonfruit instead of processed snacks.', priority: 'medium' }
+        ],
+        activity: [
+          { title: 'Daily Walking', detail: 'Start with 15-20 minute walks daily and gradually increase duration.', priority: 'high' },
+          { title: 'Stay Active', detail: 'Incorporate movement throughout your day - take stairs, walk to market, or do household chores.', priority: 'high' },
+          { title: 'Find Activities You Enjoy', detail: 'Try dancing, swimming, or cycling to make exercise more enjoyable.', priority: 'medium' },
+          { title: 'Exercise with Others', detail: 'Join community exercise groups or walk with friends for motivation.', priority: 'low' }
+        ],
+        sleep: [
+          { title: 'Consistent Sleep Schedule', detail: 'Go to bed and wake up at the same time each day, even on weekends.', priority: 'high' },
+          { title: 'Create a Relaxing Routine', detail: 'Develop a pre-sleep routine like reading, gentle stretching, or meditation.', priority: 'high' },
+          { title: 'Limit Screen Time', detail: 'Avoid phones and screens at least 1 hour before bedtime.', priority: 'medium' },
+          { title: 'Manage Stress', detail: 'Practice deep breathing or mindfulness to reduce daily stress.', priority: 'medium' }
+        ],
+        bloodsugar: [
+          { title: 'Monitor Glucose Levels', detail: 'Check your blood sugar regularly if diabetic or pre-diabetic.', priority: 'high' },
+          { title: 'Choose Complex Carbs', detail: 'Opt for brown rice, whole grains, and vegetables over white rice and sugary foods.', priority: 'high' },
+          { title: 'Eat Regular Meals', detail: 'Don\'t skip meals - eat at consistent times to maintain stable blood sugar.', priority: 'medium' },
+          { title: 'Stay Hydrated', detail: 'Drink plenty of water throughout the day to help manage blood sugar.', priority: 'medium' }
+        ]
+      };
+      
+      setInsights(prev => ({ ...prev, [tabId]: mockInsights[tabId] || mockInsights.cardiovascular }));
+      setLoadingTab(null);
+    }, 1000);
+  }, [insights, loadingTab]);
 
   const sendMsg = useCallback(async (txt) => {
     const msg = txt || chatInput.trim();
@@ -297,15 +267,17 @@ Instructions:
     setChatInput('');
     setMessages(p => [...p, { role: 'user', text: msg, time: getTime() }]);
     setChatBusy(true);
-    try {
-      const hist = messages.slice(-8).map(m => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }));
-      const reply = await callClaude(sysPrompt, msg, hist);
-      setMessages(p => [...p, { role: 'bot', text: reply, time: getTime() }]);
-    } catch {
-      setMessages(p => [...p, { role: 'bot', text: "Sorry, I'm having trouble connecting right now. Please try again.", time: getTime() }]);
-    }
-    setChatBusy(false);
-  }, [chatInput, chatBusy, messages, sysPrompt]);
+    
+    // Mock response for now
+    setTimeout(() => {
+      setMessages(p => [...p, { 
+        role: 'bot', 
+        text: "I'm sorry, the AI chat feature is currently being set up. Please check back soon! In the meantime, review the health insights above for personalized recommendations.", 
+        time: getTime() 
+      }]);
+      setChatBusy(false);
+    }, 1000);
+  }, [chatInput, chatBusy]);
 
   const logGoal = (id) => {
     setGoals(prev => prev.map(g => g.id === id && g.done < g.target ? { ...g, done: g.done + 1 } : g));
@@ -326,8 +298,6 @@ Instructions:
 
   return (
     <div className="ha-wrap">
-
-      {/* ── Topbar ── */}
       <div className="ha-top">
         <div>
           <h1 className="ha-title">Health <span>Advisor</span></h1>
@@ -342,7 +312,6 @@ Instructions:
         </div>
       </div>
 
-      {/* ── Assessment date bar ── */}
       <div className="ha-assessed-bar">
         <div className="ha-assessed-left">
           <I.History />
@@ -356,7 +325,6 @@ Instructions:
         </button>
       </div>
 
-      {/* ── Stats strip ── */}
       <div className="ha-sum">
         {[
           { label: 'BMI',           val: patientInfo?.bmi || '—',       sub: patientInfo?.bmiCategory || '—',  col: patientInfo?.bmiCategory === 'Healthy weight' ? '#10B981' : '#F59E0B' },
@@ -372,7 +340,6 @@ Instructions:
         ))}
       </div>
 
-      {/* ── AI Insights ── */}
       <div className="ha-sh"><I.Sparkles />AI-Powered Health Insights</div>
       <div className="ha-tabs">
         {CATS.map(c => {
@@ -396,7 +363,7 @@ Instructions:
           <div className="ha-pico" style={{ background: cat?.bg, color: cat?.color }}><CatIcon /></div>
           <div>
             <div className="ha-pt">{cat?.label} Recommendations</div>
-            <div className="ha-ps">Personalised for your profile · Powered by Claude AI</div>
+            <div className="ha-ps">Personalised for your profile · Powered by AI</div>
           </div>
           <button className="ha-regen" onClick={() => {
             setInsights(prev => { const n = { ...prev }; delete n[activeTab]; return n; });
@@ -419,7 +386,7 @@ Instructions:
         ) : !insights[activeTab] ? (
           <div style={{ textAlign: 'center', padding: '36px 0', color: '#a8b3c4' }}>
             <div style={{ fontSize: '1.8rem', marginBottom: 8 }}>✨</div>
-            <p style={{ fontSize: '.88rem' }}>Loading your personalised AI insights…</p>
+            <p style={{ fontSize: '.88rem' }}>Click on a tab to load personalized insights…</p>
           </div>
         ) : (
           <div className="ha-ig">
@@ -441,7 +408,6 @@ Instructions:
         )}
       </div>
 
-      {/* ── Monthly Goals ── */}
       <div className="ha-sh"><I.Calendar />Monthly Health Tracker</div>
       <div className="ha-goals">
         {goals.map(g => {
@@ -473,7 +439,6 @@ Instructions:
         })}
       </div>
 
-      {/* ── Risk Factor Breakdown ── */}
       <div className="ha-sh"><I.Chart />Your Risk Factor Breakdown</div>
       <div className="ha-panel">
         {(factors || []).length === 0 ? (
@@ -495,19 +460,17 @@ Instructions:
         })}
       </div>
 
-      {/* ── Chat FAB ── */}
       <button className="ha-fab" onClick={() => setChatOpen(o => !o)}>
         <I.Chat /><span>Ask Health AI</span>
       </button>
 
-      {/* ── Chat Window ── */}
       {chatOpen && (
         <div className="ha-cw">
           <div className="ha-cwh">
             <div className="ha-cav"><I.Bot /></div>
             <div>
               <div className="ha-cn">Health AI Assistant</div>
-              <div className="ha-csub">Powered by Claude · Always available</div>
+              <div className="ha-csub">Powered by AI · Always available</div>
             </div>
             <button className="ha-cxbtn" onClick={() => setChatOpen(false)}><I.X /></button>
           </div>
@@ -568,56 +531,64 @@ Instructions:
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//  ROOT COMPONENT — handles auth gating + data fetching
-// ═══════════════════════════════════════════════════════════════════════════════
-
-/**
- * Props:
- *  - onGoToAssessment  : () => void   — navigate to SymptomDetector
- *  - reportData        : object|null  — pass directly after assessment completes (skips fetch)
- */
-export default function HealthAdvisor({ onGoToAssessment, reportData: propReport }) {
-  // 'loading' | 'empty' | 'ready' | 'gate-dismissed'
-  const [status,     setStatus]     = useState('loading');
-  const [report,     setReport]     = useState(propReport || null);
-  const [user,       setUser]       = useState(null);
+// ROOT COMPONENT
+export default function HealthAdvisor({ onGoToAssessment }) {
+  const navigate = useNavigate();
+  const [status, setStatus] = useState('loading');
+  const [report, setReport] = useState(null);
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const goAssess = onGoToAssessment || (() => { window.location.href = '/symptom-detector'; });
+  const goAssess = onGoToAssessment || (() => { navigate('/symptom-detector'); });
 
   useEffect(() => {
     async function init() {
+      console.log('Initializing Health Advisor...');
+      
+      // Check sessionStorage for report from assessment
+      const storedReport = sessionStorage.getItem('healthAdvisorReport');
+      if (storedReport) {
+        try {
+          const parsedReport = JSON.parse(storedReport);
+          console.log('✅ Found stored report:', parsedReport);
+          setReport(parsedReport);
+          setStatus('ready');
+          // Clear it after reading
+          sessionStorage.removeItem('healthAdvisorReport');
+          return; // Stop here - don't fetch from backend
+        } catch (e) {
+          console.error('Failed to parse stored report:', e);
+        }
+      }
+
+      // Check auth
       const token = getToken();
-      const u     = getUser();
+      const u = getUser();
       setUser(u);
       setIsLoggedIn(!!token);
 
-      // Report passed directly (e.g. right after SymptomDetector finishes)
-      if (propReport) {
-        setReport(propReport);
-        setStatus('ready');
-        return;
-      }
-
-      // Not logged in — nothing to fetch, show empty state
       if (!token) {
+        console.log('No token, showing empty state');
         setStatus('empty');
         return;
       }
 
-      // Logged in — try to load latest assessment from backend
+      // Only try to fetch from backend if no stored report
+      console.log('Fetching from backend...');
       const data = await fetchLatestAssessment();
       if (!data) {
+        console.log('No data from backend, showing empty state');
         setStatus('empty');
         return;
       }
 
+      console.log('✅ Found data from backend:', data);
       setReport(data);
       setStatus('ready');
     }
+    
     init();
-  }, [propReport]);
+  }, []); // Empty dependency array - run once on mount
 
   const handleDismissGate = () => {
     setStatus('gate-dismissed');
@@ -625,118 +596,105 @@ export default function HealthAdvisor({ onGoToAssessment, reportData: propReport
 
   return (
     <div className="ha">
-        <div className="ha-blob ha-b1" />
-        <div className="ha-blob ha-b2" />
+      <div className="ha-blob ha-b1" />
+      <div className="ha-blob ha-b2" />
 
-        {status === 'loading' && (
-          <div className="ha-loading">
-            <div className="ha-loading-spinner" />
-            <p className="ha-loading-text">Loading your health data…</p>
+      {status === 'loading' && (
+        <div className="ha-loading">
+          <div className="ha-loading-spinner" />
+          <p className="ha-loading-text">Loading your health data…</p>
+        </div>
+      )}
+
+      {status === 'empty' && (
+        <EmptyState
+          isLoggedIn={isLoggedIn}
+          user={user}
+          onGoToAssessment={goAssess}
+          onDismiss={handleDismissGate}
+        />
+      )}
+
+      {status === 'gate-dismissed' && (
+        <div className="ha-wrap" style={{ opacity: 0.7 }}>
+          <div className="ha-top">
+            <div>
+              <h1 className="ha-title">Health <span>Advisor</span></h1>
+              <p className="ha-sub">AI-powered insights tailored to your stroke risk profile.</p>
+            </div>
+            <div className="ha-risk-pill" style={{ background: 'linear-gradient(135deg,#94a3b8,#cbd5e1)' }}>
+              <span className="ha-rdot" />No Data · —%
+            </div>
           </div>
-        )}
-
-        {status === 'empty' && (
-          <EmptyState
-            isLoggedIn={isLoggedIn}
-            user={user}
-            onGoToAssessment={goAssess}
-            onDismiss={handleDismissGate}
-          />
-        )}
-
-        {status === 'gate-dismissed' && (
-          <div className="ha-wrap" style={{ opacity: 0.7 }}>
-            {/* Show empty dashboard skeleton with no data */}
-            <div className="ha-top">
+          <div className="ha-assessed-bar">
+            <div className="ha-assessed-left">
+              <I.History />
               <div>
-                <h1 className="ha-title">Health <span>Advisor</span></h1>
-                <p className="ha-sub">AI-powered insights tailored to your stroke risk profile.</p>
-              </div>
-              <div className="ha-risk-pill" style={{ background: 'linear-gradient(135deg,#94a3b8,#cbd5e1)' }}>
-                <span className="ha-rdot" />No Data · —%
+                <div className="ha-assessed-label">Last assessment</div>
+                <div className="ha-assessed-date">Not available</div>
               </div>
             </div>
-
-            {/* Assessment date bar */}
-            <div className="ha-assessed-bar">
-              <div className="ha-assessed-left">
-                <I.History />
-                <div>
-                  <div className="ha-assessed-label">Last assessment</div>
-                  <div className="ha-assessed-date">Not available</div>
-                </div>
-              </div>
-              <button className="ha-reassess-btn" onClick={goAssess}>
-                <I.Refresh /> Take Assessment
-              </button>
-            </div>
-
-            {/* Stats strip skeleton */}
-            <div className="ha-sum">
-              {[1,2,3,4].map(i => (
-                <div className="ha-sc" key={i}>
-                  <div className="ha-skel" style={{ height: 16, width: '60%', marginBottom: 8, borderRadius: 5 }} />
-                  <div className="ha-skel" style={{ height: 28, width: '45%', borderRadius: 8 }} />
-                </div>
-              ))}
-            </div>
-
-            {/* Tabs skeleton */}
-            <div className="ha-tabs">
-              {[1,2,3,4,5].map(i => (
-                <div key={i} className="ha-skel" style={{ width: 110, height: 36, borderRadius: 100 }} />
-              ))}
-            </div>
-
-            {/* Panel skeleton */}
-            <div className="ha-panel">
-              <div className="ha-ph">
-                <div className="ha-skel" style={{ width: 46, height: 46, borderRadius: 13 }} />
-                <div>
-                  <div className="ha-skel" style={{ width: 180, height: 20, borderRadius: 6, marginBottom: 5 }} />
-                  <div className="ha-skel" style={{ width: 220, height: 14, borderRadius: 5 }} />
-                </div>
-              </div>
-              <div className="ha-ig">
-                {[1,2,3,4].map(i => (
-                  <div key={i} style={{ borderRadius: 16, padding: 17, border: '1px solid #edf0f6' }}>
-                    <div className="ha-skel" style={{ height: 18, width: '38%', marginBottom: 10, borderRadius: 6 }} />
-                    <div className="ha-skel" style={{ height: 14, width: '85%', marginBottom: 6, borderRadius: 5 }} />
-                    <div className="ha-skel" style={{ height: 14, width: '60%', borderRadius: 5 }} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Monthly goals skeleton */}
-            <div className="ha-sh"><I.Calendar />Monthly Health Tracker</div>
-            <div className="ha-goals">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="ha-gc">
-                  <div className="ha-gh">
-                    <div className="ha-skel" style={{ width: 33, height: 33, borderRadius: 9 }} />
-                    <div className="ha-skel" style={{ flex: 1, height: 18, borderRadius: 6 }} />
-                  </div>
-                  <div className="ha-skel" style={{ height: 5, borderRadius: 100, marginBottom: 11 }} />
-                  <div className="ha-skel" style={{ width: '100%', height: 30, borderRadius: 10 }} />
-                </div>
-              ))}
-            </div>
-
-            {/* Chat FAB */}
-            <button className="ha-fab" style={{ opacity: 0.6, pointerEvents: 'none' }}>
-              <I.Chat /><span>Ask Health AI</span>
+            <button className="ha-reassess-btn" onClick={goAssess}>
+              <I.Refresh /> Take Assessment
             </button>
           </div>
-        )}
+          <div className="ha-sum">
+            {[1,2,3,4].map(i => (
+              <div className="ha-sc" key={i}>
+                <div className="ha-skel" style={{ height: 16, width: '60%', marginBottom: 8, borderRadius: 5 }} />
+                <div className="ha-skel" style={{ height: 28, width: '45%', borderRadius: 8 }} />
+              </div>
+            ))}
+          </div>
+          <div className="ha-tabs">
+            {[1,2,3,4,5].map(i => (
+              <div key={i} className="ha-skel" style={{ width: 110, height: 36, borderRadius: 100 }} />
+            ))}
+          </div>
+          <div className="ha-panel">
+            <div className="ha-ph">
+              <div className="ha-skel" style={{ width: 46, height: 46, borderRadius: 13 }} />
+              <div>
+                <div className="ha-skel" style={{ width: 180, height: 20, borderRadius: 6, marginBottom: 5 }} />
+                <div className="ha-skel" style={{ width: 220, height: 14, borderRadius: 5 }} />
+              </div>
+            </div>
+            <div className="ha-ig">
+              {[1,2,3,4].map(i => (
+                <div key={i} style={{ borderRadius: 16, padding: 17, border: '1px solid #edf0f6' }}>
+                  <div className="ha-skel" style={{ height: 18, width: '38%', marginBottom: 10, borderRadius: 6 }} />
+                  <div className="ha-skel" style={{ height: 14, width: '85%', marginBottom: 6, borderRadius: 5 }} />
+                  <div className="ha-skel" style={{ height: 14, width: '60%', borderRadius: 5 }} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="ha-sh"><I.Calendar />Monthly Health Tracker</div>
+          <div className="ha-goals">
+            {[1,2,3,4].map(i => (
+              <div key={i} className="ha-gc">
+                <div className="ha-gh">
+                  <div className="ha-skel" style={{ width: 33, height: 33, borderRadius: 9 }} />
+                  <div className="ha-skel" style={{ flex: 1, height: 18, borderRadius: 6 }} />
+                </div>
+                <div className="ha-skel" style={{ height: 5, borderRadius: 100, marginBottom: 11 }} />
+                <div className="ha-skel" style={{ width: '100%', height: 30, borderRadius: 10 }} />
+              </div>
+            ))}
+          </div>
+          <button className="ha-fab" style={{ opacity: 0.6, pointerEvents: 'none' }}>
+            <I.Chat /><span>Ask Health AI</span>
+          </button>
+        </div>
+      )}
 
-        {status === 'ready' && report && (
-          <AdvisorDashboard
-            report={report}
-            user={user}
-            onGoToAssessment={goAssess}
-          />
-        )}
+      {status === 'ready' && report && (
+        <AdvisorDashboard
+          report={report}
+          user={user}
+          onGoToAssessment={goAssess}
+        />
+      )}
     </div>
   );
 }
