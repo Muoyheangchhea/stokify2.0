@@ -38,7 +38,9 @@
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  background: linear-gradient(135deg, #e63e4e 0%, #b31e2c 100%);
+  /* background: linear-gradient(135deg, #e63e4e 0%, #b31e2c 100%); */
+  background: white;
+  padding-top: 80px;
 }
 /* Avatar section with edit overlay */
 .avatar-section {

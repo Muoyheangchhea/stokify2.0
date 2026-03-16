@@ -428,7 +428,7 @@ const Register = () => {
           {alert && <Alert {...alert} />}
 
           {/* Social Signup Buttons */}
-          <div className="social-buttons">
+          {/* <div className="social-buttons">
             <button
               className="social-btn google"
               type="button"
@@ -453,11 +453,11 @@ const Register = () => {
             >
               <FaApple /> Apple
             </button> */}
-          </div>
+          {/* </div>
 
           <div className="divider">
             <span>or continue with email</span>
-          </div>
+          </div>  */}
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-fields">

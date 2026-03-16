@@ -32,7 +32,8 @@
   min-height: 100vh;
   display: flex;
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #E63E4E 0%, #B31E2C 100%);
+    background: white;
+  padding-top: 80px;
 }
 
 /* Left brand panel */

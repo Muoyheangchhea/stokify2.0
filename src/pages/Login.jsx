@@ -369,15 +369,15 @@ const Login = () => {
           {alert && <Alert {...alert} />}
 
           {/* Social Login Buttons */}
-          <div className="social-buttons">
-            <button
+          {/* <div className="social-buttons">
+            {/* <button
               className="social-btn google"
               type="button"
               onClick={() => handleGoogleLogin()}
               disabled={isLoading}
             >
               <FaGoogle /> Google
-            </button>
+            </button> */}
             {/* <button
               className="social-btn facebook"
               type="button"
@@ -394,11 +394,11 @@ const Login = () => {
             >
               <FaApple /> Apple
             </button> */}
-          </div>
+          {/* </div> */}
 
-          <div className="divider">
+          {/* <div className="divider">
             <span>or continue with email</span>
-          </div>
+          </div> */}
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-fields">
