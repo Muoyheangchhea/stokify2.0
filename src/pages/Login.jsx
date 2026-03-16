@@ -18,7 +18,7 @@ import {
   FaExclamationCircle,
   FaInfoCircle,
 } from "react-icons/fa";
-import "../styles/login.css";
+import "../styles/Login.css";
 
 const Alert = ({ type, message, onAction, actionLabel }) => {
   const icons = {
