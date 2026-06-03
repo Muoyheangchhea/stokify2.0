@@ -20,7 +20,7 @@ import {
   FaInfoCircle,
   FaUserMd,
 } from "react-icons/fa";
-import "../styles/register.css";
+import "../styles/Register.css";
 
 const Alert = ({ type, message, onAction, actionLabel }) => {
   const icons = {
