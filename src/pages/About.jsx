@@ -30,12 +30,12 @@ import muoyheangImage from "../assets/img/mh.png";
 const founders = [
   {
     name: "Hieng Dara",
-    role: ["Co-Founder", "Business Lead"],
+    role: ["Co-Founder", "CEO"],
     image: daraImage,
     bio: "CS student with proven business leadership across Singapore Vietnam and China.",
-    linkedin: "https://linkedin.com/in/hieng-dara",
-    instagram: "https://instagram.com/hiengdara",
-    email: "dara@strokify.com",
+    linkedin: "https://www.linkedin.com/in/dara-hieng-1b30a3292/",
+    instagram: "https://www.instagram.com/dara_hieng/",
+    email: "darahieng9999@gmail.com",
     quote: "Bridging tech with business to drive innovation.",
     education: "Computer Science, AUPP",
     expertise: [
@@ -46,12 +46,12 @@ const founders = [
   },
   {
     name: "Van Meysorng",
-    role: ["Co-Founder", "Product Lead"],
+    role: ["Co-Founder", "COO"],
     image: meysorngImage,
     bio: "ICT specialist with international experience in UI/UX design and product innovation.",
-    linkedin: "https://linkedin.com/in/van-meysorng",
-    instagram: "https://instagram.com/vanmeysorng",
-    email: "meysorng@strokify.com",
+    linkedin: "https://www.linkedin.com/in/meysorng-van/",
+    instagram: "https://www.instagram.com/gggnrxss/",
+    email: "meysorng9@gmail.com",
     quote: "Great products blend design with technical excellence.",
     education: "ICT, AUPP",
     expertise: [
@@ -62,12 +62,12 @@ const founders = [
   },
   {
     name: "Chhea Muoyheang",
-    role: ["Co-Founder", "Technical Lead"],
+    role: ["Co-Founder", "CTO"],
     image: muoyheangImage,
     bio: "Full-stack developer with expertise in building scalable technical solutions.",
-    linkedin: "https://linkedin.com/in/chhea-muoyheang",
+    linkedin: "https://www.linkedin.com/in/muoyheang-chhea/",
     instagram: "https://instagram.com/chheamuoyheang",
-    email: "muoyheang@strokify.com",
+    email: "muoyheang12345@gmail.com",
     quote: "Building robust foundations for innovative solutions.",
     education: "Software Development, AUPP",
     expertise: [

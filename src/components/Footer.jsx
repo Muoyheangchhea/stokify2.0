@@ -101,7 +101,7 @@ const Footer = () => {
               </li>
               <li>
                 <FaPhone />
-                <span>+855-77-847664</span>
+                <span>+855-92-693368</span>
               </li>
               <li>
                 <FaEnvelope />
